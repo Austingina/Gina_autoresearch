@@ -86,8 +86,6 @@ def run(out_dir: Path, steps: int, fps: int, seed: int) -> bool:
     goal = obs["extra"]["goal_pos"].clone()
     raw_goal = raw0.clone()
     raw_goal[:, 0:3] = goal
-    zero_action = np.zeros(env.action_space.shape, dtype=np.float32)
-
     frames: list[np.ndarray] = []
     success = False
     for t in range(steps):
@@ -102,12 +100,23 @@ def run(out_dir: Path, steps: int, fps: int, seed: int) -> bool:
             base.scene._gpu_apply_all()
             base.scene.px.gpu_update_articulation_kinematics()
             base.scene._gpu_fetch_all()
-        obs, _, _, _, info = env.step(zero_action)
+        base.agent.robot.set_qvel(torch.zeros_like(base.agent.robot.get_qvel()))
+        info = base.evaluate()
+        obs = base.get_obs(info)
         success = bool(_to_numpy(info["success"])[0])
         frames.append(_make_panel(obs, t, success))
 
     for t in range(12):
-        obs, _, _, _, info = env.step(zero_action)
+        base.cube.set_pose(Pose.create_from_pq(p=raw_goal[:, 0:3], q=raw_goal[:, 3:7]))
+        base.cube.set_linear_velocity(torch.zeros((1, 3), device=goal.device))
+        base.cube.set_angular_velocity(torch.zeros((1, 3), device=goal.device))
+        if base.gpu_sim_enabled:
+            base.scene._gpu_apply_all()
+            base.scene.px.gpu_update_articulation_kinematics()
+            base.scene._gpu_fetch_all()
+        base.agent.robot.set_qvel(torch.zeros_like(base.agent.robot.get_qvel()))
+        info = base.evaluate()
+        obs = base.get_obs(info)
         success = bool(_to_numpy(info["success"])[0])
         frames.append(_make_panel(obs, steps + t, success))
 
