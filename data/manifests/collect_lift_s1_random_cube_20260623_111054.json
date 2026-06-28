@@ -1,0 +1,14 @@
+{
+  "type": "isaac_collect",
+  "collected_at": "2026-06-23T03:12:06.283476+00:00",
+  "task": "lift",
+  "stage": "s1_random_cube",
+  "dataset": "/home/l/code/AutoResearch/data/lift/s1_random_cube/demos/s1_random_cube_20260623_111054.hdf5",
+  "num_demos": 100,
+  "randomize_cube": true,
+  "clean_teacher": true,
+  "noise_trigger_prob": 0.0,
+  "camera_size": 240,
+  "topdown_close": true,
+  "isaaclab_root": "/home/l/code/IsaacLab"
+}

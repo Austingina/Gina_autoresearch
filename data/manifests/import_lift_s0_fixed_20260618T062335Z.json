@@ -1,0 +1,15 @@
+{
+  "import_id": "20260618T062335Z",
+  "task": "lift",
+  "stage": "s0_fixed",
+  "source_root": "/home/l/code/IsaacLab/datasets/lift_cube_lenient_teacher_maskdepth/lift_cube_lenient_teacher_maskdepth_v3.hdf5",
+  "dest_dir": "/home/l/code/AutoResearch/data/lift/s0_fixed/demos",
+  "files": [
+    {
+      "source": "/home/l/code/IsaacLab/datasets/lift_cube_lenient_teacher_maskdepth/lift_cube_lenient_teacher_maskdepth_v3.hdf5",
+      "dest": "/home/l/code/AutoResearch/data/lift/s0_fixed/demos/lift_cube_lenient_teacher_maskdepth_v3.hdf5",
+      "sha256": "2e2f581c000a503315f49fa404e377be59c00c5baaa772e86cda9b5caa867cd7",
+      "size_bytes": 2116587434
+    }
+  ]
+}

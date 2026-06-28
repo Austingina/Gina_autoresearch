@@ -1,0 +1,45 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.coverage
+.venv/
+venv/
+.env
+.env.*
+run.log
+*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+outputs/
+runs/
+checkpoints/
+data/**/demos/
+data/**/demos_*/
+*.hdf5
+*.h5
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.mp4
+*.avi
+*.mov
+*.npy
+*.npz
+events.out.tfevents.*
+wandb/
+
+# Legacy — do not store project data here
+datasets/
+Uni-embodied-goal/*.pdf
+
+# Track small provenance files
+!data/README.md
+!data/manifests/
+!data/manifests/*.json
+
+# Autoresearch: results.tsv and findings.md are tracked for continuity
+# but run.log is always ephemeral

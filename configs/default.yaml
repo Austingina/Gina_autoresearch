@@ -1,0 +1,102 @@
+# AnchorMask + GuidanceField — Autoresearch Config
+
+paths:
+  isaaclab: "${ISAACLAB_ROOT:/home/l/code/IsaacLab}"
+  evt: "${EVT_ROOT:/home/l/code/Offline_RL_Active_Tracking}"
+  hievt: "${HIEVT_ROOT:/home/l/code/Hierarchical-Instruction-aware-Embodied-Visual-Tracking-master}"
+  targf: "${TARGF_ROOT:/home/l/code/TarGF}"
+  dualgf: "${DUALGF_ROOT:/home/l/code/DualGF}"
+  unrealzoo: "${UNREALZOO_ROOT:/home/l/code/unrealzoo-gym}"
+
+# Mutable project storage — never write to isaaclab.datasets from this repo
+workspace:
+  root: "."  # AutoResearch repo root
+  data: "data"
+  manifests: "data/manifests"
+  checkpoints: "checkpoints"
+  runs: "runs"
+  # Read-only reference paths (import/copy only)
+  isaac_datasets_readonly: "${ISAACLAB_ROOT:/home/l/code/IsaacLab}/datasets"
+  demo_layout: "data/{task}/{stage}/demos"
+  field_checkpoint_layout: "checkpoints/{task}/guidance_field_{stage}.pt"
+
+tasks:
+  track:
+    description: "Person/object mask → view-region guidance field"
+    hievt: true
+  approach:
+    description: "Object mask → gripper-centered region field"
+    isaac_task: Isaac-Lift-Cube-Franka-Vision-Teacher-Student-v0
+  lift:
+    description: "Cube mask + upward field post-grasp (killer metric: wander)"
+    isaac_task: Isaac-Lift-Cube-Franka-Vision-Teacher-Student-v0
+  pick:
+    alias_of: lift
+  push:
+    description: "Object mask → toward target region field"
+    isaac_task: null
+  pull:
+    description: "Handle mask → outward field"
+    isaac_task: null
+
+splits:
+  s0_fixed:
+    curriculum: fixed_cube_fixed_goal
+    description: "START — fixed cube position + fixed lift goal"
+    pass_field_alignment: 0.75
+    pass_policy_delta_sr: 0.15
+  s1_random_cube:
+    curriculum: random_cube_fixed_goal
+    description: "Random cube xy — field spatial generalization"
+    pass_field_alignment: 0.70
+  s2_random_goal:
+    curriculum: random_cube_random_goal
+    description: "Random cube + random lift goal"
+  s3_ood_object:
+    curriculum: ood_appearance
+    description: "Novel object appearance — Month 2"
+  id:
+    alias: s0_fixed
+  ood_object:
+    alias: s3_ood_object
+  ood_scene:
+    description: "Novel layout / camera — Month 2+"
+
+# Policy-learning baselines (guidance_mode in experiment.py)
+baselines:
+  B0:
+    guidance_mode: none
+    description: "obs only — no explicit goal channels"
+  B1:
+    guidance_mode: anchor_only
+    description: "single anchor mask — target acquisition"
+  B2:
+    guidance_mode: anchor_target_mask
+    description: "anchor + counterfactual target mask"
+  B3:
+    guidance_mode: anchor_field_rule
+    description: "oracle G — upper bound sanity check only"
+  B7:
+    guidance_mode: anchor_field_demo
+    description: "learned G_θ — Step 2 main (after Step 1)"
+  B8:
+    guidance_mode: anchor_field_wm
+    description: "WM-derived G — optional ablation"
+
+pipeline:
+  step1: learn_guidance_field  # scripts/learn_guidance_field.py
+  step2: policy_with_learned_G  # B1 vs B7
+
+metrics:
+  step1_primary: field_alignment
+  step2_primary: success_rate
+  step2_co_primary: post_grasp_wander_m
+  ratchet:
+    success_rate_min_delta: 0.005
+    wander_max_delta: -0.02  # negative = wander decreased = good
+
+time_budget_sec: 600
+
+execution:
+  algorithm: dagger  # or offline_rl for tracking
+  note: "Same pi architecture; only g_t=(M,G) changes between baselines"

@@ -1,0 +1,10 @@
+{
+  "type": "isaac_collect",
+  "collected_at": "2026-06-22T09:31:38.424595+00:00",
+  "task": "lift",
+  "stage": "s1_random_cube",
+  "dataset": "/home/l/code/AutoResearch/data/lift/s1_random_cube/demos/s1_random_cube_20260622_170659.hdf5",
+  "num_demos": 100,
+  "randomize_cube": true,
+  "isaaclab_root": "/home/l/code/IsaacLab"
+}
