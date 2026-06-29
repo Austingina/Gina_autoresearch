@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# S1 DAgger — xy cube DR (matches G_θ clean240 collect), 240px camera, adaptive β.
+# S1 DAgger — IsaacLab vertical-free lift, 240px camera, adaptive β.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -23,6 +23,8 @@ LEARNING_RATE="${LEARNING_RATE:-1e-4}"
 IMAGE_SIZE="${IMAGE_SIZE:-240}"
 CAMERA_SIZE="${CAMERA_SIZE:-240}"
 TOPDOWN_CLOSE="${TOPDOWN_CLOSE:-1}"
+ROBOT_X_OFFSET="${ROBOT_X_OFFSET:--0.10}"
+PANDA_JOINT6="${PANDA_JOINT6:-2.7}"
 RANDOMIZE_CUBE_Z_ONLY="${RANDOMIZE_CUBE_Z_ONLY:-0}"
 CUBE_Z_MIN="${CUBE_Z_MIN:-0.0}"
 CUBE_Z_MAX="${CUBE_Z_MAX:-0.0}"
@@ -86,6 +88,8 @@ common=(
   --image_size "${IMAGE_SIZE}"
   --camera_height "${CAMERA_SIZE}"
   --camera_width "${CAMERA_SIZE}"
+  --robot_x_offset "${ROBOT_X_OFFSET}"
+  --panda_joint6 "${PANDA_JOINT6}"
 )
 if [[ "${TOPDOWN_CLOSE}" == "1" ]]; then
   common+=(--topdown_close)
@@ -144,7 +148,7 @@ cube_dr_msg="xy[x=-0.1..0.1,y=-0.25..0.25,z=0] (G_θ clean240)"
 if [[ "${MODE}" == "B1" ]]; then
   echo "=== S1 B1 vision-only (8ch) -> ${LOG_DIR} ==="
   echo "    iters=${MAX_ITERS} envs=${NUM_ENVS} collect=${COLLECT_STEPS} buf_cap=${MAX_AGGREGATE_EPISODES}"
-  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE}"
+  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE} robot_x_offset=${ROBOT_X_OFFSET} panda_joint6=${PANDA_JOINT6}"
   echo "    eval: every ${EVAL_INTERVAL} iters x ${EVAL_EPISODES} eps (${NUM_EVAL_ENVS} envs)"
   echo "    beta: warmup=${BETA_WARMUP_ITERS} adaptive=${BETA_ADAPTIVE} target=${BETA_SUCCESS_TARGET}"
   echo "    g_aug: noise=${G_AUG_NOISE_STD} dropout=${G_AUG_DROPOUT_PROB} blend_gt=${G_AUG_BLEND_GT_PROB} reach_only=${G_AUG_REACH_ONLY}"
@@ -159,7 +163,7 @@ elif [[ "${MODE}" == "B3" ]]; then
   echo "=== S1 B3 vision+GT G (11ch) -> ${LOG_DIR} ==="
   echo "    guidance=anchor_field_rule (oracle 3D subgoal, no G_θ checkpoint)"
   echo "    iters=${MAX_ITERS} envs=${NUM_ENVS} collect=${COLLECT_STEPS} buf_cap=${MAX_AGGREGATE_EPISODES}"
-  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE}"
+  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE} robot_x_offset=${ROBOT_X_OFFSET} panda_joint6=${PANDA_JOINT6}"
   echo "    eval: every ${EVAL_INTERVAL} iters x ${EVAL_EPISODES} eps (${NUM_EVAL_ENVS} envs)"
   echo "    beta: warmup=${BETA_WARMUP_ITERS} adaptive=${BETA_ADAPTIVE} target=${BETA_SUCCESS_TARGET}"
   echo "    g_aug: noise=${G_AUG_NOISE_STD} dropout=${G_AUG_DROPOUT_PROB} blend_gt=${G_AUG_BLEND_GT_PROB} reach_only=${G_AUG_REACH_ONLY}"
@@ -170,10 +174,10 @@ elif [[ "${MODE}" == "B3" ]]; then
     "${resume_flags[@]}" \
     --guidance_mode anchor_field_rule
 elif [[ "${MODE}" == "B7" ]]; then
-  echo "=== S1 B7 vision+G (10ch) -> ${LOG_DIR} ==="
+  echo "=== S1 B7 vision+G_theta -> ${LOG_DIR} ==="
   echo "    field=${FIELD_CKPT}"
   echo "    iters=${MAX_ITERS} envs=${NUM_ENVS} collect=${COLLECT_STEPS} buf_cap=${MAX_AGGREGATE_EPISODES}"
-  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE}"
+  echo "    cube_dr=${cube_dr_msg} camera=${CAMERA_SIZE}px topdown_close=${TOPDOWN_CLOSE} image_size=${IMAGE_SIZE} robot_x_offset=${ROBOT_X_OFFSET} panda_joint6=${PANDA_JOINT6}"
   echo "    eval: every ${EVAL_INTERVAL} iters x ${EVAL_EPISODES} eps (${NUM_EVAL_ENVS} envs)"
   echo "    beta: warmup=${BETA_WARMUP_ITERS} adaptive=${BETA_ADAPTIVE} target=${BETA_SUCCESS_TARGET}"
   echo "    g_aug: noise=${G_AUG_NOISE_STD} dropout=${G_AUG_DROPOUT_PROB} blend_gt=${G_AUG_BLEND_GT_PROB} reach_only=${G_AUG_REACH_ONLY}"

@@ -29,6 +29,23 @@ All demos: `data/lift/<stage>/demos/` — see `docs/DATA_ISOLATION.md`.
 
 **Deferred:** [docs/FUTURE_RESEARCH_ROUTES.md](docs/FUTURE_RESEARCH_ROUTES.md) — drawer/door/button κ, multi-task G, TarGF.
 
+### Task base update (2026-06-28) — infra back on IsaacLab
+
+**Available tasks:** `lift cube`, `open drawer`, `open door`. **`button` dropped** (`normal_press` κ is contact/force-heavy, weak transfer — out of scope for now).
+
+**Revolute deferred:** current `open door` implementation **pulls in a straight line, not an arc** → it is *not* genuinely revolute yet. True rotational scenes = future work (see FUTURE_RESEARCH_ROUTES). Keep door tagged as `κ=slide` now, **upgradable→revolute** later without re-collecting (object identity unchanged).
+
+**Geometry axis right now = 2 classes:**
+- `free-translate` : lift cube (vertical_free)
+- `constrained-straight-pull` : open door + open drawer (both straight-line → **same κ**)
+
+**Implication for transfer story:**
+- `door ↔ drawer` = clean **same-geometry, different-object positive control** (was confounded when I assumed door=revolute; now clean).
+- `lift ↔ open` = cross-class: expect **REACH shared / ACTUATE diverges** (vertical-free vs straight-pull) → needs (ψ,κ) conditioning.
+- Weakest part of the thesis (rotation-vs-translation) is exactly the missing revolute → revolute is the eventual upgrade that makes the claim strong.
+
+**Immediate plan = representation-level (open-loop) transfer first** — does NOT depend on the still-imperfect lift closed-loop (B7 not yet > B1). See "Immediate transfer sprint" below.
+
 ---
 
 ## S1 exit checklist
@@ -162,6 +179,33 @@ Code wired this sprint: `goals/interaction_geometry.py`, `MaskFieldCNN(out_dim, 
 - Do **not** drive β decay from strict `success@2cm` during Stage 1 bring-up; it is too brittle and kept β=1.0 despite grasp/lift progress.
 - Use a bring-up metric for β input: prefer `success@5cm`; fallback proxy = `grasp && lifted` / vertical-lift success. Keep strict `success@2cm` as the final report metric.
 - Interpretation: β should start letting the student execute once it consistently reaches/grasp/lifts, instead of waiting for 2 cm precision.
+
+### Immediate transfer sprint (2026-06-28) — open-loop first, two non-competing tracks
+
+Rationale: lift closed-loop not yet proven (B7 ≯ B1). Get a transfer signal that does **not** need closed-loop. Track A is pure offline G work (no Isaac) and does not compete with Track B for the single Isaac process.
+
+**Track A — representation-level transfer (primary, no Isaac after collection):**
+- [ ] A1 collect `open` (door+drawer) demos in **G-format** (ee_mask+ee_depth+third_person_mask+third_person_depth+student_state+goals/phase), safe profile, single Isaac job. *Blocker to verify first:* does `open` demo `student_state` carry handle pos + a pull reference so ACTUATE dir is computable? (lift uses `student_state[0:3]=ee, 4:7=cube`).
+- [ ] A2 add `open` G* labels in `goals/field_data.py`: REACH=`unit(handle−ee)`; ACTUATE=`unit(pull displacement)` straight-line; tag `κ=slide` (door upgradable→revolute).
+- [ ] A3 train 3 specialists with `learn_guidance_field.py`: lift-only, open-only(door+drawer), joint **(ψ,κ)-conditioned** (`--g-phase`, extend cond to carry κ).
+- [ ] A4 cross-eval matrix, **phase-split REACH/ACTUATE**: lift↔open (expect REACH high / ACTUATE low zero-shot, recovered by conditioning) + door↔drawer (expect ACTUATE high = positive control). → first transfer table.
+
+**Track B — lift closed-loop gate (parallel, pre-existing, Isaac):**
+- [ ] B1 re-run B3/B7 with **β bring-up metric = success@5cm** (not strict@2cm) so β decays and student executes.
+- [ ] Gate: **B7 (learned G) ≥ B1** on grasp+vertical-lift@5cm. Transfer claim's policy half needs this.
+
+### Lift B7 correction plan (2026-06-28)
+
+Before any cross-task transfer claim, recover B7 on IsaacLab lift. Current correction targets:
+
+1. **Initial visibility first.** Prior S1 B7 failed largely as `never_reached_cube`; random cube positions can start outside the wrist/EE camera view. Fix the initial robot/EE pose and cube randomization so the initial `ee_mask` contains the white cube mask under uniform cube randomization.
+2. **ACTUATE G follows the EE frame, not a fixed world +Z simplification.** For grasped lift, the guidance should follow the direction opposite the current EE approach/forward direction (the retreat/lift direction), preserving any needed XY component. Do not hard-code ACTUATE to `[0, 0, 1]` until this is revalidated.
+3. **B7 gate before transfer.** Train/retrain G only after the visibility check passes; then rerun B3/B7 with a bring-up metric (`success@5cm` or grasp+lift proxy) before collecting drawer/door transfer evidence.
+
+Initial-pose gate result:
+- Rejected `robot_x_offset=-0.20`: initial EE mask visibility passed, but teacher missed a far cube case.
+- Rejected `robot_x_offset=-0.25` alone: 3x3 grid over default cube randomization had visibility 9/9 but teacher lift 7/9.
+- Accepted `robot_x_offset=-0.10` plus `panda_joint6=2.7`: 3x3 grid over full default cube randomization (`x=[-0.1,0.1]`, `y=[-0.25,0.25]`) had initial EE white-mask visibility 9/9 and teacher lift success 9/9 (`success_lift_height=0.12 m`, median xy drift about 0.038 m).
 
 ### Step 2 (policy B1 vs B7 @ S1)
 - [ ] `--randomize_cube`; lift success = **grasp + vertical lift** (goal above cube, not xy relocate)

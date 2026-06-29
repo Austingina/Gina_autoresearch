@@ -21,7 +21,9 @@ class InteractionPrimitive(str, Enum):
     """Phase of interaction — shared across manipulation tasks."""
 
     REACH = "reach"
+    GRASP = "grasp"
     ACTUATE = "actuate"
+    HOLD = "hold"
 
 
 class ConstraintKappa(str, Enum):
@@ -95,12 +97,15 @@ def subgoal_direction_3d(
     phase: float,
     *,
     height_above: float = DEFAULT_LIFT_HEIGHT_ABOVE_CUBE_M,
+    ee_pose: np.ndarray | None = None,
 ) -> np.ndarray | None:
     """Phase-aware lift G* for Step 1 (ψ-conditioned attractor labels)."""
     ee = student_state[t, 0:3]
     cube = student_state[t, 4:7]
     if phase < 0.5:
         return lift_reach_direction_3d(ee, cube)
+    if ee_pose is not None:
+        return lift_actuate_direction_from_ee_forward_3d(ee_pose[t, 3:7])
     return lift_actuate_direction_3d(cube, height_above=height_above)
 
 
@@ -154,6 +159,22 @@ def quat_wxyz_to_axis_x(quat_wxyz: np.ndarray) -> np.ndarray:
         dtype=np.float32,
     )
     return _unit(col0, fallback=np.array([1.0, 0.0, 0.0], dtype=np.float32))
+
+
+def quat_wxyz_to_axis_z(quat_wxyz: np.ndarray) -> np.ndarray:
+    """World/base-frame z-axis of a frame given its (w, x, y, z) quaternion."""
+    w, x, y, z = (float(c) for c in np.asarray(quat_wxyz, dtype=np.float64).reshape(4))
+    col2 = np.array(
+        [2.0 * (x * z + w * y), 2.0 * (y * z - w * x), 1.0 - 2.0 * (x * x + y * y)],
+        dtype=np.float32,
+    )
+    return _unit(col2, fallback=np.array([0.0, 0.0, 1.0], dtype=np.float32))
+
+
+def lift_actuate_direction_from_ee_forward_3d(ee_quat_wxyz: np.ndarray) -> np.ndarray:
+    """Lift ACTUATE G*: retreat opposite the current EE forward (+Z) axis."""
+    forward = quat_wxyz_to_axis_z(ee_quat_wxyz)
+    return _unit(-forward, fallback=np.array([0.0, 0.0, 1.0], dtype=np.float32))
 
 
 def reach_direction_3d(ee_pos: np.ndarray, contact_pos: np.ndarray) -> np.ndarray | None:

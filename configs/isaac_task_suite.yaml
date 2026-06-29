@@ -1,0 +1,50 @@
+tasks:
+  lift_cube:
+    simulator: isaaclab
+    entrypoint: scripts/play_isaac_lift_cube_state_machine.sh
+    primitive_sequence: [reach, grasp, actuate, hold]
+    anchor: cube
+    kappa: vertical_free
+    actuate_direction: [0.0, 0.0, 1.0]
+    success:
+      min_lift_height_m: 0.16
+      max_xy_drift_m: 0.08
+      require_stable_hold: true
+    notes:
+      - "ACTUATE is pure vertical lifting above the cube spawn/contact xy."
+      - "Do not use a hidden fixed xy relocation goal for lift success or G supervision."
+  open_drawer:
+    simulator: isaaclab
+    entrypoint: scripts/play_isaac_open_drawer_state_machine.sh
+    primitive_sequence: [reach, grasp, actuate, hold]
+    anchor: drawer_handle
+    kappa: slide
+    success:
+      min_joint_open_m: 0.20
+      require_stable_hold: true
+  open_side_door:
+    simulator: isaaclab
+    entrypoint: scripts/play_isaac_open_side_door_state_machine.sh
+    primitive_sequence: [reach, grasp, actuate, hold]
+    anchor: door_knob
+    kappa: revolute
+    success:
+      min_joint_open_rad: 0.75
+      require_stable_hold: true
+
+demo_schema:
+  observations:
+    - ee_rgb
+    - ee_depth
+    - ee_mask
+    - third_person_rgb
+    - third_person_depth
+    - third_person_mask
+    - student_state
+  labels:
+    - teacher_action
+    - interaction_primitive
+    - constraint_kappa
+    - anchor_mask_id
+    - guidance_field
+    - success

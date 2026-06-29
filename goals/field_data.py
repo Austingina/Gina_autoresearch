@@ -125,12 +125,13 @@ def _subgoal_target(
     *,
     lift_height_above: float = DEFAULT_LIFT_HEIGHT_ABOVE_CUBE_M,
     out_dim: int = 2,
+    ee_pose: np.ndarray | None = None,
 ) -> np.ndarray | None:
-    """Phase-aware lift G* (ψ): REACH EE→cube; ACTUATE vertical above cube (κ=vertical_free)."""
+    """Phase-aware lift G* (ψ): REACH EE→cube; ACTUATE opposite EE forward axis."""
     if out_dim == 3:
         from goals.interaction_geometry import subgoal_direction_3d
 
-        return subgoal_direction_3d(student_state, t, phase, height_above=lift_height_above)
+        return subgoal_direction_3d(student_state, t, phase, height_above=lift_height_above, ee_pose=ee_pose)
     return subgoal_direction_2d_xz(student_state, t, phase)
 
 
@@ -160,6 +161,7 @@ def load_field_samples_from_hdf5(
             ee_depth = _read_dataset(g, "obs/ee_depth") if use_depth else None
             tp_depth = _read_dataset(g, "obs/third_person_depth") if use_depth else None
             student_state = _read_dataset(g, "obs/student_state").astype(np.float32)
+            ee_pose = _read_dataset(g, "ee_pose").astype(np.float32) if "ee_pose" in g else None
             phase = _read_dataset(g, "goals/phase").reshape(-1)
             lengths = [len(ee_mask), len(tp_mask), len(phase), len(student_state)]
             if use_depth:
@@ -178,7 +180,7 @@ def load_field_samples_from_hdf5(
                 elif supervision == "state_goal":
                     target = _state_goal_target(student_state, t)
                 elif supervision == "subgoal":
-                    target = _subgoal_target(student_state, t, ph, out_dim=out_dim)
+                    target = _subgoal_target(student_state, t, ph, out_dim=out_dim, ee_pose=ee_pose)
                 else:
                     raise ValueError(f"Unknown supervision={supervision!r}")
                 if target is None or float(np.linalg.norm(target)) < 1e-5:
@@ -249,6 +251,7 @@ def _resolve_field_target(
     student_state: np.ndarray,
     t: int,
     phase: float,
+    ee_pose: np.ndarray | None = None,
     ee_mask_t: np.ndarray | None = None,
     ee_mask_t1: np.ndarray | None = None,
     tp_mask_t: np.ndarray | None = None,
@@ -268,7 +271,7 @@ def _resolve_field_target(
     elif supervision == "state_goal":
         target = _state_goal_target(student_state, t)
     elif supervision == "subgoal":
-        target = _subgoal_target(student_state, t, phase, out_dim=out_dim)
+        target = _subgoal_target(student_state, t, phase, out_dim=out_dim, ee_pose=ee_pose)
     else:
         raise ValueError(f"Unknown supervision={supervision!r}")
     if target is None or float(np.linalg.norm(target)) < 1e-5:
@@ -300,6 +303,7 @@ def build_field_indices_from_hdf5(
                 continue
             t_steps = int(g["obs/ee_mask"].shape[0]) - 1
             student_state = np.asarray(g["obs/student_state"], dtype=np.float32)
+            ee_pose = np.asarray(g["ee_pose"], dtype=np.float32) if "ee_pose" in g else None
             phase = np.asarray(g["goals/phase"], dtype=np.float32).reshape(-1)
             t_steps = min(t_steps, len(student_state) - 1, len(phase) - 1)
             if use_depth:
@@ -318,6 +322,7 @@ def build_field_indices_from_hdf5(
                         student_state=student_state,
                         t=t,
                         phase=ph,
+                        ee_pose=ee_pose,
                         ee_mask_t=ee_t,
                         ee_mask_t1=ee_t1,
                         tp_mask_t=tp_t,
@@ -327,7 +332,7 @@ def build_field_indices_from_hdf5(
                     )
                 else:
                     target = _resolve_field_target(
-                        supervision, student_state=student_state, t=t, phase=ph, out_dim=out_dim
+                        supervision, student_state=student_state, t=t, phase=ph, ee_pose=ee_pose, out_dim=out_dim
                     )
                 if target is None:
                     continue

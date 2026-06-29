@@ -26,6 +26,8 @@ ENABLE_PREVIEW="${ENABLE_PREVIEW:-0}"
 SHOW_OPENCV="${SHOW_OPENCV:-0}"
 PREVIEW_DIR="${PREVIEW_DIR:-${ROOT}/runs/collect_preview/${STAGE}_${RUN_TAG}}"
 HEADLESS="${HEADLESS:-1}"
+ROBOT_X_OFFSET="${ROBOT_X_OFFSET:-0.0}"
+PANDA_JOINT6="${PANDA_JOINT6:-}"
 
 # S0: fixed cube (default). S1: export RANDOMIZE_CUBE=1
 EXTRA_ARGS=()
@@ -43,7 +45,17 @@ fi
 if [[ "${LIFT_GOAL_ABOVE_CUBE:-0}" == "1" ]]; then
   EXTRA_ARGS+=(--lift_goal_above_cube --lift_height_above_cube "${LIFT_HEIGHT_ABOVE_CUBE:-0.20}")
 fi
+if [[ "${RANDOMIZE_CUBE:-0}" == "1" && "${ROBOT_X_OFFSET}" == "0.0" ]]; then
+  ROBOT_X_OFFSET="-0.10"
+fi
+if [[ "${RANDOMIZE_CUBE:-0}" == "1" && -z "${PANDA_JOINT6}" ]]; then
+  PANDA_JOINT6="2.7"
+fi
 EXTRA_ARGS+=(--camera_height "${CAMERA_SIZE}" --camera_width "${CAMERA_SIZE}")
+EXTRA_ARGS+=(--robot_x_offset "${ROBOT_X_OFFSET}")
+if [[ -n "${PANDA_JOINT6}" ]]; then
+  EXTRA_ARGS+=(--panda_joint6 "${PANDA_JOINT6}")
+fi
 
 if [[ "${ENABLE_PREVIEW}" == "1" ]]; then
   EXTRA_ARGS+=(--enable_preview --preview_dir "${PREVIEW_DIR}")
@@ -61,7 +73,7 @@ fi
 echo "=== AutoResearch collect (isolated) ==="
 echo "  output: ${DATASET}"
 echo "  stage:  ${STAGE}  randomize_cube=${RANDOMIZE_CUBE:-0}"
-echo "  clean_teacher=${CLEAN_TEACHER}  noise_prob=${NOISE_TRIGGER_PROB}  camera=${CAMERA_SIZE}x${CAMERA_SIZE}  topdown_close=${TOPDOWN_CLOSE}"
+echo "  clean_teacher=${CLEAN_TEACHER}  noise_prob=${NOISE_TRIGGER_PROB}  camera=${CAMERA_SIZE}x${CAMERA_SIZE}  topdown_close=${TOPDOWN_CLOSE}  robot_x_offset=${ROBOT_X_OFFSET}  panda_joint6=${PANDA_JOINT6:-default}"
 if [[ "${ENABLE_PREVIEW}" == "1" ]]; then
   echo "  preview: ${PREVIEW_DIR}/preview_latest.png  opencv=${SHOW_OPENCV}"
 fi

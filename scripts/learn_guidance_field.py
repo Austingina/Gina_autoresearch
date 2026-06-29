@@ -108,6 +108,12 @@ def main() -> int:
     )
     p.add_argument("--num-workers", type=int, default=4)
     p.add_argument(
+        "--max-samples",
+        type=int,
+        default=0,
+        help="Optional cap on field samples after train/val split for fast smoke training (0 = all).",
+    )
+    p.add_argument(
         "--out-dim",
         type=int,
         default=None,
@@ -171,6 +177,12 @@ def main() -> int:
             print(f"[ERROR] Too few field samples ({len(samples)}). Import more demos.", file=sys.stderr)
             return 1
         train_samples, val_samples = train_val_split(samples, val_ratio=args.val_ratio, seed=args.seed)
+        if args.max_samples > 0:
+            rng = np.random.default_rng(args.seed)
+            max_train = max(1, int(args.max_samples * (1.0 - args.val_ratio)))
+            max_val = max(1, args.max_samples - max_train)
+            train_samples = [train_samples[i] for i in rng.permutation(len(train_samples))[: min(max_train, len(train_samples))]]
+            val_samples = [val_samples[i] for i in rng.permutation(len(val_samples))[: min(max_val, len(val_samples))]]
         print(f"[INFO] samples train={len(train_samples)} val={len(val_samples)}")
         train_loader = DataLoader(
             MaskFieldDataset(train_samples, g_phase=args.g_phase), batch_size=args.batch_size, shuffle=True
@@ -191,6 +203,12 @@ def main() -> int:
             print(f"[ERROR] Too few field samples ({len(indices)}). Import more demos.", file=sys.stderr)
             return 1
         train_idx, val_idx = train_val_split_indices(indices, val_ratio=args.val_ratio, seed=args.seed)
+        if args.max_samples > 0:
+            rng = np.random.default_rng(args.seed)
+            max_train = max(1, int(args.max_samples * (1.0 - args.val_ratio)))
+            max_val = max(1, args.max_samples - max_train)
+            train_idx = [train_idx[i] for i in rng.permutation(len(train_idx))[: min(max_train, len(train_idx))]]
+            val_idx = [val_idx[i] for i in rng.permutation(len(val_idx))[: min(max_val, len(val_idx))]]
         print(f"[INFO] samples train={len(train_idx)} val={len(val_idx)} (lazy HDF5)")
         train_loader = DataLoader(
             LazyMaskFieldDataset(train_idx, image_size=args.image_size, input_mode=args.input_mode, g_phase=args.g_phase),
@@ -256,6 +274,11 @@ def main() -> int:
         # Phase-split alignment: ψ=0 REACH (pre-grasp), ψ=1 ACTUATE (post-grasp).
         reach_cos_sum, reach_n = 0.0, 0
         act_cos_sum, act_n = 0.0, 0
+        comp_abs_sum = torch.zeros(args.out_dim, dtype=torch.float64)
+        comp_n = 0
+        angular_deg_sum, angular_n = 0.0, 0
+        xy_cos_sum, xy_cos_n = 0.0, 0
+        xz_cos_sum, xz_cos_n = 0.0, 0
         with torch.no_grad():
             for masks, targets, cond in val_loader:
                 masks = masks.to(args.device)
@@ -263,6 +286,27 @@ def main() -> int:
                 pred = model(masks, _cond(cond))
                 psi = cond.to(args.device).reshape(-1)
                 cos = F.cosine_similarity(pred, targets, dim=-1)
+                comp_abs_sum += torch.abs(pred - targets).detach().cpu().double().sum(dim=0)
+                comp_n += int(targets.shape[0])
+                angular_deg_sum += float(torch.rad2deg(torch.acos(torch.clamp(cos, -1.0, 1.0))).sum().item())
+                angular_n += int(cos.numel())
+                if args.out_dim == 3:
+                    pred_xy = F.normalize(pred[:, [0, 1]], dim=-1)
+                    tgt_xy = F.normalize(targets[:, [0, 1]], dim=-1)
+                    pred_xz = F.normalize(pred[:, [0, 2]], dim=-1)
+                    tgt_xz = F.normalize(targets[:, [0, 2]], dim=-1)
+                    valid_xy = (torch.linalg.norm(targets[:, [0, 1]], dim=-1) > 1e-6) & (
+                        torch.linalg.norm(pred[:, [0, 1]], dim=-1) > 1e-6
+                    )
+                    valid_xz = (torch.linalg.norm(targets[:, [0, 2]], dim=-1) > 1e-6) & (
+                        torch.linalg.norm(pred[:, [0, 2]], dim=-1) > 1e-6
+                    )
+                    if valid_xy.any():
+                        xy_cos_sum += float(F.cosine_similarity(pred_xy[valid_xy], tgt_xy[valid_xy], dim=-1).sum().item())
+                        xy_cos_n += int(valid_xy.sum().item())
+                    if valid_xz.any():
+                        xz_cos_sum += float(F.cosine_similarity(pred_xz[valid_xz], tgt_xz[valid_xz], dim=-1).sum().item())
+                        xz_cos_n += int(valid_xz.sum().item())
                 reach_mask = psi < 0.5
                 if reach_mask.any():
                     reach_cos_sum += float(cos[reach_mask].sum().item())
@@ -278,6 +322,10 @@ def main() -> int:
 
         reach_align = reach_cos_sum / max(reach_n, 1)
         act_align = act_cos_sum / max(act_n, 1)
+        comp_mae = (comp_abs_sum / max(comp_n, 1)).tolist()
+        angular_deg = angular_deg_sum / max(angular_n, 1)
+        xy_align = xy_cos_sum / max(xy_cos_n, 1) if args.out_dim == 3 else None
+        xz_align = xz_cos_sum / max(xz_cos_n, 1) if args.out_dim == 3 else None
         row = {
             "epoch": epoch,
             "train_loss": train_loss,
@@ -285,13 +333,32 @@ def main() -> int:
             "val_align": val_align,
             "val_reach_align": reach_align,
             "val_actuate_align": act_align,
+            "val_angular_deg": angular_deg,
+            "val_component_mae": comp_mae,
         }
+        if args.out_dim == 3:
+            row.update(
+                {
+                    "val_mae_x": comp_mae[0],
+                    "val_mae_y": comp_mae[1],
+                    "val_mae_z": comp_mae[2],
+                    "val_xy_align": xy_align,
+                    "val_xz_align": xz_align,
+                }
+            )
         history.append(row)
         if epoch % 10 == 0 or epoch == 1:
-            print(
+            msg = (
                 f"epoch {epoch:03d}  loss={train_loss:.4f}  train_align={train_align:.4f}  "
-                f"val_align={val_align:.4f}  REACH={reach_align:.4f}({reach_n})  ACTUATE={act_align:.4f}({act_n})"
+                f"val_align={val_align:.4f}  angle={angular_deg:.1f}deg  "
+                f"REACH={reach_align:.4f}({reach_n})  ACTUATE={act_align:.4f}({act_n})"
             )
+            if args.out_dim == 3:
+                msg += (
+                    f"  mae_xyz=({comp_mae[0]:.3f},{comp_mae[1]:.3f},{comp_mae[2]:.3f})"
+                    f"  cos_xy={xy_align:.4f}  cos_xz={xz_align:.4f}"
+                )
+            print(msg)
 
         if val_align > best_align:
             best_align = val_align
@@ -303,10 +370,13 @@ def main() -> int:
                 "field_alignment_val": val_align,
                 "field_alignment_reach": reach_align,
                 "field_alignment_actuate": act_align,
+                "field_angular_deg": angular_deg,
+                "field_component_mae": comp_mae,
                 "best_epoch": best_epoch,
                 "image_size": args.image_size,
                 "num_train": num_train,
                 "num_val": num_val,
+                "max_samples": args.max_samples,
                 "supervision": args.supervision,
                 "input_mode": args.input_mode,
                 "in_channels": in_channels,
@@ -317,6 +387,16 @@ def main() -> int:
                 "init_meta": init_meta,
                 "config": ExperimentConfig(guidance_mode="anchor_field_demo").to_dict(),
             }
+            if args.out_dim == 3:
+                meta.update(
+                    {
+                        "field_mae_x": comp_mae[0],
+                        "field_mae_y": comp_mae[1],
+                        "field_mae_z": comp_mae[2],
+                        "field_alignment_xy": xy_align,
+                        "field_alignment_xz": xz_align,
+                    }
+                )
             save_field_checkpoint(output, model, meta=meta)
 
     print(f"[OK] Best val field_alignment={best_align:.4f} @ epoch {best_epoch}")

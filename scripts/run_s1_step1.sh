@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# S1 Step 1 — learn phase-aware G_θ (subgoal supervision) on random-cube demos.
+# S1 Step 1 — learn phase-aware 3D G_θ on random-cube vertical-free lift demos.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -19,5 +19,7 @@ fi
   --demo-dir "${DEMO_DIR}" \
   --supervision subgoal \
   --input-mode mask_depth \
+  --out-dim 3 \
+  --g-phase \
   --image-size "${IMAGE_SIZE}" \
   "$@"
