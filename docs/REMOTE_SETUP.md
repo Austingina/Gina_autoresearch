@@ -37,15 +37,48 @@ IsaacLab and Arena packages are external dependencies and are not installed by t
 Set these paths on the remote if those repos are available there:
 
 ```bash
-export ISAACLAB_ROOT=/path/to/IsaacLab
+export ISAACLAB_ROOT=$HOME/code/IsaacLab
 export HIEVT_ROOT=/path/to/Hierarchical-Instruction-aware-Embodied-Visual-Tracking-master
 export EVT_ROOT=/path/to/Offline_RL_Active_Tracking
 export DUALGF_ROOT=/path/to/DualGF
 export TARGF_ROOT=/path/to/TarGF
 export AUTORESEARCH_ROOT=$PWD
+export OMNI_KIT_ACCEPT_EULA=YES
 ```
 
 The current local defaults are documented in `configs/default.yaml`.
+
+### IsaacLab on H200 (env_isaaclab)
+
+IsaacLab code lives at `~/code/IsaacLab` (rsync from local; excludes `runs/`, `datasets/`).
+
+Create the conda env and install Isaac Sim 5.1 + extensions:
+
+```bash
+bash scripts/remote_setup_env_isaaclab.sh
+# log: runs/remote_env_setup.log
+```
+
+Verified remote stack: Python 3.11, torch 2.7.0+cu128, isaacsim 5.1.0.0, isaaclab 0.54.4.
+
+**Headless rendering prerequisites** (mask+depth collect + B7 need RTX cameras):
+
+```bash
+sudo apt-get install -y libglu1-mesa libgl1-mesa-glx xvfb
+```
+
+Without `libGLU.so.1`, Isaac Sim headless RTX may crash in `libcarb.glinterop.plugin.so`.
+GLFW also needs a virtual display — use `xvfb-run`:
+
+```bash
+export CUDA_VISIBLE_DEVICES=3   # mask to a free GPU; activeGpu=0 inside Isaac
+export OMNI_KIT_ACCEPT_EULA=YES
+xvfb-run -a bash scripts/remote_smoke_b7.sh
+```
+
+Do **not** pass `--device cuda:3` while `CUDA_VISIBLE_DEVICES` is unset (activeGpu>0 can crash on this host).
+
+G-only training (no sim) works once demos exist under `data/lift/s1_random_cube/demos/`.
 
 ## 3. Initialize Project Storage
 

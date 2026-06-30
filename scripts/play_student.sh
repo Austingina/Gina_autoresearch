@@ -14,6 +14,9 @@ MAX_EPISODES="${MAX_EPISODES:-20}"
 HEADLESS="${HEADLESS:-0}"
 SHOW_OPENCV="${SHOW_OPENCV:-1}"
 
+ROBOT_X_OFFSET="${ROBOT_X_OFFSET:--0.10}"
+PANDA_JOINT6="${PANDA_JOINT6:-2.7}"
+
 if [[ "${MODE}" == "B1" ]]; then
   GUIDANCE_MODE="anchor_only"
   if [[ "${STAGE}" == "s1" ]]; then
@@ -39,7 +42,7 @@ fi
 field_args=()
 if [[ "${GUIDANCE_MODE}" == "anchor_field_demo" ]]; then
   if [[ "${STAGE}" == "s1" ]]; then
-    FIELD_CKPT="${FIELD_CKPT:-${ROOT}/checkpoints/lift/guidance_field_s1_random_cube.pt}"
+    FIELD_CKPT="${FIELD_CKPT:-${ROOT}/checkpoints/lift/guidance_field_s1_random_cube_visible_ee_forward_12k.pt}"
   else
     FIELD_CKPT="${FIELD_CKPT:-${ROOT}/checkpoints/lift/guidance_field_s0_fixed.pt}"
   fi
@@ -92,6 +95,8 @@ echo "=== Play ${STAGE} ${MODE} | ${CHECKPOINT} ==="
   --output_dir "${OUTPUT_DIR}" \
   --max_episodes "${MAX_EPISODES}" \
   --guidance_mode "${GUIDANCE_MODE}" \
+  --robot_x_offset "${ROBOT_X_OFFSET}" \
+  --panda_joint6 "${PANDA_JOINT6}" \
   "${field_args[@]}" \
   --autoresearch_root "${ROOT}" \
   "${domain_args[@]}" \

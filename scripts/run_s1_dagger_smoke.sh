@@ -44,6 +44,8 @@ G_AUG_NOISE_STD="${G_AUG_NOISE_STD:-0.0}"
 G_AUG_DROPOUT_PROB="${G_AUG_DROPOUT_PROB:-0.0}"
 G_AUG_BLEND_GT_PROB="${G_AUG_BLEND_GT_PROB:-0.0}"
 G_AUG_REACH_ONLY="${G_AUG_REACH_ONLY:-1}"
+MAX_STORE_EPISODE_STEPS="${MAX_STORE_EPISODE_STEPS:-512}"
+EVAL_PHASE_STALL_STEPS="${EVAL_PHASE_STALL_STEPS:-60}"
 EVAL_INTERVAL="${EVAL_INTERVAL:-25}"
 EVAL_EPISODES="${EVAL_EPISODES:-5}"
 NUM_EVAL_ENVS="${NUM_EVAL_ENVS:-4}"
@@ -80,6 +82,8 @@ common=(
   --aggregate_backend "${AGGREGATE_BACKEND}"
   --aggregate_cache_size "${AGGREGATE_CACHE_SIZE}"
   --aggregate_visual_storage_dtype "${AGGREGATE_VISUAL_STORAGE_DTYPE}"
+  --max_store_episode_steps "${MAX_STORE_EPISODE_STEPS}"
+  --eval_phase_stall_steps "${EVAL_PHASE_STALL_STEPS}"
   --seed 42
   --fixed_lift_goal
   --no-randomize_lift_goal

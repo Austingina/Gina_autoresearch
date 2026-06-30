@@ -211,6 +211,31 @@ Initial-pose gate result:
 - [ ] `--randomize_cube`; lift success = **grasp + vertical lift** (goal above cube, not xy relocate)
 - [ ] Report **success@2cm** (height+xy at spawn) + grasp rate
 
+### S1 B1 without G — EE-visible ablation (2026-06-29/30)
+
+**Goal:** Fair B1 vs B7 comparison under accepted EE-visible init (`robot_x_offset=-0.10`, `panda_joint6=2.7`, 240px topdown_close, random cube xy). Pure vision 8ch (`anchor_only`), no learned G.
+
+**Runs:**
+| run | status | note |
+|-----|--------|------|
+| `s1_B1_visible_ee_forward_20260629_172231` | **invalid** | Anti-hang partial **discard** (pre-fix) → buffer stuck at 0, KL/BCE logged as 0, no learning |
+| `s1_B1_visible_ee_forward_20260629_175108` | finished 2000 iters | Partial **flush** fix applied (IsaacLab); buffer 162 ep / 41k steps; eval success **0%** entire run |
+
+**Key findings (valid run `175108`):**
+1. **Training signal was fragment-only.** `buffer ok=0` for all 2000 iters; rollout `grasp=0.00 lift=0.00`. Teacher never completed grasp/lift because `COLLECT_STEPS=128` + `partial_cap=256` flushes+resets before `episode_length_s=25` (~1250 steps) can finish. Student only mimicked 256-step APPROACH fragments (arm_kl 757→3.6; bce→0 — gripper never learned close).
+2. **β deadlock (secondary).** Adaptive β (`success@5cm`, target 0.5) stayed **1.0** entire run because eval never improved → `teacher_exec=1.0`, no student on-policy DAgger correction. Old B1 (`20260622`, `COLLECT_STEPS=256`, `ok=13`) also had β=1 but had complete teacher demos and rollout `grasp=1.0`.
+3. **Eval / play failure modes:** `never_reached_cube` dominant; occasional `lifted_not_at_goal`. `pre_grasp_ee_cube` ~0.10–0.20. Play uses `anchor_only` — overlay green **G\*** is oracle debug only, not student input.
+4. **Interpretation for B7 ablation:** Pure vision without G under EE-visible S1 random cube does not learn a viable policy with current safe DAgger profile. Supports hypothesis that G helps approach/relocation; B7 comparison must use **complete teacher episodes** in buffer.
+
+**Infra fixes shipped (IsaacLab + AutoResearch scripts):**
+- IsaacLab: `_flush_capped_partial_rollouts` replaces discard-at-cap (writes truncated episode to buffer then resets env).
+- AutoResearch: `scripts/run_s1_b1_fresh.sh` (B1 mirror of B7 safe profile); `play_student.sh` passes `robot_x_offset` / `panda_joint6`; `max_store_episode_steps` + `eval_phase_stall_steps` in `run_s1_dagger_smoke.sh`; `prune_dagger_episodes.py`, `rebuild_dagger_disk_buffer.py`.
+
+**Next B1/B7 rerun guardrails:**
+- Raise `COLLECT_STEPS=256` (partial_cap→512) or allow cross-iter accumulation until teacher episode completes.
+- Consider `BETA_ADAPTIVE=0` + linear decay after warmup so β drops without waiting for eval success.
+- Gate on `buffer ok>0` and `rollout grasp>0` before trusting eval curves.
+
 ## Best runs
 
 | stage | step | split | field_alignment | success@2cm | success@5cm | wander | note |
@@ -220,6 +245,7 @@ Initial-pose gate result:
 | s0_fixed | 2 B7 | s0_fixed | — | 0% | **70%** | 0.069 m | final_dist 3-7cm |
 | s1_random_cube | 1 | s1 | **0.723** | — | — | — | **stale** — noisy demos, mask-only 84px; clean240 retrain pending |
 | s1_random_cube | 2 B1 | s1 | — | 0% | 0% | — | 300 iters @ iter300; 16/20 never_reached_cube |
+| s1_random_cube | 2 B1 | s1 EE-visible | — | 0% | 0% | — | **2000 iters** `visible_ee_forward_175108`; ok=0; fragment-only buffer; β=1 |
 | s1_random_cube | 2 B7 | s1 | — | 0% | 0% | — | 300 iters @ iter300; 16/20 never_reached_cube (old G) |
 | s1_random_cube | 2 **B3** | s1 | — | **0% train eval** / **~33% play** | — | — | oracle GT 3D G; iter 666 stopped; eval latch bug → β=1.0; play 4/12 success after fix |
 

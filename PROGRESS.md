@@ -197,6 +197,27 @@ bash scripts/play_teacher_g_check.sh
 | 2026-06-22 | **S1** | — | — | — | subgoal field + dagger scripts ready |
 | 2026-06-23 | S1 collect | — | — | — | clean240, 100% success, archived 17 GB |
 | 2026-06-23 | S1 Step 2 | — | 0% | 0% | 300 iters each; stale G; buffers archived |
+| 2026-06-30 | S1 B1 no-G | — | **0%** | — | EE-visible init; 2000 iters; ok=0 fragment buffer; β=1; play fails |
+
+---
+
+## Day 2 — 2026-06-30 (S1 B1 without G ablation)
+
+### Done
+- [x] B1 fresh run under EE-visible init matching B7 (`run_s1_b1_fresh.sh`)
+- [x] Diagnosed invalid first run: partial discard → empty buffer, KL=0
+- [x] Fixed partial handling (IsaacLab flush-at-cap); valid rerun completed 2000 iters
+- [x] Play script: `robot_x_offset`, `panda_joint6`; updated S1 G checkpoint paths
+
+### Findings
+- Buffer never had successful teacher episodes (`ok=0`); only 256-step APPROACH fragments
+- Adaptive β locked at 1.0 (eval success@5cm always 0)
+- Eval/play: mostly `never_reached_cube`; pure vision insufficient without G under this profile
+- See `findings.md` → "S1 B1 without G — EE-visible ablation"
+
+### Next
+- Rerun B1/B7 with `COLLECT_STEPS=256` and/or longer partial cap so teacher completes
+- Optional: linear β decay (`BETA_ADAPTIVE=0`) to break β deadlock
 
 ---
 
