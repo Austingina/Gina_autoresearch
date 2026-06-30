@@ -228,7 +228,7 @@ Initial-pose gate result:
 4. **Interpretation for B7 ablation:** Pure vision without G under EE-visible S1 random cube does not learn a viable policy with current safe DAgger profile. Supports hypothesis that G helps approach/relocation; B7 comparison must use **complete teacher episodes** in buffer.
 
 **Infra fixes shipped (IsaacLab + AutoResearch scripts):**
-- IsaacLab: `_flush_capped_partial_rollouts` replaces discard-at-cap (writes truncated episode to buffer then resets env).
+- IsaacLab: capped rollout **segments** flush to buffer at `partial_cap`, then in-flight tensors shift left — **env is not reset** so one logical episode can span segments through grasp/lift; eval envs optionally reset after flush before eval.
 - AutoResearch: `scripts/run_s1_b1_fresh.sh` (B1 mirror of B7 safe profile); `play_student.sh` passes `robot_x_offset` / `panda_joint6`; `max_store_episode_steps` + `eval_phase_stall_steps` in `run_s1_dagger_smoke.sh`; `prune_dagger_episodes.py`, `rebuild_dagger_disk_buffer.py`.
 
 **Next B1/B7 rerun guardrails:**
