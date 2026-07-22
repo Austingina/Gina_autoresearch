@@ -36,10 +36,22 @@ wandb/
 datasets/
 Uni-embodied-goal/*.pdf
 
-# Nested simulator checkouts (own git repos / large local artifacts)
-simulators/isaaclab/
+# Optional external Arena checkout (not vendored)
 simulators/arena/
-# Keep platform docs / registry tracked
+
+# IsaacLab is vendored under simulators/isaaclab/ (source + install scripts).
+# Keep only heavy / local-only artifacts out of Git:
+simulators/isaaclab/runs/
+simulators/isaaclab/datasets/
+simulators/isaaclab/logs/
+simulators/isaaclab/outputs/
+simulators/isaaclab/_isaac_sim*/
+simulators/isaaclab/_repo/
+simulators/isaaclab/_build/
+simulators/isaaclab/.venv/
+simulators/isaaclab/.pytest_cache/
+simulators/isaaclab.git.backup/
+# Keep platform docs / adapters tracked
 !simulators/README.md
 !simulators/registry.yaml
 !simulators/resolve_paths.sh

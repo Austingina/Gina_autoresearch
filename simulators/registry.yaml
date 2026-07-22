@@ -13,8 +13,9 @@ platforms:
     tasks:
       - Isaac-Lift-Cube-Franka-Vision-Teacher-Student-v0
     notes: >
-      Nested git checkout. Large runs/ and datasets/ stay local and are gitignored
-      by the nested repo / AutoResearch policy. Recreate remote if needed.
+      Vendored into AutoResearch (source + install scripts). Large runs/ and
+      datasets/ stay local and gitignored. Isaac Sim installs into conda, not
+      into this tree.
 
   maniskill:
     id: maniskill

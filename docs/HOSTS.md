@@ -56,8 +56,8 @@ See also [archive/old_paths.md](../archive/old_paths.md).
 
 | Repo | URL | Notes |
 |------|-----|-------|
-| AutoResearch | `https://github.com/wukui-muc/AutoResearch.git` | **canonical** recovery source |
-| IsaacLab fork | `https://github.com/wukui-muc/IsaacLab.git` | recreate if deleted; upstream `isaac-sim/IsaacLab` |
+| AutoResearch | `https://github.com/wukui-muc/AutoResearch.git` | **canonical** recovery source (includes vendored IsaacLab sources) |
+| IsaacLab (optional fork) | `https://github.com/wukui-muc/IsaacLab.git` | optional; prefer `simulators/isaaclab` inside AutoResearch |
 | CALVIN | `https://github.com/mees/calvin.git` @ `fa03f01` | + `calvin_env` @ `1431a46` |
 
 The H200 unified tree historically lived **outside** Git; as of 2026-07-22 the recoverable framework is merged into this GitHub repo. Keep server working copies in sync with `git pull` + selective `rsync` for artifacts.

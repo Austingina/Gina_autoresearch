@@ -36,15 +36,14 @@ pip install -e ".[visual]"
 
 ### Isaac Lab
 
-Prefer nested checkout:
+Isaac Lab sources ship inside this repo at `simulators/isaaclab/`.
+Install Isaac Sim into conda (not into Git):
 
 ```bash
-# If missing:
-git clone https://github.com/wukui-muc/IsaacLab.git simulators/isaaclab
 bash scripts/remote_setup_env_isaaclab.sh
 ```
 
-Or point at an existing tree:
+Or point at another tree:
 
 ```bash
 export ISAACLAB_ROOT=$HOME/code/IsaacLab

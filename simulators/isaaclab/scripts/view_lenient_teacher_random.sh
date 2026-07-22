@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Visualize lenient teacher with randomized cube spawn + randomized lift goal.
+#
+# Example:
+#   ./scripts/view_lenient_teacher_random.sh
+#
+# Headless mp4:
+#   HEADLESS=1 MAX_EPISODES=30 ./scripts/view_lenient_teacher_random.sh
+#
+# Batch stats only (no window):
+#   HEADLESS=1 MAX_EPISODES=50 ./scripts/view_lenient_teacher_random.sh
+
+set -euo pipefail
+
+ISAACLAB_DIR="${ISAACLAB_DIR:-/home/l/code/IsaacLab}"
+CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
+
+OUTPUT_DIR="${OUTPUT_DIR:-./runs/lenient_teacher_random_preview}"
+HEADLESS="${HEADLESS:-0}"
+MAX_EPISODES="${MAX_EPISODES:-30}"
+BINARY_GRIPPER="${BINARY_GRIPPER:-1}"
+EPISODE_LENGTH_S="${EPISODE_LENGTH_S:-30}"
+TEACHER_MIN_LIN_SPEED="${TEACHER_MIN_LIN_SPEED:-0.10}"
+TEACHER_MIN_ANG_SPEED="${TEACHER_MIN_ANG_SPEED:-0.20}"
+TASK="${TASK:-Isaac-Lift-Cube-Franka-Oracle-Twist-Play-Random-v0}"
+
+if [[ ! -d "${ISAACLAB_DIR}" ]]; then
+    echo "Isaac Lab directory not found: ${ISAACLAB_DIR}" >&2
+    exit 1
+fi
+
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate "${CONDA_ENV}"
+cd "${ISAACLAB_DIR}"
+
+cmd=(
+    ./isaaclab.sh -p scripts/tools/view_lenient_teacher.py
+    --task "${TASK}"
+    --num_envs 1
+    --output_dir "${OUTPUT_DIR}"
+    --max_episodes "${MAX_EPISODES}"
+    --episode_length_s "${EPISODE_LENGTH_S}"
+    --teacher_min_lin_speed "${TEACHER_MIN_LIN_SPEED}"
+    --teacher_min_ang_speed "${TEACHER_MIN_ANG_SPEED}"
+)
+
+if [[ "${BINARY_GRIPPER}" != "0" ]]; then
+    cmd+=(--binary_gripper)
+fi
+
+if [[ "${HEADLESS}" != "0" ]]; then
+    cmd+=(--headless)
+fi
+
+cmd+=("$@")
+
+echo "Visualizing lenient teacher (random cube + random lift goal):"
+printf ' %q' "${cmd[@]}"
+echo
+
+exec "${cmd[@]}"

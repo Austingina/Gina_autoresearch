@@ -3,7 +3,8 @@
 ## Why
 
 Physics / rendering engines are **pluggable backends**. AutoResearch owns the
-research flywheel; each platform keeps its own checkout or external tree.
+research flywheel; each platform keeps install docs and (where practical) source
+under this repo or an external linked tree.
 
 ## Default paths
 
@@ -19,24 +20,26 @@ research flywheel; each platform keeps its own checkout or external tree.
 source simulators/resolve_paths.sh
 ```
 
-## Nested IsaacLab git
+## Isaac Lab (vendored)
 
-`simulators/isaaclab` is a **nested git repository** (not vendored into AutoResearch history).
+`simulators/isaaclab` is **checked into AutoResearch** (README, `isaaclab.sh`,
+`source/`, research scripts, docs). Clone AutoResearch → you get the IsaacLab
+tree used by Phase 0.
 
-- Push/pull IsaacLab with its own `origin` (recreate on GitHub if deleted).
-- AutoResearch `.gitignore` ignores the nested tree except platform docs.
-- Do not commit `simulators/isaaclab/runs/` or `datasets/`.
+Still **not** in Git (local only):
 
-```bash
-cd simulators/isaaclab
-git remote add origin git@github.com:<you>/IsaacLab.git   # if missing
-git push -u origin main
-```
+- `simulators/isaaclab/runs/`, `datasets/`
+- `_isaac_sim*`, `.venv/` (Isaac Sim / conda live in the env, not in the tree)
+
+Install: [ENVIRONMENTS.md](ENVIRONMENTS.md) + `scripts/remote_setup_env_isaaclab.sh`.
+
+A detached history backup may exist locally as `simulators/isaaclab.git.backup/`
+(gitignored) if you previously used a nested clone.
 
 ## CALVIN (Phase 1)
 
-CALVIN is an **external** workspace (`calvin_g`), linked under `phase1_calvin/`.
-Code entry: `framework/scripts/`. Env recipe: `docs/ENVIRONMENTS.md`.
+CALVIN remains an **external** workspace (`calvin_g`), linked under `phase1_calvin/`.
+Code entry: `framework/scripts/`. Env recipe: [ENVIRONMENTS.md](ENVIRONMENTS.md).
 
 ## Registry
 

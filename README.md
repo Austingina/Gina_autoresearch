@@ -27,7 +27,7 @@ AutoResearch/
   framework/                 # Phase-1 CALVIN trainers / gates
   knowledge_base/            # paper + evidence writeups
   experiments/               # run records (metrics tracked; weights not)
-  simulators/                # IsaacLab nested git + registry
+  simulators/                # IsaacLab vendored sources + registry
   scripts/ goals/ configs/   # Phase-0 Isaac flywheel
   shared/envs/               # pip freezes
   phase0_isaac/ phase1_calvin/  # phase READMEs + CALVIN symlinks
@@ -41,7 +41,7 @@ export AUTORESEARCH_ROOT="$PWD"
 source simulators/resolve_paths.sh
 
 # Phase 0 — Isaac
-# (install env_isaaclab + nest IsaacLab under simulators/isaaclab)
+# (install env_isaaclab; IsaacLab sources already under simulators/isaaclab)
 ./scripts/init_workspace.sh
 python scripts/check_flywheel.py
 
@@ -67,4 +67,4 @@ GPU=0 framework/scripts/run_calvin_dualcam.sh smoke
 ## Git vs artifacts
 
 - **Git:** code, configs, journals, KB, lightweight `experiments/**` metrics.
-- **rsync / regenerate:** HDF5, `*.pt`, CALVIN ABC_D/D_D, nested `simulators/isaaclab/`.
+- **rsync / regenerate:** HDF5, `*.pt`, CALVIN ABC_D/D_D, Isaac `runs/`/`datasets/` (not in Git).

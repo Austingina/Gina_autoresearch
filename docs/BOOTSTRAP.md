@@ -14,21 +14,24 @@ export AUTORESEARCH_ROOT="$PWD"
 source simulators/resolve_paths.sh   # sets ISAACLAB_ROOT, CALVIN_*, hosts
 ```
 
-Optional IsaacLab nested checkout (primary Phase-0 backend):
+Optional IsaacLab backend (vendored under this repo):
 
 ```bash
-# Recreate if missing (own git history; not vendored into this repo)
-git clone https://github.com/wukui-muc/IsaacLab.git simulators/isaaclab
-# or: git clone https://github.com/isaac-sim/IsaacLab.git simulators/isaaclab
-# then re-apply research patches from this repo's findings / IsaacLab fork history
+# After clone, Isaac Lab sources are already at:
+#   simulators/isaaclab/   (README, isaaclab.sh, source/, research scripts)
+# Install Isaac Sim + conda env (not stored in Git):
+bash scripts/remote_setup_env_isaaclab.sh
 ```
 
+Legacy: a separate fork at `https://github.com/wukui-muc/IsaacLab.git` is optional;
+prefer the vendored tree in this repository.
 ## 1. What lives where
 
 | Tracked in Git | Not in Git (rebuild / rsync) |
 |----------------|------------------------------|
 | `PROGRESS.md`, `findings.md`, `docs/`, `knowledge_base/` | `runs/`, `checkpoints/*.pt`, HDF5 demos |
-| `scripts/`, `goals/`, `framework/`, `configs/` | `simulators/isaaclab/` nested tree |
+| `scripts/`, `goals/`, `framework/`, `configs/` | `simulators/isaaclab/runs|datasets|_isaac_sim*` |
+| `simulators/isaaclab/` source + install scripts | conda / Isaac Sim packages (~GBs) |
 | `experiments/**/*.json|md|yaml|sh` (metrics/notes) | `experiments/**/*.pt` weights |
 | `shared/envs/*.pip.freeze.txt` | conda/venv installs (~GBs) |
 | `simulators/registry.yaml`, platform docs | CALVIN `task_ABC_D` (~500G+), `task_D_D` |
