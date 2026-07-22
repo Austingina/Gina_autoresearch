@@ -1,0 +1,38 @@
+# Simulator platform registry
+# Paths default to $AUTORESEARCH_ROOT/simulators/<id> unless overridden by env.
+
+platforms:
+  isaaclab:
+    id: isaaclab
+    display_name: Isaac Lab
+    role: primary
+    env_var: ISAACLAB_ROOT
+    default_relpath: simulators/isaaclab
+    launcher: isaaclab.sh
+    conda_env: env_isaaclab
+    tasks:
+      - Isaac-Lift-Cube-Franka-Vision-Teacher-Student-v0
+    notes: >
+      Nested git checkout. Large runs/ and datasets/ stay local and are gitignored
+      by the nested repo / AutoResearch policy. Recreate remote if needed.
+
+  maniskill:
+    id: maniskill
+    display_name: ManiSkill
+    role: secondary
+    env_var: MANISKILL_ROOT
+    default_relpath: simulators/maniskill
+    python_extra: "[maniskill]"
+    bridge: goals/maniskill_bridge.py
+    notes: >
+      Thin adapter directory; pip extra installs ManiSkill. Used for validation /
+      transfer pilots, not the main lift DAgger loop.
+
+  arena:
+    id: arena
+    display_name: Isaac Lab Arena
+    role: optional
+    env_var: ARENA_ROOT
+    default_relpath: simulators/arena
+    notes: >
+      Optional; may remain an external clone until vendored.

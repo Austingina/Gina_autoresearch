@@ -48,30 +48,37 @@ pip install -e ".[visual]"     # local plotting / video review
 pip install -e ".[maniskill]"  # ManiSkill validation scripts
 ```
 
-IsaacLab / Arena scripts require external local repositories; configure their paths with the
-environment variables below.
+**Simulators** live under `simulators/` (see [docs/SIMULATORS.md](docs/SIMULATORS.md)).
+Isaac Lab is the primary backend at `simulators/isaaclab` (nested git checkout).
+
+```bash
+source simulators/resolve_paths.sh
+echo "$ISAACLAB_ROOT"   # …/AutoResearch/simulators/isaaclab
+```
 
 ## Docs (read in order)
 
 | Doc | Content |
 |-----|---------|
 | [docs/EXPERIMENT_PLAN.md](docs/EXPERIMENT_PLAN.md) | **Start here** — curriculum S0–S3, exit criteria |
+| [docs/SIMULATORS.md](docs/SIMULATORS.md) | Pluggable backends (IsaacLab, ManiSkill, …) |
 | [docs/REFERENCES.md](docs/REFERENCES.md) | Papers + local repos + files to reuse |
 | [docs/EXPERIMENT_PROTOCOL.md](docs/EXPERIMENT_PROTOCOL.md) | Step 1 / Step 2 protocol |
 | [docs/REMOTE_SETUP.md](docs/REMOTE_SETUP.md) | Remote H200 setup, artifact sync, sanity checks |
 | [docs/RESEARCH_CONTEXT.md](docs/RESEARCH_CONTEXT.md) | Hypotheses |
 | [program.md](program.md) | Autoresearch agent loop |
 
-## Repos
+## Repos / env
 
 ```bash
-export ISAACLAB_ROOT=/home/l/code/IsaacLab
+export AUTORESEARCH_ROOT=/home/l/code/AutoResearch
+# Defaults to $AUTORESEARCH_ROOT/simulators/isaaclab after migration
+export ISAACLAB_ROOT=${ISAACLAB_ROOT:-$AUTORESEARCH_ROOT/simulators/isaaclab}
 export HIEVT_ROOT=/home/l/code/Hierarchical-Instruction-aware-Embodied-Visual-Tracking-master
 export EVT_ROOT=/home/l/code/Offline_RL_Active_Tracking
 export DUALGF_ROOT=/home/l/code/DualGF
-export TARGF_ROOT=/home/l/code/TarGF   # git clone https://github.com/AaronAnima/TarGF
+export TARGF_ROOT=/home/l/code/TarGF
 ```
-
 ## Remote workflow
 
 Use Git for code/config/docs and `rsync` for large artifacts:

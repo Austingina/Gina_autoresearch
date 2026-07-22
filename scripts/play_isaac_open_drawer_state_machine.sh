@@ -12,7 +12,7 @@ set -euo pipefail
 # `Isaac-Open-Drawer-Franka-IK-Abs-v0`, not the DirectRL training env
 # `Isaac-Franka-Cabinet-Direct-v0`.
 
-ISAACLAB_ROOT="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+# ISAACLAB_ROOT set by simulators/resolve_paths.sh
 NUM_ENVS="${NUM_ENVS:-1}"
 
 cd "${ISAACLAB_ROOT}"

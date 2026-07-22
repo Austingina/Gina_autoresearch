@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 
 BUFFER_DIR="${BUFFER_DIR:-${ROOT}/runs/s1_B1_mosaic_20260701_141037/dagger_episodes}"

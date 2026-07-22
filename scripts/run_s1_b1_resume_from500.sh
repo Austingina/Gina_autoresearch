@@ -5,6 +5,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 SRC_RUN="${SRC_RUN:-${ROOT}/runs/s1_B1_visible_ee_forward_20260630_094041}"
 RESUME_CKPT="${RESUME_CKPT:-${SRC_RUN}/student_iter_500.pt}"
 
@@ -24,7 +25,7 @@ exec env -i \
   SHELL="${SHELL:-/bin/bash}" \
   TERM="${TERM:-xterm-256color}" \
   OMNI_KIT_ACCEPT_EULA="${OMNI_KIT_ACCEPT_EULA:-YES}" \
-  ISAACLAB_ROOT="${ISAACLAB_ROOT:-$HOME/code/IsaacLab}" \
+  ISAACLAB_ROOT="${ISAACLAB_ROOT}" \
   CONDA_ENV="${CONDA_ENV:-env_isaaclab}" \
   AUTORESEARCH_ROOT="${ROOT}" \
   RUN_TAG="${RUN_TAG}" \

@@ -36,6 +36,17 @@ wandb/
 datasets/
 Uni-embodied-goal/*.pdf
 
+# Nested simulator checkouts (own git repos / large local artifacts)
+simulators/isaaclab/
+simulators/arena/
+# Keep platform docs / registry tracked
+!simulators/README.md
+!simulators/registry.yaml
+!simulators/resolve_paths.sh
+!simulators/isaaclab.md
+!simulators/maniskill/
+!simulators/maniskill/**
+
 # Track small provenance files
 !data/README.md
 !data/manifests/

@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 
 DRY_RUN="${DRY_RUN:-1}"
 SKIP_TASK_SMOKE="${SKIP_TASK_SMOKE:-0}"

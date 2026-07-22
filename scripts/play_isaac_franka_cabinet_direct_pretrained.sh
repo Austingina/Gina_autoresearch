@@ -4,7 +4,7 @@ set -euo pipefail
 # Try IsaacLab's official RSL-RL play entry for the Direct Franka Cabinet task.
 # This uses the published pretrained checkpoint if IsaacLab provides one.
 
-ISAACLAB_ROOT="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+# ISAACLAB_ROOT set by simulators/resolve_paths.sh
 NUM_ENVS="${NUM_ENVS:-16}"
 VIDEO_LENGTH="${VIDEO_LENGTH:-300}"
 

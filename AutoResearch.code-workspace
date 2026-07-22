@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "AutoResearch",
+			"path": "."
+		},
+		{
+			"name": "IsaacLab (simulator)",
+			"path": "simulators/isaaclab"
+		}
+	],
+	"settings": {}
+}

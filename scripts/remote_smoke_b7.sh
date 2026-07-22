@@ -3,7 +3,8 @@
 set -euo pipefail
 
 ROOT="${AUTORESEARCH_ROOT:-$HOME/AutoResearch}"
-ISAACLAB_ROOT="${ISAACLAB_ROOT:-$HOME/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+# ISAACLAB_ROOT set by simulators/resolve_paths.sh
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 # Isaac Sim RTX headless: mask physical GPU via CUDA_VISIBLE_DEVICES so activeGpu=0
 # (direct --device cuda:N with N>0 can crash glinterop on this host).

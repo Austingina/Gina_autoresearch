@@ -2,7 +2,7 @@
 # One-shot remote setup: create env_isaaclab via IsaacLab and install AutoResearch deps.
 set -euo pipefail
 
-ISAACLAB_ROOT="${ISAACLAB_ROOT:-$HOME/code/IsaacLab}"
+# ISAACLAB_ROOT set by simulators/resolve_paths.sh
 AUTORESEARCH_ROOT="${AUTORESEARCH_ROOT:-$HOME/AutoResearch}"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 LOG="${LOG:-$AUTORESEARCH_ROOT/runs/remote_env_setup.log}"

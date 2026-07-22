@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 DEMO_DIR="${DEMO_DIR:-${ROOT}/data/lift/s1_random_cube/demos}"
 IMAGE_SIZE="${IMAGE_SIZE:-240}"
 

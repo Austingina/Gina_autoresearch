@@ -3,7 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ISAACLAB_DIR="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+ISAACLAB_DIR="${ISAACLAB_ROOT}"
 ARENA_DIR="${ARENA_ROOT:-/home/l/code/IsaacLab-Arena}"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 

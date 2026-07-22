@@ -4,7 +4,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ISAACLAB_DIR="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+ISAACLAB_DIR="${ISAACLAB_ROOT}"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 RUN_TAG="${RUN_TAG:-exact_repro_$(date +%Y%m%d_%H%M%S)}"
 LOG_DIR="${LOG_DIR:-${ROOT}/runs/s0_B1_${RUN_TAG}}"

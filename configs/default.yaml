@@ -1,7 +1,8 @@
 # AnchorMask + GuidanceField — Autoresearch Config
 
 paths:
-  isaaclab: "${ISAACLAB_ROOT:/home/l/code/IsaacLab}"
+  # Default: bundled under AutoResearch/simulators/isaaclab
+  isaaclab: "${ISAACLAB_ROOT:${AUTORESEARCH_ROOT:.}/simulators/isaaclab}"
   evt: "${EVT_ROOT:/home/l/code/Offline_RL_Active_Tracking}"
   hievt: "${HIEVT_ROOT:/home/l/code/Hierarchical-Instruction-aware-Embodied-Visual-Tracking-master}"
   targf: "${TARGF_ROOT:/home/l/code/TarGF}"
@@ -15,8 +16,9 @@ workspace:
   manifests: "data/manifests"
   checkpoints: "checkpoints"
   runs: "runs"
+  simulators: "simulators"
   # Read-only reference paths (import/copy only)
-  isaac_datasets_readonly: "${ISAACLAB_ROOT:/home/l/code/IsaacLab}/datasets"
+  isaac_datasets_readonly: "${ISAACLAB_ROOT:${AUTORESEARCH_ROOT:.}/simulators/isaaclab}/datasets"
   demo_layout: "data/{task}/{stage}/demos"
   field_checkpoint_layout: "checkpoints/{task}/guidance_field_{stage}.pt"
 

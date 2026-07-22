@@ -7,13 +7,33 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Read-only upstream repos (never write datasets here from this project).
-ISAACLAB_ROOT = Path(os.environ.get("ISAACLAB_ROOT", "/home/l/code/IsaacLab"))
+
+def _default_isaaclab_root() -> Path:
+    """Prefer bundled simulator; fall back to legacy sibling clones."""
+    bundled = ROOT / "simulators" / "isaaclab"
+    if (bundled / "isaaclab.sh").is_file():
+        return bundled
+    for legacy in (Path.home() / "code" / "IsaacLab", Path("/home/l/code/IsaacLab")):
+        if (legacy / "isaaclab.sh").is_file():
+            return legacy.resolve()
+    return bundled
+
+
+# Read-only upstream simulator checkout (never write datasets here from this project).
+ISAACLAB_ROOT = Path(os.environ.get("ISAACLAB_ROOT", str(_default_isaaclab_root())))
 ISAAC_DATASETS = ISAACLAB_ROOT / "datasets"
+
+# Optional secondary platforms
+MANISKILL_ROOT = Path(os.environ.get("MANISKILL_ROOT", str(ROOT / "simulators" / "maniskill")))
+ARENA_ROOT = Path(os.environ.get("ARENA_ROOT", str(ROOT / "simulators" / "arena")))
 
 
 def workspace_root() -> Path:
     return ROOT
+
+
+def simulators_root() -> Path:
+    return ROOT / "simulators"
 
 
 def data_root() -> Path:
@@ -77,5 +97,6 @@ def ensure_workspace_dirs(task: str = "lift", stage: str = "s0_fixed") -> None:
         manifests_dir(),
         checkpoints_dir() / task,
         runs_dir(),
+        simulators_root(),
     ):
         d.mkdir(parents=True, exist_ok=True)

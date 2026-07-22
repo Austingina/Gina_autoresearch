@@ -6,7 +6,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ISAACLAB_DIR="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+ISAACLAB_DIR="${ISAACLAB_ROOT}"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 
 MODE="${1:-B1}"  # B1, B3, or B7

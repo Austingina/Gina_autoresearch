@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 cd "$ROOT"
 
 STAGES=(s0_fixed s1_random_cube s2_random_goal s3_ood_object)

@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT}/simulators/resolve_paths.sh"
 RUN_TAG="${RUN_TAG:-cam240_xy_gt3d_$(date +%Y%m%d_%H%M%S)}"
 LOG_DIR="${ROOT}/runs/s1_B3_${RUN_TAG}"
 mkdir -p "${LOG_DIR}"
@@ -13,7 +14,7 @@ exec env -i \
   PATH="${PATH}" \
   SHELL="${SHELL:-/bin/bash}" \
   TERM="${TERM:-xterm-256color}" \
-  ISAACLAB_ROOT="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}" \
+  ISAACLAB_ROOT="${ISAACLAB_ROOT}" \
   CONDA_ENV="${CONDA_ENV:-env_isaaclab}" \
   AUTORESEARCH_ROOT="${ROOT}" \
   RUN_TAG="${RUN_TAG}" \

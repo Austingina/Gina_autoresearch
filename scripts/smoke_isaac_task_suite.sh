@@ -3,7 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ISAACLAB_ROOT="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+# ISAACLAB_ROOT set by simulators/resolve_paths.sh
 DRAWER_TIMEOUT_SEC="${DRAWER_TIMEOUT_SEC:-35}"
 
 echo "=== [1/3] lift_cube: vertical_free ==="

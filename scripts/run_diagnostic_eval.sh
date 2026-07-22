@@ -3,7 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ISAACLAB_DIR="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}"
+source "${ROOT}/simulators/resolve_paths.sh"
+ISAACLAB_DIR="${ISAACLAB_ROOT}"
 CONDA_ENV="${CONDA_ENV:-env_isaaclab}"
 
 STAGE="${STAGE:-s0}"  # s0 = fixed cube; s1 = random cube + fixed lift goal
