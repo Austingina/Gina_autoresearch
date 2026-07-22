@@ -1,0 +1,44 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/calvin_debug_dataset",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "slide right the pink block",
+      "end": 553961,
+      "index": 6,
+      "length": 46,
+      "split": "validation",
+      "start": 553916,
+      "task": "push_pink_block_right"
+    },
+    {
+      "ann": "in the slider grasp the blue block",
+      "end": 553765,
+      "index": 7,
+      "length": 65,
+      "split": "validation",
+      "start": 553701,
+      "task": "lift_blue_block_slider"
+    },
+    {
+      "ann": "in the cabinet grasp the blue block",
+      "end": 553755,
+      "index": 3,
+      "length": 65,
+      "split": "validation",
+      "start": 553691,
+      "task": "lift_blue_block_slider"
+    },
+    {
+      "ann": "lift the red block from the table",
+      "end": 554110,
+      "index": 0,
+      "length": 65,
+      "split": "validation",
+      "start": 554046,
+      "task": "lift_red_block_table"
+    }
+  ],
+  "split": "validation",
+  "task_filter": null
+}

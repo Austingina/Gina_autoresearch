@@ -1,0 +1,25 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "i2_l0",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-11_scope_primitive_seed_factor_i2_l0_e50_n100_h160/chunk_bc_lang_query_g/policy.pt"
+    }
+  ],
+  "eval_task_filter": [
+    "close_drawer"
+  ],
+  "num_sequences_per_task": 100,
+  "ep_len": 160,
+  "eval_scan_sequences": 50000,
+  "eval_sequence_offset": 0,
+  "g_scales": [
+    1.0
+  ],
+  "query_g_controls": [
+    "normal"
+  ],
+  "language_controls": [
+    "zero"
+  ]
+}

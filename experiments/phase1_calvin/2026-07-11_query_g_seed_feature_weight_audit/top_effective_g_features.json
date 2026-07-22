@@ -1,0 +1,712 @@
+{
+  "seed0": [
+    {
+      "rank": 1,
+      "token": 0,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1059761.5842453728
+    },
+    {
+      "rank": 2,
+      "token": 3,
+      "local_dim": 12,
+      "feature": "field_z",
+      "raw_effective_column_norm": 1053853.4515089064
+    },
+    {
+      "rank": 3,
+      "token": 2,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1040409.8590269983
+    },
+    {
+      "rank": 4,
+      "token": 1,
+      "local_dim": 16,
+      "feature": "dist_norm",
+      "raw_effective_column_norm": 1035076.983354897
+    },
+    {
+      "rank": 5,
+      "token": 1,
+      "local_dim": 7,
+      "feature": "rel_part_x",
+      "raw_effective_column_norm": 1034363.7392031793
+    },
+    {
+      "rank": 6,
+      "token": 2,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1033092.62670281
+    },
+    {
+      "rank": 7,
+      "token": 0,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1032327.6889069644
+    },
+    {
+      "rank": 8,
+      "token": 1,
+      "local_dim": 8,
+      "feature": "rel_part_y",
+      "raw_effective_column_norm": 1031588.8376425207
+    },
+    {
+      "rank": 9,
+      "token": 3,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1026139.4020071646
+    },
+    {
+      "rank": 10,
+      "token": 1,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1023948.4751463393
+    },
+    {
+      "rank": 11,
+      "token": 3,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1023945.4499091058
+    },
+    {
+      "rank": 12,
+      "token": 1,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1020687.0832864846
+    },
+    {
+      "rank": 13,
+      "token": 3,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1016744.7999125803
+    },
+    {
+      "rank": 14,
+      "token": 0,
+      "local_dim": 5,
+      "feature": "rel_eef_y",
+      "raw_effective_column_norm": 1014812.6506187236
+    },
+    {
+      "rank": 15,
+      "token": 0,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1011412.5800004438
+    },
+    {
+      "rank": 16,
+      "token": 3,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1008968.7518492758
+    },
+    {
+      "rank": 17,
+      "token": 1,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1007546.1472181104
+    },
+    {
+      "rank": 18,
+      "token": 1,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 999681.1616035029
+    },
+    {
+      "rank": 19,
+      "token": 2,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 993907.4500637656
+    },
+    {
+      "rank": 20,
+      "token": 0,
+      "local_dim": 6,
+      "feature": "rel_eef_z",
+      "raw_effective_column_norm": 985883.8931738244
+    }
+  ],
+  "seed1": [
+    {
+      "rank": 1,
+      "token": 0,
+      "local_dim": 5,
+      "feature": "rel_eef_y",
+      "raw_effective_column_norm": 1051860.2237345506
+    },
+    {
+      "rank": 2,
+      "token": 1,
+      "local_dim": 7,
+      "feature": "rel_part_x",
+      "raw_effective_column_norm": 1047209.9274125202
+    },
+    {
+      "rank": 3,
+      "token": 1,
+      "local_dim": 16,
+      "feature": "dist_norm",
+      "raw_effective_column_norm": 1045988.6122293422
+    },
+    {
+      "rank": 4,
+      "token": 0,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1044486.3001401615
+    },
+    {
+      "rank": 5,
+      "token": 2,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1043089.137731584
+    },
+    {
+      "rank": 6,
+      "token": 3,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1040169.1634508163
+    },
+    {
+      "rank": 7,
+      "token": 3,
+      "local_dim": 12,
+      "feature": "field_z",
+      "raw_effective_column_norm": 1038768.106565276
+    },
+    {
+      "rank": 8,
+      "token": 3,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1035774.6794902342
+    },
+    {
+      "rank": 9,
+      "token": 0,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1034614.0009737263
+    },
+    {
+      "rank": 10,
+      "token": 1,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1030185.1694349735
+    },
+    {
+      "rank": 11,
+      "token": 1,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1029779.4961070631
+    },
+    {
+      "rank": 12,
+      "token": 1,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1026376.3531452434
+    },
+    {
+      "rank": 13,
+      "token": 2,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1025259.4570426396
+    },
+    {
+      "rank": 14,
+      "token": 3,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1017598.828097712
+    },
+    {
+      "rank": 15,
+      "token": 0,
+      "local_dim": 6,
+      "feature": "rel_eef_z",
+      "raw_effective_column_norm": 1015221.4347605171
+    },
+    {
+      "rank": 16,
+      "token": 2,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1008860.236438395
+    },
+    {
+      "rank": 17,
+      "token": 0,
+      "local_dim": 4,
+      "feature": "rel_eef_x",
+      "raw_effective_column_norm": 1007508.6496029855
+    },
+    {
+      "rank": 18,
+      "token": 1,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1007029.1088607163
+    },
+    {
+      "rank": 19,
+      "token": 1,
+      "local_dim": 8,
+      "feature": "rel_part_y",
+      "raw_effective_column_norm": 1004864.3223488407
+    },
+    {
+      "rank": 20,
+      "token": 0,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 979954.7644866443
+    }
+  ],
+  "seed2": [
+    {
+      "rank": 1,
+      "token": 1,
+      "local_dim": 16,
+      "feature": "dist_norm",
+      "raw_effective_column_norm": 1049676.641489574
+    },
+    {
+      "rank": 2,
+      "token": 3,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1041747.3494534541
+    },
+    {
+      "rank": 3,
+      "token": 2,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1037081.0942077421
+    },
+    {
+      "rank": 4,
+      "token": 0,
+      "local_dim": 5,
+      "feature": "rel_eef_y",
+      "raw_effective_column_norm": 1035043.3043923958
+    },
+    {
+      "rank": 5,
+      "token": 2,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1034841.8932144034
+    },
+    {
+      "rank": 6,
+      "token": 1,
+      "local_dim": 8,
+      "feature": "rel_part_y",
+      "raw_effective_column_norm": 1034093.0382471487
+    },
+    {
+      "rank": 7,
+      "token": 0,
+      "local_dim": 4,
+      "feature": "rel_eef_x",
+      "raw_effective_column_norm": 1030950.045471314
+    },
+    {
+      "rank": 8,
+      "token": 0,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1027412.8025506168
+    },
+    {
+      "rank": 9,
+      "token": 0,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1026959.3076425444
+    },
+    {
+      "rank": 10,
+      "token": 0,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1020989.8240101376
+    },
+    {
+      "rank": 11,
+      "token": 3,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1020565.9012916434
+    },
+    {
+      "rank": 12,
+      "token": 2,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1015978.9248363425
+    },
+    {
+      "rank": 13,
+      "token": 1,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1015536.6249412944
+    },
+    {
+      "rank": 14,
+      "token": 1,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1011753.4407927684
+    },
+    {
+      "rank": 15,
+      "token": 0,
+      "local_dim": 6,
+      "feature": "rel_eef_z",
+      "raw_effective_column_norm": 1010616.7198559836
+    },
+    {
+      "rank": 16,
+      "token": 1,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1008172.1433054929
+    },
+    {
+      "rank": 17,
+      "token": 1,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1007914.9924172312
+    },
+    {
+      "rank": 18,
+      "token": 3,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1007130.1645842893
+    },
+    {
+      "rank": 19,
+      "token": 3,
+      "local_dim": 12,
+      "feature": "field_z",
+      "raw_effective_column_norm": 1006872.0643122212
+    },
+    {
+      "rank": 20,
+      "token": 1,
+      "local_dim": 7,
+      "feature": "rel_part_x",
+      "raw_effective_column_norm": 989205.5143883913
+    }
+  ],
+  "seed3": [
+    {
+      "rank": 1,
+      "token": 1,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1071054.6369567579
+    },
+    {
+      "rank": 2,
+      "token": 3,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1055266.8316203135
+    },
+    {
+      "rank": 3,
+      "token": 2,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1044049.000470256
+    },
+    {
+      "rank": 4,
+      "token": 0,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1039262.134599799
+    },
+    {
+      "rank": 5,
+      "token": 0,
+      "local_dim": 6,
+      "feature": "rel_eef_z",
+      "raw_effective_column_norm": 1038537.6721731487
+    },
+    {
+      "rank": 6,
+      "token": 3,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1032374.3074389284
+    },
+    {
+      "rank": 7,
+      "token": 1,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1031085.4650421008
+    },
+    {
+      "rank": 8,
+      "token": 3,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1030824.3148473788
+    },
+    {
+      "rank": 9,
+      "token": 0,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1026253.9522577364
+    },
+    {
+      "rank": 10,
+      "token": 3,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1024582.9735353129
+    },
+    {
+      "rank": 11,
+      "token": 1,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1022070.8585953263
+    },
+    {
+      "rank": 12,
+      "token": 3,
+      "local_dim": 12,
+      "feature": "field_z",
+      "raw_effective_column_norm": 1021198.1349513475
+    },
+    {
+      "rank": 13,
+      "token": 0,
+      "local_dim": 4,
+      "feature": "rel_eef_x",
+      "raw_effective_column_norm": 1019449.1415087177
+    },
+    {
+      "rank": 14,
+      "token": 1,
+      "local_dim": 8,
+      "feature": "rel_part_y",
+      "raw_effective_column_norm": 1018615.9932942272
+    },
+    {
+      "rank": 15,
+      "token": 2,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1016425.5180760799
+    },
+    {
+      "rank": 16,
+      "token": 0,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1011777.2626849959
+    },
+    {
+      "rank": 17,
+      "token": 2,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1008435.9075949559
+    },
+    {
+      "rank": 18,
+      "token": 1,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1005114.6673956513
+    },
+    {
+      "rank": 19,
+      "token": 1,
+      "local_dim": 7,
+      "feature": "rel_part_x",
+      "raw_effective_column_norm": 1002400.7044212747
+    },
+    {
+      "rank": 20,
+      "token": 1,
+      "local_dim": 16,
+      "feature": "dist_norm",
+      "raw_effective_column_norm": 993247.6235887676
+    }
+  ],
+  "seed4": [
+    {
+      "rank": 1,
+      "token": 2,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1058217.9070362905
+    },
+    {
+      "rank": 2,
+      "token": 1,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1052024.9596503777
+    },
+    {
+      "rank": 3,
+      "token": 0,
+      "local_dim": 5,
+      "feature": "rel_eef_y",
+      "raw_effective_column_norm": 1050992.375594062
+    },
+    {
+      "rank": 4,
+      "token": 0,
+      "local_dim": 4,
+      "feature": "rel_eef_x",
+      "raw_effective_column_norm": 1047629.5734230392
+    },
+    {
+      "rank": 5,
+      "token": 1,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1045973.6277305456
+    },
+    {
+      "rank": 6,
+      "token": 1,
+      "local_dim": 7,
+      "feature": "rel_part_x",
+      "raw_effective_column_norm": 1043348.4963221928
+    },
+    {
+      "rank": 7,
+      "token": 0,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1040956.6744067052
+    },
+    {
+      "rank": 8,
+      "token": 3,
+      "local_dim": 2,
+      "feature": "type_contact",
+      "raw_effective_column_norm": 1040030.692811067
+    },
+    {
+      "rank": 9,
+      "token": 0,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1031331.6654973566
+    },
+    {
+      "rank": 10,
+      "token": 2,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 1026931.6383400356
+    },
+    {
+      "rank": 11,
+      "token": 2,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1025984.0933328649
+    },
+    {
+      "rank": 12,
+      "token": 1,
+      "local_dim": 16,
+      "feature": "dist_norm",
+      "raw_effective_column_norm": 1024735.6757625276
+    },
+    {
+      "rank": 13,
+      "token": 3,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1022571.7449143926
+    },
+    {
+      "rank": 14,
+      "token": 3,
+      "local_dim": 1,
+      "feature": "type_part",
+      "raw_effective_column_norm": 1020042.5391284229
+    },
+    {
+      "rank": 15,
+      "token": 3,
+      "local_dim": 12,
+      "feature": "field_z",
+      "raw_effective_column_norm": 1014624.7480539349
+    },
+    {
+      "rank": 16,
+      "token": 1,
+      "local_dim": 8,
+      "feature": "rel_part_y",
+      "raw_effective_column_norm": 1013145.5034942589
+    },
+    {
+      "rank": 17,
+      "token": 3,
+      "local_dim": 9,
+      "feature": "rel_part_z",
+      "raw_effective_column_norm": 1005892.4264582325
+    },
+    {
+      "rank": 18,
+      "token": 1,
+      "local_dim": 0,
+      "feature": "type_eef",
+      "raw_effective_column_norm": 1002674.1572296824
+    },
+    {
+      "rank": 19,
+      "token": 0,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 995914.1612283591
+    },
+    {
+      "rank": 20,
+      "token": 1,
+      "local_dim": 3,
+      "feature": "type_side",
+      "raw_effective_column_norm": 985571.9975819091
+    }
+  ]
+}

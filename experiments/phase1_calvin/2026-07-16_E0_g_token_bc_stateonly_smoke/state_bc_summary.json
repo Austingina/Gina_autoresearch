@@ -1,0 +1,31 @@
+{
+  "eval_mode": "balanced_first_task",
+  "g_scale": 1.0,
+  "query_g_control": "normal",
+  "language_control": "normal",
+  "action_execution_horizon": 1,
+  "temporal_ensemble": false,
+  "temporal_ensemble_decay": 0.25,
+  "state_only_observation": true,
+  "avg_seq_len": 0.0,
+  "chain_sr": {
+    "1": 0.0
+  },
+  "raw_results": [
+    0
+  ],
+  "task_info": {
+    "close_drawer": {
+      "success": 0,
+      "total": 1,
+      "sr": 0.0
+    }
+  },
+  "eval_sequence_offset": 0,
+  "selected_tasks": [
+    "close_drawer"
+  ],
+  "selected_sequence_indices": [
+    37
+  ]
+}

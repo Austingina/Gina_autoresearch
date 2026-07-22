@@ -1,0 +1,17 @@
+# AutoResearch
+fatal: detected dubious ownership in repository at '/mnt/nvme33n1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /mnt/nvme33n1
+fatal: detected dubious ownership in repository at '/mnt/nvme33n1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /mnt/nvme33n1
+
+# CALVIN
+fa03f01f19c65920e18cf37398a9ce859274af76
+ m calvin_env
+
+# CALVIN env
+1431a46bd36bde5903fb6345e68b5ccc30def666
+ M egl_check/build.sh

@@ -1,0 +1,2 @@
+mode,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1
+canonical_articulation_g_film,0.17880752682685852,0.57,0.0,0.0

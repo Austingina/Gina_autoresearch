@@ -1,0 +1,18 @@
+# Reusable G Validation V1
+
+- data_root: `/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D`
+- recipe: `primitive_transfer_push_lift_rotate_to_place_stack`
+- split: `training`
+- g_target_mode: `canonical_nearest_with_scene`
+- g_target_clip_quantile: `0.99`
+
+## Artifacts
+
+- dataset summary: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/dataset_summary`
+- split manifest: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/primitive_transfer_push_lift_rotate_to_place_stack.json`
+- raw train visuals: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/raw_training`
+- raw validation visuals: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/raw_validation`
+- source G labels: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/g_primitive_transfer_push_lift_rotate_to_place_stack_source`
+- target G labels: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/g_primitive_transfer_push_lift_rotate_to_place_stack_target`
+- source G visuals: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/g_vis_primitive_transfer_push_lift_rotate_to_place_stack_source`
+- G predictor: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/g_predictor_primitive_transfer_push_lift_rotate_to_place_stack_canonical_nearest_with_scene_clip0.99_h8`

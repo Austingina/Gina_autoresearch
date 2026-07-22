@@ -1,0 +1,9 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "g_dir": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_g_v2_smoke_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_source",
+  "script": "visualize_interaction_geometry.py",
+  "selected_sequence_indices": [
+    16,
+    20
+  ]
+}

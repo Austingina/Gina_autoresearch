@@ -1,0 +1,23 @@
+# Candidate G Predictor Smoke
+
+- g_dir: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_articulation_transfer_slider_to_drawer/artifacts/g_articulation_transfer_slider_to_drawer_source`
+- val_g_dir: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_articulation_transfer_slider_to_drawer/artifacts/g_articulation_transfer_slider_to_drawer_target`
+- split_mode: heldout_g_dir
+- horizon: 8
+- feature_mode: canonical_nearest
+- target_mode: scene_only
+- target_clip_quantile: 0.99
+- train/val: 4848/4848
+- feature_dim: 24
+- target_dim: 6
+- final_train_mse_standardized: 0.006285
+- final_val_mse_standardized: 0.126848
+- best_val_mse_standardized: 0.069626
+- train_rmse_raw: 0.004325
+- val_rmse_raw: 0.008345
+- train_mae_raw: 0.001488
+- val_mae_raw: 0.003835
+- zero_train_rmse_raw: 0.018244
+- zero_val_rmse_raw: 0.000001
+- source_mean_train_rmse_raw: 0.018244
+- source_mean_val_rmse_raw: 0.000019

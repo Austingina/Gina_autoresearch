@@ -1,0 +1,70 @@
+{
+  "no_g_e50": {
+    "close_drawer": {
+      "sr": 0.0,
+      "success": 0,
+      "count": 25,
+      "categories": {
+        "never_near_part": 25
+      },
+      "final_progress_p50": 0.0,
+      "max_progress_p50": 0.0,
+      "failed_max_progress_p50": 0.0,
+      "min_dist_p50": 0.32715472070688933,
+      "failed_min_dist_p50": 0.32715472070688933,
+      "near_fraction_p50": 0.0,
+      "eef_path_length_p50": 0.508947334290023,
+      "mean_near_action_desired_axis_p50": null,
+      "positive_near_action_fraction_p50": null,
+      "mean_near_desired_axis_offset_p50": null,
+      "mean_near_b1_offset_p50": null,
+      "mean_near_b2_offset_p50": null
+    }
+  },
+  "v7_concat_e50": {
+    "close_drawer": {
+      "sr": 0.0,
+      "success": 0,
+      "count": 25,
+      "categories": {
+        "never_near_part": 25
+      },
+      "final_progress_p50": 0.0,
+      "max_progress_p50": 0.0,
+      "failed_max_progress_p50": 0.0,
+      "min_dist_p50": 0.18747027027748434,
+      "failed_min_dist_p50": 0.18747027027748434,
+      "near_fraction_p50": 0.0,
+      "eef_path_length_p50": 0.5362198733243392,
+      "mean_near_action_desired_axis_p50": null,
+      "positive_near_action_fraction_p50": null,
+      "mean_near_desired_axis_offset_p50": null,
+      "mean_near_b1_offset_p50": null,
+      "mean_near_b2_offset_p50": null
+    }
+  },
+  "v7_film_e50": {
+    "close_drawer": {
+      "sr": 0.04,
+      "success": 1,
+      "count": 25,
+      "categories": {
+        "near_insufficient_motion": 1,
+        "never_near_part": 23,
+        "success": 1
+      },
+      "final_progress_p50": 0.0,
+      "max_progress_p50": 0.0,
+      "failed_max_progress_p50": -0.0,
+      "min_dist_p50": 0.29233865212202165,
+      "failed_min_dist_p50": 0.30062407294335824,
+      "near_fraction_p50": 0.0,
+      "eef_path_length_p50": 0.45087916324111393,
+      "mean_near_action_desired_axis_p50": 0.11670463919300318,
+      "positive_near_action_fraction_p50": 1.0,
+      "mean_near_desired_axis_offset_p50": 0.003812046192180135,
+      "mean_near_b1_offset_p50": 0.028132899522315277,
+      "mean_near_b2_offset_p50": 0.031367807283324264
+    }
+  }
+}

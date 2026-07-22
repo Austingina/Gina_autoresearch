@@ -1,0 +1,86 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "seed3_sign_flip",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt"
+    }
+  ],
+  "tasks": [
+    "close_drawer"
+  ],
+  "rollout_indices": [
+    1,
+    6,
+    10,
+    13,
+    18,
+    19
+  ],
+  "g_scale": 1.0,
+  "query_g_control": "sign_flip",
+  "language_control": "normal",
+  "action_execution_horizon": 1,
+  "videos": [
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 1,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_01_success_0.mp4"
+    },
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 6,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_06_success_0.mp4"
+    },
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": true,
+      "success_step": 152,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_10_success_1.mp4"
+    },
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 13,
+      "success": true,
+      "success_step": 143,
+      "frames": 78,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_13_success_1.mp4"
+    },
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 18,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_18_success_0.mp4"
+    },
+    {
+      "alias": "seed3_sign_flip",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk1_exec1_e50_n100_h160_seed3/chunk_bc_minimal_g_film/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 19,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_h1_film_causal_videos_seed3/sign_flip/seed3_sign_flip/close_drawer/rollout_19_success_0.mp4"
+    }
+  ]
+}

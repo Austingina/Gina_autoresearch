@@ -1,0 +1,188 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "rotate the blue block 90 degrees to the left",
+      "end": 407693,
+      "index": 864,
+      "length": 65,
+      "split": "validation",
+      "start": 407629,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "rotate the pink block towards the right",
+      "end": 33287,
+      "index": 394,
+      "length": 65,
+      "split": "validation",
+      "start": 33223,
+      "task": "rotate_pink_block_right"
+    },
+    {
+      "ann": "lift the red block lying in the cabinet",
+      "end": 43478,
+      "index": 776,
+      "length": 65,
+      "split": "validation",
+      "start": 43414,
+      "task": "lift_red_block_slider"
+    },
+    {
+      "ann": "grasp the door handle, then slide the door to the left",
+      "end": 38637,
+      "index": 911,
+      "length": 65,
+      "split": "validation",
+      "start": 38573,
+      "task": "move_slider_left"
+    },
+    {
+      "ann": "move down the switch",
+      "end": 243764,
+      "index": 430,
+      "length": 65,
+      "split": "validation",
+      "start": 243700,
+      "task": "turn_off_lightbulb"
+    },
+    {
+      "ann": "push down the button to turn on the led",
+      "end": 227953,
+      "index": 41,
+      "length": 44,
+      "split": "validation",
+      "start": 227910,
+      "task": "turn_on_led"
+    },
+    {
+      "ann": "put the block in the drawer",
+      "end": 47439,
+      "index": 265,
+      "length": 37,
+      "split": "validation",
+      "start": 47403,
+      "task": "place_in_drawer"
+    },
+    {
+      "ann": "lift the pink block lying on the shelf",
+      "end": 416845,
+      "index": 988,
+      "length": 36,
+      "split": "validation",
+      "start": 416810,
+      "task": "lift_pink_block_slider"
+    },
+    {
+      "ann": "sweep the object into the drawer",
+      "end": 417691,
+      "index": 523,
+      "length": 47,
+      "split": "validation",
+      "start": 417645,
+      "task": "push_into_drawer"
+    },
+    {
+      "ann": "put the block in the cabinet",
+      "end": 856,
+      "index": 497,
+      "length": 48,
+      "split": "validation",
+      "start": 809,
+      "task": "place_in_slider"
+    },
+    {
+      "ann": "push the button to turn off the green light",
+      "end": 46516,
+      "index": 414,
+      "length": 44,
+      "split": "validation",
+      "start": 46473,
+      "task": "turn_off_led"
+    },
+    {
+      "ann": "slide the block into the drawer",
+      "end": 49449,
+      "index": 940,
+      "length": 65,
+      "split": "validation",
+      "start": 49385,
+      "task": "push_into_drawer"
+    },
+    {
+      "ann": "pick up the pink block from the sliding cabinet",
+      "end": 416857,
+      "index": 802,
+      "length": 65,
+      "split": "validation",
+      "start": 416793,
+      "task": "lift_pink_block_slider"
+    },
+    {
+      "ann": "rotate the red block to the right",
+      "end": 46660,
+      "index": 849,
+      "length": 65,
+      "split": "validation",
+      "start": 46596,
+      "task": "rotate_red_block_right"
+    },
+    {
+      "ann": "take the blue block and rotate it left",
+      "end": 407598,
+      "index": 310,
+      "length": 39,
+      "split": "validation",
+      "start": 407560,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "grasp the blue block, then rotate it left",
+      "end": 407695,
+      "index": 991,
+      "length": 65,
+      "split": "validation",
+      "start": 407631,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "go push the blue block to the left",
+      "end": 238983,
+      "index": 488,
+      "length": 46,
+      "split": "validation",
+      "start": 238938,
+      "task": "push_blue_block_left"
+    },
+    {
+      "ann": "slide right the blue block",
+      "end": 21648,
+      "index": 366,
+      "length": 65,
+      "split": "validation",
+      "start": 21584,
+      "task": "push_blue_block_right"
+    },
+    {
+      "ann": "take the pink block and rotate it left",
+      "end": 34723,
+      "index": 597,
+      "length": 65,
+      "split": "validation",
+      "start": 34659,
+      "task": "rotate_pink_block_left"
+    },
+    {
+      "ann": "push down the button to turn on the green light",
+      "end": 223773,
+      "index": 913,
+      "length": 65,
+      "split": "validation",
+      "start": 223709,
+      "task": "turn_on_led"
+    }
+  ],
+  "split": "validation",
+  "task_filter": null
+}

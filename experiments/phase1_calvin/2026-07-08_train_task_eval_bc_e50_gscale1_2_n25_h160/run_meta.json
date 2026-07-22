@@ -1,0 +1,21 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "bc_e50",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt"
+    }
+  ],
+  "eval_task_filter": [
+    "open_drawer",
+    "move_slider_left",
+    "move_slider_right"
+  ],
+  "num_sequences_per_task": 25,
+  "ep_len": 160,
+  "eval_scan_sequences": 5000,
+  "g_scales": [
+    1.0,
+    2.0
+  ]
+}

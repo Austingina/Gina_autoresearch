@@ -1,0 +1,68 @@
+{
+  "eval_mode": "balanced_first_task",
+  "avg_seq_len": 1.0,
+  "chain_sr": {
+    "1": 1.0
+  },
+  "raw_results": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "task_info": {
+    "close_drawer": {
+      "success": 25,
+      "total": 25,
+      "sr": 1.0
+    }
+  },
+  "selected_tasks": [
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer",
+    "close_drawer"
+  ]
+}

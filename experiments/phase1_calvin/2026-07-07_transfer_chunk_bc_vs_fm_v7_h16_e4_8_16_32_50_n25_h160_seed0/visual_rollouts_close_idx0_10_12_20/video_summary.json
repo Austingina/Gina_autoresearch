@@ -1,0 +1,148 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "bc_e16",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0016/policy.pt"
+    },
+    {
+      "alias": "bc_e50",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt"
+    },
+    {
+      "alias": "fm_e50",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_fm_v7/checkpoints/epoch_0050/policy.pt"
+    }
+  ],
+  "tasks": [
+    "close_drawer"
+  ],
+  "rollout_indices": [
+    0,
+    10,
+    12,
+    20
+  ],
+  "videos": [
+    {
+      "alias": "bc_e16",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0016/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e16/close_drawer/rollout_00_success_0.mp4"
+    },
+    {
+      "alias": "bc_e16",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0016/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": true,
+      "success_step": 109,
+      "frames": 61,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e16/close_drawer/rollout_10_success_1.mp4"
+    },
+    {
+      "alias": "bc_e16",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0016/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 12,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e16/close_drawer/rollout_12_success_0.mp4"
+    },
+    {
+      "alias": "bc_e16",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0016/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 20,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e16/close_drawer/rollout_20_success_0.mp4"
+    },
+    {
+      "alias": "bc_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e50/close_drawer/rollout_00_success_0.mp4"
+    },
+    {
+      "alias": "bc_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e50/close_drawer/rollout_10_success_0.mp4"
+    },
+    {
+      "alias": "bc_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 12,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e50/close_drawer/rollout_12_success_0.mp4"
+    },
+    {
+      "alias": "bc_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_bc_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 20,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/bc_e50/close_drawer/rollout_20_success_0.mp4"
+    },
+    {
+      "alias": "fm_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_fm_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/fm_e50/close_drawer/rollout_00_success_0.mp4"
+    },
+    {
+      "alias": "fm_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_fm_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/fm_e50/close_drawer/rollout_10_success_0.mp4"
+    },
+    {
+      "alias": "fm_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_fm_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 12,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/fm_e50/close_drawer/rollout_12_success_0.mp4"
+    },
+    {
+      "alias": "fm_e50",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/chunk_fm_v7/checkpoints/epoch_0050/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 20,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-07_transfer_chunk_bc_vs_fm_v7_h16_e4_8_16_32_50_n25_h160_seed0/visual_rollouts_close_idx0_10_12_20/fm_e50/close_drawer/rollout_20_success_0.mp4"
+    }
+  ]
+}

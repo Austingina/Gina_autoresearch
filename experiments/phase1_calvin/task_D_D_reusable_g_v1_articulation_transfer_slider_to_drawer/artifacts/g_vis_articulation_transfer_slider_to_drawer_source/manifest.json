@@ -1,0 +1,27 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "g_dir": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/task_D_D_reusable_g_v1_articulation_transfer_slider_to_drawer/artifacts/g_articulation_transfer_slider_to_drawer_source",
+  "script": "visualize_interaction_geometry.py",
+  "selected_sequence_indices": [
+    0,
+    1,
+    11,
+    14,
+    19,
+    21,
+    29,
+    49,
+    50,
+    86,
+    91,
+    104,
+    113,
+    117,
+    120,
+    126,
+    139,
+    141,
+    145,
+    157
+  ]
+}

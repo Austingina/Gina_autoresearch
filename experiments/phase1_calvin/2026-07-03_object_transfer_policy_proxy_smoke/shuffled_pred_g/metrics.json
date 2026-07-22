@@ -1,0 +1,16 @@
+{
+  "action_dim": 7,
+  "best_val_mse_standardized": 0.9906942248344421,
+  "epochs": 2,
+  "feature_dim": 36,
+  "final_train_mse_standardized": 0.936038076877594,
+  "final_val_mse_standardized": 0.9906942248344421,
+  "val_gripper_mse": 0.6736249923706055,
+  "val_gripper_sign_acc": 0.78515625,
+  "val_mae": 0.2441873699426651,
+  "val_mse": 0.14024114608764648,
+  "val_pos_mse": 0.04369320347905159,
+  "val_rmse": 0.37448784708976746,
+  "val_rot_mse": 0.05899448320269585,
+  "variant": "shuffled_pred_g"
+}

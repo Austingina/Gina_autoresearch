@@ -1,0 +1,13 @@
+[
+  {
+    "mode": "chunk_bc_lang_query_g",
+    "checkpoint_epoch": null,
+    "train_val_chunk_mse": 0.04634355753660202,
+    "train_val_first_gripper_acc": 0.9714817110973342,
+    "avg_seq_len": 0.07,
+    "sr_1": 0.07,
+    "task_close_drawer_success": 7,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.07
+  }
+]

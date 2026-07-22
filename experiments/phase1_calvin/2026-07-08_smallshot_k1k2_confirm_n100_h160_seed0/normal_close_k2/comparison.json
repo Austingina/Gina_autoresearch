@@ -1,0 +1,46 @@
+[
+  {
+    "alias": "state_k2",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-08_smallshot_language_query_g_e50_n25_h160_seed0/close_k2/chunk_bc_state/checkpoints/epoch_0050/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "task_close_drawer_success": 0,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.0
+  },
+  {
+    "alias": "lang_k2",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-08_smallshot_language_query_g_e50_n25_h160_seed0/close_k2/chunk_bc_lang/checkpoints/epoch_0050/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "avg_seq_len": 0.48,
+    "sr_1": 0.48,
+    "task_close_drawer_success": 48,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.48
+  },
+  {
+    "alias": "query_g_k2",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-08_smallshot_language_query_g_e50_n25_h160_seed0/close_k2/chunk_bc_query_g/checkpoints/epoch_0050/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "avg_seq_len": 1.0,
+    "sr_1": 1.0,
+    "task_close_drawer_success": 100,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 1.0
+  },
+  {
+    "alias": "lang_query_g_k2",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-08_smallshot_language_query_g_e50_n25_h160_seed0/close_k2/chunk_bc_lang_query_g/checkpoints/epoch_0050/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "avg_seq_len": 1.0,
+    "sr_1": 1.0,
+    "task_close_drawer_success": 100,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 1.0
+  }
+]

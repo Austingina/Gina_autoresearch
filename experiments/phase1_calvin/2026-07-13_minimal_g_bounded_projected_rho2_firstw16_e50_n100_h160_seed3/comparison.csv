@@ -1,0 +1,2 @@
+mode,checkpoint_epoch,train_val_chunk_mse,train_val_first_gripper_acc,avg_seq_len,sr_1,task_close_drawer_success,task_close_drawer_total,task_close_drawer_sr
+chunk_bc_minimal_g_bounded_projected,,0.049163732677698135,0.9671419714817111,1.0,1.0,100,100,1.0

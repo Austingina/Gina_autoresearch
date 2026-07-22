@@ -1,0 +1,80 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "push the pink block to the left",
+      "end": 507029,
+      "index": 3155,
+      "length": 65,
+      "split": "training",
+      "start": 506965,
+      "task": "push_pink_block_left"
+    },
+    {
+      "ann": "grasp the blue block lying in the cabinet",
+      "end": 186087,
+      "index": 3445,
+      "length": 65,
+      "split": "training",
+      "start": 186023,
+      "task": "lift_blue_block_slider"
+    },
+    {
+      "ann": "put the block in the drawer",
+      "end": 532330,
+      "index": 331,
+      "length": 65,
+      "split": "training",
+      "start": 532266,
+      "task": "place_in_drawer"
+    },
+    {
+      "ann": "in the cabinet grasp the red block",
+      "end": 303651,
+      "index": 2121,
+      "length": 65,
+      "split": "training",
+      "start": 303587,
+      "task": "lift_red_block_slider"
+    },
+    {
+      "ann": "place the block on top of another block",
+      "end": 496885,
+      "index": 4188,
+      "length": 43,
+      "split": "training",
+      "start": 496843,
+      "task": "stack_block"
+    },
+    {
+      "ann": "move the light switch to turn on the yellow light",
+      "end": 353651,
+      "index": 3980,
+      "length": 65,
+      "split": "training",
+      "start": 353587,
+      "task": "turn_on_lightbulb"
+    },
+    {
+      "ann": "grasp the handle of the drawer and open it",
+      "end": 338509,
+      "index": 3317,
+      "length": 65,
+      "split": "training",
+      "start": 338445,
+      "task": "open_drawer"
+    },
+    {
+      "ann": "rotate left the pink block",
+      "end": 479967,
+      "index": 2484,
+      "length": 65,
+      "split": "training",
+      "start": 479903,
+      "task": "rotate_pink_block_left"
+    }
+  ],
+  "split": "training",
+  "task_filter": null
+}

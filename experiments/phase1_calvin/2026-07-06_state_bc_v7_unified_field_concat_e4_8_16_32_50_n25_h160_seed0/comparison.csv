@@ -1,0 +1,6 @@
+mode,checkpoint_epoch,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1,close_drawer_success,close_drawer_total,close_drawer_sr,move_slider_left_success,move_slider_left_total,move_slider_left_sr,move_slider_right_success,move_slider_right_total,move_slider_right_sr,open_drawer_success,open_drawer_total,open_drawer_sr
+articulation_g_v7_unified_field_concat,4,0.030334318056702614,0.9772841998990409,0.77,0.77,25,25,1.0,2,25,0.08,25,25,1.0,25,25,1.0
+articulation_g_v7_unified_field_concat,8,0.02673123963177204,0.9772841998990409,0.74,0.74,25,25,1.0,0,25,0.0,25,25,1.0,24,25,0.96
+articulation_g_v7_unified_field_concat,16,0.02464253455400467,0.9772841998990409,0.74,0.74,25,25,1.0,0,25,0.0,24,25,0.96,25,25,1.0
+articulation_g_v7_unified_field_concat,32,0.023499106988310814,0.9772841998990409,0.78,0.78,24,25,0.96,9,25,0.36,24,25,0.96,21,25,0.84
+articulation_g_v7_unified_field_concat,50,0.022493114694952965,0.9772841998990409,0.68,0.68,23,25,0.92,1,25,0.04,25,25,1.0,19,25,0.76

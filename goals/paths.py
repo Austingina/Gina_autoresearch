@@ -28,6 +28,39 @@ MANISKILL_ROOT = Path(os.environ.get("MANISKILL_ROOT", str(ROOT / "simulators" /
 ARENA_ROOT = Path(os.environ.get("ARENA_ROOT", str(ROOT / "simulators" / "arena")))
 
 
+def _default_calvin_g_root() -> Path:
+    env = os.environ.get("CALVIN_G_ROOT")
+    if env:
+        return Path(env)
+    h200 = Path("/mnt/nvme33n1/wuk_code/calvin_g")
+    if h200.is_dir():
+        return h200
+    return ROOT / "phase1_calvin" / "calvin_g"
+
+
+CALVIN_G_ROOT = _default_calvin_g_root()
+CALVIN_CODE = Path(
+    os.environ.get(
+        "CALVIN_CODE",
+        str(
+            ROOT / "phase1_calvin" / "calvin_code"
+            if (ROOT / "phase1_calvin" / "calvin_code").exists()
+            else CALVIN_G_ROOT / "code" / "calvin"
+        ),
+    )
+)
+CALVIN_ENV = Path(
+    os.environ.get(
+        "CALVIN_ENV",
+        str(
+            ROOT / "phase1_calvin" / "envs" / "calvin_h200"
+            if (ROOT / "phase1_calvin" / "envs" / "calvin_h200").exists()
+            else CALVIN_G_ROOT / "envs" / "calvin_h200"
+        ),
+    )
+)
+
+
 def workspace_root() -> Path:
     return ROOT
 

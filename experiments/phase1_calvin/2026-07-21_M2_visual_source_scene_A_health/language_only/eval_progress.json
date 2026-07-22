@@ -1,0 +1,1540 @@
+{
+  "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-19_M1_abc_to_d_oracle_g_minilm_visual_seed0/language_only/chunk_bc_minimal_g_tokens/policy.pt",
+  "source_data_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_ABC_D_compact_blocks",
+  "source_archive": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_ABC_D.zip",
+  "eval_data_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "tasks": [
+    "push_blue_block_right",
+    "push_pink_block_left",
+    "push_pink_block_right",
+    "push_red_block_left"
+  ],
+  "scenes": [
+    "calvin_scene_A"
+  ],
+  "num_per_task_scene": 25,
+  "ep_len": 160,
+  "g_scale": 1.0,
+  "query_g_control": "zero",
+  "language_control": "normal",
+  "action_execution_horizon": 1,
+  "audit_reset_visuals": true,
+  "scene_ranges": {
+    "calvin_scene_B": [
+      0,
+      598909
+    ],
+    "calvin_scene_C": [
+      598910,
+      1191338
+    ],
+    "calvin_scene_A": [
+      1191339,
+      1795044
+    ]
+  },
+  "selected": [
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1192251
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1238245
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1279151
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1308323
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1322524
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1354861
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1372307
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1424649
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1441862
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1452241
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1499559
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1524513
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1576190
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1593370
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1607536
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1642572
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1659763
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1671450
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1687137
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1702475
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1712007
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1724480
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1741533
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1764665
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1794286
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1198203
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1247190
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1294417
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1330944
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1345325
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1349951
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1411421
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1480999
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1494572
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1495199
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1499960
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1511152
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1566208
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1589638
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1599621
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1605868
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1659911
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1686577
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1686627
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1723152
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1740348
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1745636
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1753362
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1762155
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1791977
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1208787
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1371220
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1463905
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1495007
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1506160
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1543031
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1569290
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1580501
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1594586
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1599742
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1623888
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1651673
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686318
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686388
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686434
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1717266
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1720572
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1731517
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1733989
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1738624
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1755904
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1762037
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1762958
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1780787
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1785780
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1193610
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1196694
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1271640
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1436815
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1468667
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1480034
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1515875
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1529316
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1545285
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1572376
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1605682
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1628459
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1655631
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1661876
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1664818
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1675965
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1688810
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1704278
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1706228
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1735287
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1740949
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1747789
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1756875
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1776904
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1792054
+    }
+  ],
+  "results": [
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1192251,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.008325000293552876,
+      "rgb_static_dino_cosine": 0.9998922328231126,
+      "rgb_gripper_pixel_mae": 0.0027872261125594378,
+      "rgb_gripper_dino_cosine": 0.999865922198791
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1238245,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.4448249936103821,
+      "rgb_static_dino_cosine": 0.9921682755357792,
+      "rgb_gripper_pixel_mae": 1.1637377738952637,
+      "rgb_gripper_dino_cosine": 0.966198130632299
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1279151,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.002733333269134164,
+      "rgb_static_dino_cosine": 0.9999251740773997,
+      "rgb_gripper_pixel_mae": 0.02154194936156273,
+      "rgb_gripper_dino_cosine": 0.9994689440244133
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1308323,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.013658333569765091,
+      "rgb_static_dino_cosine": 0.9998186635120564,
+      "rgb_gripper_pixel_mae": 0.11096938699483871,
+      "rgb_gripper_dino_cosine": 0.9982489721350876
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1322524,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.005524999927729368,
+      "rgb_static_dino_cosine": 0.9998644288683418,
+      "rgb_gripper_pixel_mae": 0.34476569294929504,
+      "rgb_gripper_dino_cosine": 0.9973181189708481
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1354861,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.002524999901652336,
+      "rgb_static_dino_cosine": 0.9998096560323121,
+      "rgb_gripper_pixel_mae": 0.003306878264993429,
+      "rgb_gripper_dino_cosine": 0.9999225800385941
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1372307,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.07311666756868362,
+      "rgb_static_dino_cosine": 0.9993814300656133,
+      "rgb_gripper_pixel_mae": 0.4244142174720764,
+      "rgb_gripper_dino_cosine": 0.9951490701987536
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1424649,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.1403166651725769,
+      "rgb_static_dino_cosine": 0.9986042577358414,
+      "rgb_gripper_pixel_mae": 0.6483843326568604,
+      "rgb_gripper_dino_cosine": 0.9914421919569508
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1441862,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0005583333550021052,
+      "rgb_static_dino_cosine": 0.9999298117582354,
+      "rgb_gripper_pixel_mae": 0.0001889644772745669,
+      "rgb_gripper_dino_cosine": 0.9999220849183963
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1452241,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.006641666870564222,
+      "rgb_static_dino_cosine": 0.9998318245414697,
+      "rgb_gripper_pixel_mae": 0.0625472441315651,
+      "rgb_gripper_dino_cosine": 0.9989411340639983
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1499559,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.007983333431184292,
+      "rgb_static_dino_cosine": 0.9997909102564754,
+      "rgb_gripper_pixel_mae": 0.024234693497419357,
+      "rgb_gripper_dino_cosine": 0.9996981971095869
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1524513,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.011191667057573795,
+      "rgb_static_dino_cosine": 0.9997888410694824,
+      "rgb_gripper_pixel_mae": 0.08621504157781601,
+      "rgb_gripper_dino_cosine": 0.9996076550548731
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1576190,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0065750000067055225,
+      "rgb_static_dino_cosine": 0.999864223978626,
+      "rgb_gripper_pixel_mae": 0.028628118336200714,
+      "rgb_gripper_dino_cosine": 0.9997889538149027
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1593370,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.01759999990463257,
+      "rgb_static_dino_cosine": 0.9994263689765281,
+      "rgb_gripper_pixel_mae": 0.2231198102235794,
+      "rgb_gripper_dino_cosine": 0.9973167580258817
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1607536,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00644166674464941,
+      "rgb_static_dino_cosine": 0.9998745461832528,
+      "rgb_gripper_pixel_mae": 0.01100718043744564,
+      "rgb_gripper_dino_cosine": 0.9998135874848461
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1642572,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0004250000056345016,
+      "rgb_static_dino_cosine": 0.9999298115196512,
+      "rgb_gripper_pixel_mae": 0.008361677639186382,
+      "rgb_gripper_dino_cosine": 0.999776946996851
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1659763,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004091666545718908,
+      "rgb_static_dino_cosine": 0.9998484176928603,
+      "rgb_gripper_pixel_mae": 0.054327286779880524,
+      "rgb_gripper_dino_cosine": 0.9993363880895898
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1671450,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.004800000227987766,
+      "rgb_static_dino_cosine": 0.9998950504613173,
+      "rgb_gripper_pixel_mae": 0.0018896447727456689,
+      "rgb_gripper_dino_cosine": 0.9999337381764422
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1687137,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00488333310931921,
+      "rgb_static_dino_cosine": 0.999889443614962,
+      "rgb_gripper_pixel_mae": 0.013227513059973717,
+      "rgb_gripper_dino_cosine": 0.9998434207891072
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1702475,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.005441666580736637,
+      "rgb_static_dino_cosine": 0.9996286025605984,
+      "rgb_gripper_pixel_mae": 0.0005668934318237007,
+      "rgb_gripper_dino_cosine": 0.9998890121146755
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1712007,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.41546666622161865,
+      "rgb_static_dino_cosine": 0.9849947844888437,
+      "rgb_gripper_pixel_mae": 0.8041855692863464,
+      "rgb_gripper_dino_cosine": 0.9801505099970713
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1724480,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.015150000341236591,
+      "rgb_static_dino_cosine": 0.9997540968709429,
+      "rgb_gripper_pixel_mae": 0.03047052212059498,
+      "rgb_gripper_dino_cosine": 0.9996572131345693
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1741533,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0006000000284984708,
+      "rgb_static_dino_cosine": 0.999930469032108,
+      "rgb_gripper_pixel_mae": 0.0006613756413571537,
+      "rgb_gripper_dino_cosine": 0.9999062754313616
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1764665,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.005475000012665987,
+      "rgb_static_dino_cosine": 0.9996657193912741,
+      "rgb_gripper_pixel_mae": 0.015306122601032257,
+      "rgb_gripper_dino_cosine": 0.999609892442807
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_blue_block_right",
+      "start": 1794286,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.1612916737794876,
+      "rgb_static_dino_cosine": 0.996693353814633,
+      "rgb_gripper_pixel_mae": 0.24366968870162964,
+      "rgb_gripper_dino_cosine": 0.9946517566565266
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1198203,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.004441666882485151,
+      "rgb_static_dino_cosine": 0.9997209728535124,
+      "rgb_gripper_pixel_mae": 0.004204459488391876,
+      "rgb_gripper_dino_cosine": 0.9999532210054696
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1247190,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.00865000020712614,
+      "rgb_static_dino_cosine": 0.999766830029445,
+      "rgb_gripper_pixel_mae": 0.008550642058253288,
+      "rgb_gripper_dino_cosine": 0.9997730308322559
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1294417,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004966666456311941,
+      "rgb_static_dino_cosine": 0.9998538990324686,
+      "rgb_gripper_pixel_mae": 0.0035430837888270617,
+      "rgb_gripper_dino_cosine": 0.9999078307354934
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1330944,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.04574166610836983,
+      "rgb_static_dino_cosine": 0.9981815735196394,
+      "rgb_gripper_pixel_mae": 1.838955044746399,
+      "rgb_gripper_dino_cosine": 0.9918170904429228
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1345325,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.005125000141561031,
+      "rgb_static_dino_cosine": 0.9999036038770762,
+      "rgb_gripper_pixel_mae": 0.00911753624677658,
+      "rgb_gripper_dino_cosine": 0.999876243659296
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1349951,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.011133333668112755,
+      "rgb_static_dino_cosine": 0.9995817014192059,
+      "rgb_gripper_pixel_mae": 0.0031651549506932497,
+      "rgb_gripper_dino_cosine": 0.9998968734035651
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1411421,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.002575000049546361,
+      "rgb_static_dino_cosine": 0.9999145212645204,
+      "rgb_gripper_pixel_mae": 0.0011337868636474013,
+      "rgb_gripper_dino_cosine": 0.9998779888264545
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1480999,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004466666840016842,
+      "rgb_static_dino_cosine": 0.9999270908999859,
+      "rgb_gripper_pixel_mae": 0.0013227512827143073,
+      "rgb_gripper_dino_cosine": 0.9999114605457293
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1494572,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.021308332681655884,
+      "rgb_static_dino_cosine": 0.9996923808839397,
+      "rgb_gripper_pixel_mae": 0.41808390617370605,
+      "rgb_gripper_dino_cosine": 0.9887941674021143
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1495199,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.019075000658631325,
+      "rgb_static_dino_cosine": 0.9994892110307471,
+      "rgb_gripper_pixel_mae": 0.26662886142730713,
+      "rgb_gripper_dino_cosine": 0.9964039668381788
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1499960,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.01549999974668026,
+      "rgb_static_dino_cosine": 0.999615183592532,
+      "rgb_gripper_pixel_mae": 0.019982993602752686,
+      "rgb_gripper_dino_cosine": 0.9993147492896385
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1511152,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.021849999204277992,
+      "rgb_static_dino_cosine": 0.9995963494408033,
+      "rgb_gripper_pixel_mae": 0.1745559275150299,
+      "rgb_gripper_dino_cosine": 0.9978386657531197
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1566208,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.060100000351667404,
+      "rgb_static_dino_cosine": 0.999210447012412,
+      "rgb_gripper_pixel_mae": 0.7614796161651611,
+      "rgb_gripper_dino_cosine": 0.9964172778604047
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1589638,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.013000000268220901,
+      "rgb_static_dino_cosine": 0.9998095005718245,
+      "rgb_gripper_pixel_mae": 0.017006803303956985,
+      "rgb_gripper_dino_cosine": 0.9999022641010803
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1599621,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.23755833506584167,
+      "rgb_static_dino_cosine": 0.995829308577099,
+      "rgb_gripper_pixel_mae": 0.3155706822872162,
+      "rgb_gripper_dino_cosine": 0.9951077421092404
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1605868,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.5604249835014343,
+      "rgb_static_dino_cosine": 0.9914257243222979,
+      "rgb_gripper_pixel_mae": 1.468537449836731,
+      "rgb_gripper_dino_cosine": 0.9842721612911437
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1659911,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00640833331272006,
+      "rgb_static_dino_cosine": 0.9998854742183835,
+      "rgb_gripper_pixel_mae": 0.009212017990648746,
+      "rgb_gripper_dino_cosine": 0.9997975317764548
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1686577,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.005541666876524687,
+      "rgb_static_dino_cosine": 0.9998917533798746,
+      "rgb_gripper_pixel_mae": 0.014266817830502987,
+      "rgb_gripper_dino_cosine": 0.999807346504461
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1686627,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00071666669100523,
+      "rgb_static_dino_cosine": 0.999872598650009,
+      "rgb_gripper_pixel_mae": 0.0007086168043315411,
+      "rgb_gripper_dino_cosine": 0.999938322503319
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1723152,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.2215999960899353,
+      "rgb_static_dino_cosine": 0.9893693888474693,
+      "rgb_gripper_pixel_mae": 0.2697940170764923,
+      "rgb_gripper_dino_cosine": 0.994577161979303
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1740348,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.015183333307504654,
+      "rgb_static_dino_cosine": 0.9996378606635249,
+      "rgb_gripper_pixel_mae": 0.10133220255374908,
+      "rgb_gripper_dino_cosine": 0.9982913707395429
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1745636,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0042583332397043705,
+      "rgb_static_dino_cosine": 0.999911245903217,
+      "rgb_gripper_pixel_mae": 0.0022675737272948027,
+      "rgb_gripper_dino_cosine": 0.999938638426812
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1753362,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.24005833268165588,
+      "rgb_static_dino_cosine": 0.9971605244079853,
+      "rgb_gripper_pixel_mae": 1.5204081535339355,
+      "rgb_gripper_dino_cosine": 0.9823576239219395
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1762155,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0019499999471008778,
+      "rgb_static_dino_cosine": 0.9999007893510743,
+      "rgb_gripper_pixel_mae": 0.0037320484407246113,
+      "rgb_gripper_dino_cosine": 0.9998949063107754
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_left",
+      "start": 1791977,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.005258333403617144,
+      "rgb_static_dino_cosine": 0.9997799828850896,
+      "rgb_gripper_pixel_mae": 0.010770974680781364,
+      "rgb_gripper_dino_cosine": 0.999839695736977
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1208787,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.02071666717529297,
+      "rgb_static_dino_cosine": 0.9996774823591865,
+      "rgb_gripper_pixel_mae": 0.3573318123817444,
+      "rgb_gripper_dino_cosine": 0.9971079777995375
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1371220,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0009166666422970593,
+      "rgb_static_dino_cosine": 0.9999274637667029,
+      "rgb_gripper_pixel_mae": 0.0033541193697601557,
+      "rgb_gripper_dino_cosine": 0.9999207935383445
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1463905,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.01490833330899477,
+      "rgb_static_dino_cosine": 0.9997373591213566,
+      "rgb_gripper_pixel_mae": 0.0027399847749620676,
+      "rgb_gripper_dino_cosine": 0.9999234026327404
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1495007,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.005216666497290134,
+      "rgb_static_dino_cosine": 0.9998838861618203,
+      "rgb_gripper_pixel_mae": 0.002314814832061529,
+      "rgb_gripper_dino_cosine": 0.9999366063498145
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1506160,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.001891666674055159,
+      "rgb_static_dino_cosine": 0.9999434876575612,
+      "rgb_gripper_pixel_mae": 0.018990930169820786,
+      "rgb_gripper_dino_cosine": 0.9998966674459946
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1543031,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.00283333333209157,
+      "rgb_static_dino_cosine": 0.9994025912164117,
+      "rgb_gripper_pixel_mae": 0.0011810279684141278,
+      "rgb_gripper_dino_cosine": 0.9999157843653252
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1569290,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.004516666755080223,
+      "rgb_static_dino_cosine": 0.9998808405107895,
+      "rgb_gripper_pixel_mae": 0.0027399847749620676,
+      "rgb_gripper_dino_cosine": 0.9999097677147547
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1580501,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.04335833340883255,
+      "rgb_static_dino_cosine": 0.9988606967440086,
+      "rgb_gripper_pixel_mae": 0.9102891087532043,
+      "rgb_gripper_dino_cosine": 0.9936898019154641
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1594586,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.008449999615550041,
+      "rgb_static_dino_cosine": 0.9995614407992796,
+      "rgb_gripper_pixel_mae": 0.01568405143916607,
+      "rgb_gripper_dino_cosine": 0.9996970474509848
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1599742,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.004158333409577608,
+      "rgb_static_dino_cosine": 0.999917473039993,
+      "rgb_gripper_pixel_mae": 0.05890967324376106,
+      "rgb_gripper_dino_cosine": 0.9967667578709478
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1623888,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00022499999613501132,
+      "rgb_static_dino_cosine": 0.9999055158033137,
+      "rgb_gripper_pixel_mae": 0.0004724111931864172,
+      "rgb_gripper_dino_cosine": 0.9999034799571322
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1651673,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0026833333540707827,
+      "rgb_static_dino_cosine": 0.9998602201083644,
+      "rgb_gripper_pixel_mae": 0.017290249466896057,
+      "rgb_gripper_dino_cosine": 0.9995232068794032
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686318,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.3636833429336548,
+      "rgb_static_dino_cosine": 0.9948609176180918,
+      "rgb_gripper_pixel_mae": 1.0557445287704468,
+      "rgb_gripper_dino_cosine": 0.9818369633704775
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686388,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0017000000225380063,
+      "rgb_static_dino_cosine": 0.9999281037338271,
+      "rgb_gripper_pixel_mae": 0.0011810279684141278,
+      "rgb_gripper_dino_cosine": 0.9999242156377716
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1686434,
+      "success": 1,
+      "rgb_static_pixel_mae": 7.500000356230885e-05,
+      "rgb_static_dino_cosine": 0.9999211966762802,
+      "rgb_gripper_pixel_mae": 4.724111931864172e-05,
+      "rgb_gripper_dino_cosine": 0.9999166985677398
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1717266,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0066999997943639755,
+      "rgb_static_dino_cosine": 0.999760043633147,
+      "rgb_gripper_pixel_mae": 0.09136432409286499,
+      "rgb_gripper_dino_cosine": 0.9982572123420188
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1720572,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.530875027179718,
+      "rgb_static_dino_cosine": 0.9839321025828129,
+      "rgb_gripper_pixel_mae": 0.7713057398796082,
+      "rgb_gripper_dino_cosine": 0.9782499054269993
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1731517,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.005933333188295364,
+      "rgb_static_dino_cosine": 0.999847484768732,
+      "rgb_gripper_pixel_mae": 0.12466931343078613,
+      "rgb_gripper_dino_cosine": 0.9988040529023384
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1733989,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.37193334102630615,
+      "rgb_static_dino_cosine": 0.996489094190569,
+      "rgb_gripper_pixel_mae": 0.7869425415992737,
+      "rgb_gripper_dino_cosine": 0.9877189852712258
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1738624,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.010008333250880241,
+      "rgb_static_dino_cosine": 0.9997594433855602,
+      "rgb_gripper_pixel_mae": 0.04048563912510872,
+      "rgb_gripper_dino_cosine": 0.9997981615131744
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1755904,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.009783333167433739,
+      "rgb_static_dino_cosine": 0.9998790738128968,
+      "rgb_gripper_pixel_mae": 0.0893329530954361,
+      "rgb_gripper_dino_cosine": 0.9994044117139836
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1762037,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.10477499663829803,
+      "rgb_static_dino_cosine": 0.996888337479502,
+      "rgb_gripper_pixel_mae": 0.3193499743938446,
+      "rgb_gripper_dino_cosine": 0.9971789950096326
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1762958,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.00010833333362825215,
+      "rgb_static_dino_cosine": 0.9999135614980287,
+      "rgb_gripper_pixel_mae": 4.724111931864172e-05,
+      "rgb_gripper_dino_cosine": 0.9999307963476316
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1780787,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.020383333787322044,
+      "rgb_static_dino_cosine": 0.9990507679061472,
+      "rgb_gripper_pixel_mae": 0.5254157185554504,
+      "rgb_gripper_dino_cosine": 0.9916033994170717
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_pink_block_right",
+      "start": 1785780,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.003983333241194487,
+      "rgb_static_dino_cosine": 0.9999276723750301,
+      "rgb_gripper_pixel_mae": 0.0010865457588806748,
+      "rgb_gripper_dino_cosine": 0.9999391102946662
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1193610,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.002400000113993883,
+      "rgb_static_dino_cosine": 0.999927518562183,
+      "rgb_gripper_pixel_mae": 0.0038265306502580643,
+      "rgb_gripper_dino_cosine": 0.9999253043501917
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1196694,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0013749999925494194,
+      "rgb_static_dino_cosine": 0.9999204574709419,
+      "rgb_gripper_pixel_mae": 0.02021919935941696,
+      "rgb_gripper_dino_cosine": 0.999629771519984
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1271640,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0024333333130925894,
+      "rgb_static_dino_cosine": 0.999924674650704,
+      "rgb_gripper_pixel_mae": 0.0034486015792936087,
+      "rgb_gripper_dino_cosine": 0.999922660649293
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1436815,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.0029416666366159916,
+      "rgb_static_dino_cosine": 0.9998937016392337,
+      "rgb_gripper_pixel_mae": 0.018471278250217438,
+      "rgb_gripper_dino_cosine": 0.999177964531546
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1468667,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.017366666346788406,
+      "rgb_static_dino_cosine": 0.9992009322493534,
+      "rgb_gripper_pixel_mae": 0.37755101919174194,
+      "rgb_gripper_dino_cosine": 0.9953686616525848
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1480034,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.006966666784137487,
+      "rgb_static_dino_cosine": 0.9998460639654722,
+      "rgb_gripper_pixel_mae": 0.03132086247205734,
+      "rgb_gripper_dino_cosine": 0.9980147592634877
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1515875,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0018666667165234685,
+      "rgb_static_dino_cosine": 0.9999279026971294,
+      "rgb_gripper_pixel_mae": 0.012093726545572281,
+      "rgb_gripper_dino_cosine": 0.9998299801643525
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1529316,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.06839166581630707,
+      "rgb_static_dino_cosine": 0.9990169615038555,
+      "rgb_gripper_pixel_mae": 1.5384070873260498,
+      "rgb_gripper_dino_cosine": 0.994840991621023
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1545285,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.31014999747276306,
+      "rgb_static_dino_cosine": 0.9956410082313466,
+      "rgb_gripper_pixel_mae": 1.098308801651001,
+      "rgb_gripper_dino_cosine": 0.9821743036880454
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1572376,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.17456667125225067,
+      "rgb_static_dino_cosine": 0.995526023467074,
+      "rgb_gripper_pixel_mae": 1.0172902345657349,
+      "rgb_gripper_dino_cosine": 0.9868340979309054
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1605682,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004683333449065685,
+      "rgb_static_dino_cosine": 0.9999211828354606,
+      "rgb_gripper_pixel_mae": 0.0026455025654286146,
+      "rgb_gripper_dino_cosine": 0.9999200979752708
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1628459,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.13392500579357147,
+      "rgb_static_dino_cosine": 0.9980439292435141,
+      "rgb_gripper_pixel_mae": 0.750094473361969,
+      "rgb_gripper_dino_cosine": 0.9739112229879561
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1655631,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004783333279192448,
+      "rgb_static_dino_cosine": 0.9999184086673119,
+      "rgb_gripper_pixel_mae": 0.019463341683149338,
+      "rgb_gripper_dino_cosine": 0.9993668578883751
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1661876,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.009200000204145908,
+      "rgb_static_dino_cosine": 0.9995762419657278,
+      "rgb_gripper_pixel_mae": 0.028108466416597366,
+      "rgb_gripper_dino_cosine": 0.9994175549505229
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1664818,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.00032500000088475645,
+      "rgb_static_dino_cosine": 0.9999134746849485,
+      "rgb_gripper_pixel_mae": 0.0008503401186317205,
+      "rgb_gripper_dino_cosine": 0.9999172580139905
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1675965,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0013416666770353913,
+      "rgb_static_dino_cosine": 0.9999201287142432,
+      "rgb_gripper_pixel_mae": 0.00807823147624731,
+      "rgb_gripper_dino_cosine": 0.9998627023670563
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1688810,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.07886666804552078,
+      "rgb_static_dino_cosine": 0.9977662814936239,
+      "rgb_gripper_pixel_mae": 0.14923469722270966,
+      "rgb_gripper_dino_cosine": 0.9683942924937006
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1704278,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.345466673374176,
+      "rgb_static_dino_cosine": 0.9949474257335412,
+      "rgb_gripper_pixel_mae": 1.0587207078933716,
+      "rgb_gripper_dino_cosine": 0.9831488372447375
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1706228,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0033833333291113377,
+      "rgb_static_dino_cosine": 0.9998801708074857,
+      "rgb_gripper_pixel_mae": 0.010770974680781364,
+      "rgb_gripper_dino_cosine": 0.9998584400806984
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1735287,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.00013333333481568843,
+      "rgb_static_dino_cosine": 0.999939437070806,
+      "rgb_gripper_pixel_mae": 0.007416855543851852,
+      "rgb_gripper_dino_cosine": 0.9996231819443422
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1740949,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.052808333188295364,
+      "rgb_static_dino_cosine": 0.9973747741162166,
+      "rgb_gripper_pixel_mae": 1.1594387292861938,
+      "rgb_gripper_dino_cosine": 0.9805892926493339
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1747789,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.03867499902844429,
+      "rgb_static_dino_cosine": 0.9962331148016587,
+      "rgb_gripper_pixel_mae": 0.9331066012382507,
+      "rgb_gripper_dino_cosine": 0.9926809534527703
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1756875,
+      "success": 1,
+      "rgb_static_pixel_mae": 0.0008666666690260172,
+      "rgb_static_dino_cosine": 0.9999256853520002,
+      "rgb_gripper_pixel_mae": 0.00014172335795592517,
+      "rgb_gripper_dino_cosine": 0.9999187399102575
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1776904,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.016341665759682655,
+      "rgb_static_dino_cosine": 0.9981047826229843,
+      "rgb_gripper_pixel_mae": 0.23630008101463318,
+      "rgb_gripper_dino_cosine": 0.9966208507960157
+    },
+    {
+      "scene": "calvin_scene_A",
+      "task": "push_red_block_left",
+      "start": 1792054,
+      "success": 0,
+      "rgb_static_pixel_mae": 0.004416666459292173,
+      "rgb_static_dino_cosine": 0.999869381319468,
+      "rgb_gripper_pixel_mae": 0.021494708955287933,
+      "rgb_gripper_dino_cosine": 0.9990509980453711
+    }
+  ]
+}

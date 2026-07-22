@@ -1,0 +1,53 @@
+{
+  "projected": {
+    "close_drawer": {
+      "sr": 0.12,
+      "success": 3,
+      "count": 25,
+      "categories": {
+        "near_axis_line_wrong_offset": 3,
+        "near_part_no_joint_progress": 7,
+        "no_axis_contact": 12,
+        "success": 3
+      },
+      "near_axis_line_steps_p50": 4.0,
+      "near_part_steps_p50": 0.0,
+      "axis_command_no_progress_steps_p50": 0.0,
+      "weird_axis_satisfied_steps_p50": 0.0,
+      "wrong_side_axis_command_steps_p50": 0.0,
+      "useful_push_steps_p50": 0.0,
+      "min_dist_to_part_p50": 0.07219455162052253,
+      "min_dist_to_axis_line_p50": 0.062238704333202555,
+      "min_dist_to_contact_anchor_p50": 0.10194308912967534,
+      "final_dist_to_part_p50": 0.09476742811122339,
+      "first_near_part_step_p50": 75.5,
+      "first_near_axis_line_step_p50": 64.0,
+      "first_near_contact_anchor_step_p50": 135.0,
+      "first_joint_progress_step_p50": 66.0,
+      "q_progress_after_first_near_part_p50": 0.00019767745081770123,
+      "pre_contact_mean_action_desired_axis_p50": -0.0012459768584507196,
+      "pre_contact_mean_prior_action_desired_axis_p50": -0.06474010615136697,
+      "pre_contact_mean_learned_action_desired_axis_p50": 0.02349998236221293,
+      "post_contact_mean_action_desired_axis_p50": -0.000677358027478783,
+      "pre_contact_mean_eef_delta_desired_axis_p50": -0.0012455722882910361,
+      "post_contact_mean_eef_delta_desired_axis_p50": -0.00013390774597132307,
+      "pre_contact_sum_q_delta_desired_p50": 0.0,
+      "post_contact_sum_q_delta_desired_p50": 4.4114887714385986e-05,
+      "post_contact_mean_q_delta_desired_p50": 5.429779648677789e-07,
+      "pre_contact_mean_action_norm_p50": 0.003933318245471729,
+      "post_contact_mean_action_norm_p50": 0.0030771797501275397,
+      "pre_contact_mean_eef_step_norm_p50": 0.0038805865958337765,
+      "post_contact_mean_eef_step_norm_p50": 0.0022609932781531856,
+      "pre_contact_mean_action_g_field_cos_p50": 0.4786659705986038,
+      "pre_contact_mean_eef_g_field_cos_p50": 0.4672867500430723,
+      "near_part_mean_action_norm_p50": 0.004887667172876791,
+      "near_part_mean_action_desired_axis_p50": -0.001724900822893911,
+      "near_part_mean_eef_delta_desired_axis_p50": -0.001679693513174485,
+      "eef_net_desired_axis_p50": -0.17188118549831485,
+      "near_axis_mean_part_to_eef_axis_p50": 0.05723346793989965,
+      "near_axis_mean_height_offset_p50": 0.02655943374455967,
+      "weird_mean_action_desired_axis_p50": null,
+      "weird_mean_q_delta_desired_p50": null
+    }
+  }
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "mode": "chunk_bc_lang",
+    "checkpoint_epoch": null,
+    "train_val_chunk_mse": 0.04916702210903168,
+    "train_val_first_gripper_acc": 0.9679685885513536,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "task_close_drawer_success": 0,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.0
+  },
+  {
+    "mode": "chunk_bc_lang_query_g",
+    "checkpoint_epoch": null,
+    "train_val_chunk_mse": 0.04674495384097099,
+    "train_val_first_gripper_acc": 0.9710684025625129,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "task_close_drawer_success": 0,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.0
+  }
+]

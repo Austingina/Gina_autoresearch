@@ -1,0 +1,147 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "seed2_lang",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt"
+    }
+  ],
+  "tasks": [
+    "close_drawer"
+  ],
+  "rollout_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "g_scale": 1.0,
+  "videos": [
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_00_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 1,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_01_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 2,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_02_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 3,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_03_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 4,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_04_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 5,
+      "success": true,
+      "success_step": 19,
+      "frames": 16,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang/close_drawer/rollout_05_success_1.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_00_success_0.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 1,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_01_success_0.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 2,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_02_success_0.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 3,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_03_success_0.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 4,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_04_success_0.mp4"
+    },
+    {
+      "alias": "seed2_lang_query_g",
+      "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed2/chunk_bc_lang_query_g/policy.pt",
+      "task": "close_drawer",
+      "rollout_idx": 5,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_seed2_lang_vs_lang_query_g_videos/seed2_lang_query_g/close_drawer/rollout_05_success_0.mp4"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "alias": "i0_l1",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-11_scope_primitive_seed_factor_i0_l1_e50_n100_h160/chunk_bc_lang_query_g/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "language_control": "zero",
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "task_close_drawer_success": 0,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.0
+  }
+]

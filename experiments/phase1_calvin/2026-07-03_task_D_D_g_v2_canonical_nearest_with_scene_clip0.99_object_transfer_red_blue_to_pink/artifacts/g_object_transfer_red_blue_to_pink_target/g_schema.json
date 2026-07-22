@@ -1,0 +1,167 @@
+{
+  "arrays": {
+    "dist_object_to_eef": [
+      16848,
+      3
+    ],
+    "eef_orn": [
+      16848,
+      3
+    ],
+    "eef_pos": [
+      16848,
+      3
+    ],
+    "frame_ids": [
+      16848
+    ],
+    "future_delta_eef_h1": [
+      16848,
+      3
+    ],
+    "future_delta_eef_h16": [
+      16848,
+      3
+    ],
+    "future_delta_eef_h4": [
+      16848,
+      3
+    ],
+    "future_delta_eef_h8": [
+      16848,
+      3
+    ],
+    "future_delta_object_pos_h1": [
+      16848,
+      3,
+      3
+    ],
+    "future_delta_object_pos_h16": [
+      16848,
+      3,
+      3
+    ],
+    "future_delta_object_pos_h4": [
+      16848,
+      3,
+      3
+    ],
+    "future_delta_object_pos_h8": [
+      16848,
+      3,
+      3
+    ],
+    "future_delta_scene_scalars_h1": [
+      16848,
+      6
+    ],
+    "future_delta_scene_scalars_h16": [
+      16848,
+      6
+    ],
+    "future_delta_scene_scalars_h4": [
+      16848,
+      6
+    ],
+    "future_delta_scene_scalars_h8": [
+      16848,
+      6
+    ],
+    "gripper": [
+      16848,
+      1
+    ],
+    "near_contact": [
+      16848,
+      3
+    ],
+    "nearest_object_index": [
+      16848,
+      1
+    ],
+    "object_names": [
+      3
+    ],
+    "object_orn": [
+      16848,
+      3,
+      3
+    ],
+    "object_pos": [
+      16848,
+      3,
+      3
+    ],
+    "rel_object_to_eef": [
+      16848,
+      3,
+      3
+    ],
+    "scene_scalar_names": [
+      6
+    ],
+    "scene_scalars": [
+      16848,
+      6
+    ],
+    "sequence_index": [
+      16848
+    ]
+  },
+  "contact_threshold": 0.1,
+  "created_at": "2026-07-03_024443",
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "future_horizons": [
+    1,
+    4,
+    8,
+    16
+  ],
+  "object_names": [
+    "block_red",
+    "block_blue",
+    "block_pink"
+  ],
+  "partition": "target",
+  "scene_name": "calvin_scene_D",
+  "scene_obs_schema": {
+    "objects": [
+      {
+        "layout": "xyz + euler orientation",
+        "name": "block_red",
+        "slice": [
+          6,
+          12
+        ]
+      },
+      {
+        "layout": "xyz + euler orientation",
+        "name": "block_blue",
+        "slice": [
+          12,
+          18
+        ]
+      },
+      {
+        "layout": "xyz + euler orientation",
+        "name": "block_pink",
+        "slice": [
+          18,
+          24
+        ]
+      }
+    ],
+    "scalars": "scene_obs[0:6] = ['base__slide', 'base__drawer', 'base__button', 'base__switch', 'lightbulb', 'led']"
+  },
+  "scene_scalar_names": [
+    "base__slide",
+    "base__drawer",
+    "base__button",
+    "base__switch",
+    "lightbulb",
+    "led"
+  ],
+  "schema_source": "hydra",
+  "script": "extract_candidate_g_labels.py",
+  "split_manifest": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_object_transfer_red_blue_to_pink/artifacts/object_transfer_red_blue_to_pink.json"
+}

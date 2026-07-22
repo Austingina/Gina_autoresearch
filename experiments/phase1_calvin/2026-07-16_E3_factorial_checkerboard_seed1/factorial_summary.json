@@ -1,0 +1,223 @@
+{
+  "run_root": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-16_E3_factorial_checkerboard_seed1",
+  "held_out_tasks": [
+    "close_drawer",
+    "move_slider_left",
+    "push_red_block_right",
+    "push_blue_block_left"
+  ],
+  "rows": [
+    {
+      "task": "close_drawer",
+      "condition": "with_g_normal",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "close_drawer",
+      "condition": "with_g_sign_flip",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "close_drawer",
+      "condition": "matched_no_g",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "move_slider_left",
+      "condition": "with_g_normal",
+      "success": 10,
+      "total": 100,
+      "sr": 0.1
+    },
+    {
+      "task": "move_slider_left",
+      "condition": "with_g_sign_flip",
+      "success": 2,
+      "total": 100,
+      "sr": 0.02
+    },
+    {
+      "task": "move_slider_left",
+      "condition": "matched_no_g",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "push_red_block_right",
+      "condition": "with_g_normal",
+      "success": 56,
+      "total": 100,
+      "sr": 0.56
+    },
+    {
+      "task": "push_red_block_right",
+      "condition": "with_g_sign_flip",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "push_red_block_right",
+      "condition": "matched_no_g",
+      "success": 3,
+      "total": 100,
+      "sr": 0.03
+    },
+    {
+      "task": "push_blue_block_left",
+      "condition": "with_g_normal",
+      "success": 68,
+      "total": 100,
+      "sr": 0.68
+    },
+    {
+      "task": "push_blue_block_left",
+      "condition": "with_g_sign_flip",
+      "success": 0,
+      "total": 100,
+      "sr": 0.0
+    },
+    {
+      "task": "push_blue_block_left",
+      "condition": "matched_no_g",
+      "success": 1,
+      "total": 100,
+      "sr": 0.01
+    }
+  ],
+  "source_health": [
+    {
+      "condition": "with_g",
+      "success": 111,
+      "total": 275,
+      "sr": 0.4036363636363636,
+      "tasks": {
+        "move_slider_right": {
+          "success": 17,
+          "total": 25,
+          "sr": 0.68
+        },
+        "open_drawer": {
+          "success": 25,
+          "total": 25,
+          "sr": 1.0
+        },
+        "push_blue_block_right": {
+          "success": 7,
+          "total": 25,
+          "sr": 0.28
+        },
+        "push_into_drawer": {
+          "success": 12,
+          "total": 25,
+          "sr": 0.48
+        },
+        "push_pink_block_left": {
+          "success": 16,
+          "total": 25,
+          "sr": 0.64
+        },
+        "push_pink_block_right": {
+          "success": 12,
+          "total": 25,
+          "sr": 0.48
+        },
+        "push_red_block_left": {
+          "success": 21,
+          "total": 25,
+          "sr": 0.84
+        },
+        "turn_off_led": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_off_lightbulb": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_on_led": {
+          "success": 1,
+          "total": 25,
+          "sr": 0.04
+        },
+        "turn_on_lightbulb": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        }
+      }
+    },
+    {
+      "condition": "matched_no_g",
+      "success": 9,
+      "total": 275,
+      "sr": 0.03272727272727273,
+      "tasks": {
+        "move_slider_right": {
+          "success": 1,
+          "total": 25,
+          "sr": 0.04
+        },
+        "open_drawer": {
+          "success": 4,
+          "total": 25,
+          "sr": 0.16
+        },
+        "push_blue_block_right": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "push_into_drawer": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "push_pink_block_left": {
+          "success": 4,
+          "total": 25,
+          "sr": 0.16
+        },
+        "push_pink_block_right": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "push_red_block_left": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_off_led": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_off_lightbulb": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_on_led": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        },
+        "turn_on_lightbulb": {
+          "success": 0,
+          "total": 25,
+          "sr": 0.0
+        }
+      }
+    }
+  ]
+}

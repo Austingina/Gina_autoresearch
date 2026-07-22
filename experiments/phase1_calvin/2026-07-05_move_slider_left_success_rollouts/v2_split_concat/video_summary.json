@@ -1,0 +1,163 @@
+{
+  "checkpoint_root": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v2_split_g_balanced_n25_h160_seed0_rerun",
+  "videos": [
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 124,
+      "frames": 69,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 1,
+      "success": true,
+      "success_step": 155,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_01_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 13,
+      "success": true,
+      "success_step": 116,
+      "frames": 65,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_13_success_1.mp4"
+    }
+  ],
+  "attempts": [
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 124,
+      "frames": 69,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 1,
+      "success": true,
+      "success_step": 155,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_01_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 2,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 3,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 4,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 5,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 6,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 7,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 8,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 9,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 10,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 11,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 12,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v2_split_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 13,
+      "success": true,
+      "success_step": 116,
+      "frames": 65,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-05_move_slider_left_success_rollouts/v2_split_concat/articulation_g_v2_split_concat/move_slider_left/rollout_13_success_1.mp4"
+    }
+  ]
+}

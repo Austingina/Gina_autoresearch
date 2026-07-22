@@ -1,0 +1,81 @@
+{
+  "no_g_e32": {
+    "move_slider_left": {
+      "sr": 0.28,
+      "categories": {
+        "contact_insufficient_motion": 8,
+        "contact_wrong_axis_action": 1,
+        "never_contact": 9,
+        "success": 7
+      },
+      "final_progress_p50": 0.19434877987696111,
+      "failed_max_progress_p50": 0.04267797882825731,
+      "failed_min_dist_p50": 0.04296165413544806,
+      "mean_action_axis_contact_p50": 0.09320144655672663,
+      "mean_axis_offset_contact_p50": 0.010504875308708712
+    },
+    "move_slider_right": {
+      "sr": 0.84,
+      "categories": {
+        "contact_insufficient_motion": 2,
+        "never_contact": 2,
+        "success": 21
+      },
+      "final_progress_p50": 0.6587260507740036,
+      "failed_max_progress_p50": 0.23706188058401056,
+      "failed_min_dist_p50": 0.04496239817817268,
+      "mean_action_axis_contact_p50": -0.1656837585278194,
+      "mean_axis_offset_contact_p50": -0.012492373281176174
+    }
+  },
+  "v2_concat_e04": {
+    "move_slider_left": {
+      "sr": 0.28,
+      "categories": {
+        "contact_insufficient_motion": 18,
+        "success": 7
+      },
+      "final_progress_p50": -0.0003802083077635395,
+      "failed_max_progress_p50": 0.0,
+      "failed_min_dist_p50": 0.013823712606442282,
+      "mean_action_axis_contact_p50": 0.14574670062087566,
+      "mean_axis_offset_contact_p50": 0.01609028183945171
+    },
+    "move_slider_right": {
+      "sr": 1.0,
+      "categories": {
+        "success": 25
+      },
+      "final_progress_p50": 0.7499744551523478,
+      "failed_max_progress_p50": null,
+      "failed_min_dist_p50": null,
+      "mean_action_axis_contact_p50": -0.35250735919350656,
+      "mean_axis_offset_contact_p50": 0.004092688869989883
+    }
+  },
+  "v2_split_e08": {
+    "move_slider_left": {
+      "sr": 0.24,
+      "categories": {
+        "contact_insufficient_motion": 19,
+        "success": 6
+      },
+      "final_progress_p50": -6.664387362774941e-05,
+      "failed_max_progress_p50": 8.569692677700304e-06,
+      "failed_min_dist_p50": 0.010337926761079575,
+      "mean_action_axis_contact_p50": 0.11525871736295064,
+      "mean_axis_offset_contact_p50": 0.015706618544630194
+    },
+    "move_slider_right": {
+      "sr": 1.0,
+      "categories": {
+        "success": 25
+      },
+      "final_progress_p50": 0.6058928131806305,
+      "failed_max_progress_p50": null,
+      "failed_min_dist_p50": null,
+      "mean_action_axis_contact_p50": -0.16606014745254627,
+      "mean_axis_offset_contact_p50": -0.0038165030364323707
+    }
+  }
+}

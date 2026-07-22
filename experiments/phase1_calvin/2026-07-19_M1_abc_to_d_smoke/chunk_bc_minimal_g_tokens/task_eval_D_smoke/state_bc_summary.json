@@ -1,0 +1,41 @@
+{
+  "eval_mode": "balanced_first_task",
+  "g_scale": 1.0,
+  "query_g_control": "normal",
+  "language_control": "normal",
+  "action_execution_horizon": 1,
+  "temporal_ensemble": false,
+  "temporal_ensemble_decay": 0.25,
+  "state_only_observation": true,
+  "policy_sample_seed": null,
+  "fm_reseed_each_episode": true,
+  "avg_seq_len": 0.0,
+  "chain_sr": {
+    "1": 0.0
+  },
+  "raw_results": [
+    0,
+    0
+  ],
+  "task_info": {
+    "push_blue_block_left": {
+      "success": 0,
+      "total": 1,
+      "sr": 0.0
+    },
+    "push_red_block_right": {
+      "success": 0,
+      "total": 1,
+      "sr": 0.0
+    }
+  },
+  "eval_sequence_offset": 0,
+  "selected_tasks": [
+    "push_blue_block_left",
+    "push_red_block_right"
+  ],
+  "selected_sequence_indices": [
+    87,
+    79
+  ]
+}

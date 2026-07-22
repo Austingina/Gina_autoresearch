@@ -1,0 +1,319 @@
+# Notion Papers Local Enrichment Report
+
+This report is local-only. It does not modify cloud Notion.
+
+- Total rows: 102
+- arXiv API verified rows: 0
+- manual public-lookup rows: 18
+- deterministic arXiv-ID fill rows: 77
+- unresolved rows without URL/arXiv ID: 5
+- rows still missing one or more project fields: 84
+
+## Manual Public-Lookup Records
+
+- GRAIL: Generating Humanoid Loco-Manipulation from 3D Assets and Video Priors
+  - arXiv: 2606.05160 | https://arxiv.org/abs/2606.05160
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Goal2Pixel: Grounding Goals to Pixels for Vision-Language Navigation
+  - arXiv: 2606.01621 | https://arxiv.org/abs/2606.01621
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Hierarchical Planning with Latent World Models
+  - arXiv: 2604.03208 | https://arxiv.org/abs/2604.03208
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- World Action Models: The Next Frontier in Embodied AI
+  - arXiv: 2605.12090 | https://arxiv.org/abs/2605.12090
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- FALCON: Actively Decoupled Visuomotor Policies for Loco-Manipulation with Foundation-Model-Based Coordination
+  - arXiv: 2512.04381 | https://arxiv.org/abs/2512.04381
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- VIP: Vision Instructed Pre-training for Robotic Manipulation
+  - arXiv: 2410.07169 | https://arxiv.org/abs/2410.07169
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Sumo: Dynamic and Generalizable Whole-Body Loco-Manipulation
+  - arXiv: 2604.08508 | https://arxiv.org/abs/2604.08508
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- FlowBot++: Learning Generalized Articulated Objects Manipulation via Articulation Projection
+  - arXiv: 2306.12893 | https://arxiv.org/abs/2306.12893
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- SuperFlow: Training Flow Matching Models with RL on the Fly
+  - arXiv: 2512.17951 | https://arxiv.org/abs/2512.17951
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Learning World Models for Unconstrained Goal Navigation
+  - arXiv: 2411.02446 | https://arxiv.org/abs/2411.02446
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- COMPASS: Cooperative Multi-Agent Persistent Monitoring using Spatio-Temporal Attention Network
+  - arXiv: 2507.16306 | https://arxiv.org/abs/2507.16306
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- LongSpace: Exploring Long-Horizon Spatial Memory from Perception to Recall in Video
+  - arXiv: 2606.05677 | https://arxiv.org/abs/2606.05677
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Geometry-aware RL for Manipulation of Varying Shapes and Deformable Objects
+  - arXiv: 2502.07005 | https://arxiv.org/abs/2502.07005
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- 3DFlowAction: Learning Cross-Embodiment Manipulation from 3D Flow World Model
+  - arXiv: 2506.06199 | https://arxiv.org/abs/2506.06199
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- HiMe: Hierarchical Embodied Memory for Long-Horizon Vision-Language-Action Control
+  - arXiv: 2607.03449 | https://arxiv.org/abs/2607.03449
+  - notes: no matching arXiv record found; manual local enrichment from public paper lookup
+- Hierarchical Policy Learning via Spectral Decomposition
+  - arXiv: 2606.29570 | https://arxiv.org/abs/2606.29570
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- Bring My Cup! Personalizing Vision-Language-Action Models with Visual Attentive Prompting
+  - arXiv: 2512.20014 | https://arxiv.org/abs/2512.20014
+  - notes: filled deterministic arXiv URL/year from existing ID; API verification unavailable; manual local enrichment from public paper lookup
+- MaskWAM: Unifying Mask Prompting and Prediction for World-Action Models
+  - arXiv: 2606.13515 | https://arxiv.org/abs/2606.13515
+  - notes: no matching arXiv record found; manual local enrichment from public paper lookup
+
+## Deterministic ArXiv-ID Fill Records
+
+- VIP: Towards Universal Visual Reward and Representation via Value-Implicit Pre-Training
+  - arXiv: 2210.00030 | https://arxiv.org/abs/2210.00030
+- RoboDuet: Learning a Cooperative Policy for Whole-body Legged Loco-Manipulation
+  - arXiv: 2403.17367 | https://arxiv.org/abs/2403.17367
+- What Can RL Bring to VLA Generalization? An Empirical Study
+  - arXiv: 2505.19789 | https://arxiv.org/abs/2505.19789
+- DexVLA: VLM with Plug-In Diffusion Expert for Generalist Robot Policy
+  - arXiv: 2502.05855 | https://arxiv.org/abs/2502.05855
+- VLA-RL: Towards Masterful and General Robotic Manipulation
+  - arXiv: 2505.18719 | https://arxiv.org/abs/2505.18719
+- SayCan: Grounding Language in Robotic Affordances
+  - arXiv: 2204.01691 | https://arxiv.org/abs/2204.01691
+- Lossless Adaptation of Pretrained Vision Models for Robotic Manipulation
+  - arXiv: 2304.06600 | https://arxiv.org/abs/2304.06600
+- VIP: Towards Universal Visual Reward and Representation via Value-Implicit Pre-training
+  - arXiv: 2210.00030 | https://arxiv.org/abs/2210.00030
+- R3M: A Universal Visual Representation for Robot Manipulation
+  - arXiv: 2203.03306 | https://arxiv.org/abs/2203.03306
+- RT-Affordance: Affordances are Versatile Intermediate Representations for Robot Manipulation
+  - arXiv: 2411.02704 | https://arxiv.org/abs/2411.02704
+- AffordDP: Generalizable Diffusion Policy with Transferable Affordance
+  - arXiv: 2412.03142 | https://arxiv.org/abs/2412.03142
+- SteerVLA: Steering VLA Models in Long-Tail Driving Scenarios
+  - arXiv: 2602.08440 | https://arxiv.org/abs/2602.08440
+- Steerable Vision-Language-Action Policies
+  - arXiv: 2602.13193 | https://arxiv.org/abs/2602.13193
+- VLS: Steering Pretrained Robot Policies via Vision-Language Models
+  - arXiv: 2602.03973 | https://arxiv.org/abs/2602.03973
+- DSRL: Steering Your Diffusion Policy with Latent Space Reinforcement Learning
+  - arXiv: 2506.15799 | https://arxiv.org/abs/2506.15799
+- V-GPS: Steering Your Generalists via Value-Guided Policy Steering
+  - arXiv: 2410.13816 | https://arxiv.org/abs/2410.13816
+- AwareVLN: Reasoning with Self-awareness for Vision-Language Navigation
+  - arXiv: 2605.22816 | https://arxiv.org/abs/2605.22816
+- HTNav: A Hybrid Navigation Framework with Tiered Structure for Urban Aerial Vision-and-Language Navigation
+  - arXiv: 2604.08883 | https://arxiv.org/abs/2604.08883
+- SimWorld Studio: Automatic Environment Generation with Evolving Coding Agent for Embodied Agent Learning
+  - arXiv: 2605.09423 | https://arxiv.org/abs/2605.09423
+- A0: An Affordance-Aware Hierarchical Model for General Robotic Manipulation
+  - arXiv: 2504.12636 | https://arxiv.org/abs/2504.12636
+- TarGF: Learning Target Gradient Field to Rearrange Objects without Explicit Goal Specification
+  - arXiv: 2209.00853 | https://arxiv.org/abs/2209.00853
+- SocialGFs: Learning Social Gradient Fields for Adaptive Multi-Agent Systems
+  - arXiv: 2405.01839 | https://arxiv.org/abs/2405.01839
+- Collision-Free Humanoid Traversal in Cluttered Indoor Scenes
+  - arXiv: 2601.16035 | https://arxiv.org/abs/2601.16035
+- Realtime-VLA FLASH: Speculative Inference for Diffusion-based VLAs
+  - arXiv: 2605.13778 | https://arxiv.org/abs/2605.13778
+- Tool-Aligned VLA: Towards Long-horizon Embodied Agents
+  - arXiv: 2605.13119 | https://arxiv.org/abs/2605.13119
+- HCSG: Human-Centric Semantic-Geometric Reasoning for VLN
+  - arXiv: 2605.13321 | https://arxiv.org/abs/2605.13321
+- StereoNav: What Limits Vision-and-Language Navigation?
+  - arXiv: 2605.13328 | https://arxiv.org/abs/2605.13328
+- CoopEval: Benchmarking Cooperation-Sustaining Mechanisms and LLM Agents in Social Dilemmas
+  - arXiv: 2604.15267 | https://arxiv.org/abs/2604.15267
+- Proactive Multi-Camera Collaboration for 3D Human Pose Estimation
+  - arXiv: 2303.03767 | https://arxiv.org/abs/2303.03767
+- ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning
+  - arXiv: 2602.11236 | https://arxiv.org/abs/2602.11236
+- ABot-N0: Technical Report on the VLA Foundation Model for Versatile Embodied Navigation
+  - arXiv: 2602.11598 | https://arxiv.org/abs/2602.11598
+- ABot-Claw: A Foundation for Persistent, Cooperative, and Self-Evolving Robotic Agents
+  - arXiv: 2303.03767 | https://arxiv.org/abs/2303.03767
+- ABot-PhysWorld: Interactive World Foundation Model for Robotic Manipulation with Physics Alignment
+  - arXiv: 2603.23376 | https://arxiv.org/abs/2603.23376
+- RoboBrain 2.5: Depth in Sight, Time in Mind
+  - arXiv: 2601.14352 | https://arxiv.org/abs/2601.14352
+- RoboBrain: Large-Scale Knowledge Engine for Robots
+  - arXiv: 2502.21257 | https://arxiv.org/abs/2502.21257
+- RoboBrain 2.0 Technical Report
+  - arXiv: 2507.02029 | https://arxiv.org/abs/2507.02029
+- ELITE: Experiential Learning and Intent-Aware Transfer
+for Self-improving Embodied Agents
+
+  - arXiv: 2603.24018 | https://arxiv.org/abs/2603.24018
+- TrackVLA++: Unleashing Reasoning and Memory Capabilities in VLA Models for Embodied Visual Tracking
+  - arXiv: 2510.07134 | https://arxiv.org/abs/2510.07134
+- VISTA: Generative Visual Imagination for Vision-and-Language Navigation
+  - arXiv: 2505.07868 | https://arxiv.org/abs/2505.07868
+- NavDP: Learning Sim-to-Real Navigation Diffusion Policy with Privileged Information Guidance
+  - arXiv: 2505.08712 | https://arxiv.org/abs/2505.08712
+- Uni-NaVid: A Video-based Vision-Language-Action Model for Unifying Embodied Navigation Tasks
+  - arXiv: 2412.06224 | https://arxiv.org/abs/2412.06224
+- ImagiNav: Scalable Embodied Navigation via Generative Visual Prediction
+  - arXiv: 2603.13833 | https://arxiv.org/abs/2603.13833
+- OmniVLA: An Omni-Modal Vision-Language-Action Model for Robot Navigation
+  - arXiv: 2509.19480 | https://arxiv.org/abs/2509.19480
+- Embodied Navigation Foundation Model (NavFoM)
+  - arXiv: 2509.12129 | https://arxiv.org/abs/2509.12129
+- NaVILA: Legged Robot Vision-Language-Action Model for Navigation
+  - arXiv: 2412.04453 | https://arxiv.org/abs/2412.04453
+- Open-World Reinforcement Learning over Long Short-Term Imagination
+  - arXiv: 2410.03618 | https://arxiv.org/abs/2410.03618
+- Ground Slow, Move Fast: A Dual-System Foundation Model for Generalizable Vision-and-Language Navigation
+  - arXiv: 2512.08186 | https://arxiv.org/abs/2512.08186
+- Embodied Navigation Foundation Model
+  - arXiv: 2509.12129 | https://arxiv.org/abs/2509.12129
+- Emergence of Social Norms in Generative Agent Societies
+  - arXiv: 2403.08251 | https://arxiv.org/abs/2403.08251
+- Embodied AI Agents: Modeling the World
+  - arXiv: 2506.22355 | https://arxiv.org/abs/2506.22355
+- Embodied AI: From LLMs to World Models
+  - arXiv: 2509.20021 | https://arxiv.org/abs/2509.20021
+- Hierarchical Instruction-aware Embodied Visual Tracking
+  - arXiv: 2603.24018 | https://arxiv.org/abs/2603.24018
+- SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning
+  - arXiv: 2602.08234 | https://arxiv.org/abs/2602.08234
+- Multi-Agent Systems Shape Social Norms for Prosocial Behavior Change
+  - arXiv: 2602.07433 | https://arxiv.org/abs/2602.07433
+- A Comprehensive Survey on World Models for Embodied AI
+  - arXiv: 2510.16732 | https://arxiv.org/abs/2510.16732
+- KLong: Training LLM Agent for Extremely Long-horizon Tasks
+  - arXiv: 2602.17547 | https://arxiv.org/abs/2602.17547
+- Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers
+  - arXiv: 2603.07670 | https://arxiv.org/abs/2603.07670
+- Multi-agent Embodied AI: Advances and Future Directions
+  - arXiv: 2505.05108 | https://arxiv.org/abs/2505.05108
+- DeliveryBench: Can Agents Earn Profit in Real World?
+  - arXiv: 2602.17547 | https://arxiv.org/abs/2602.17547
+- CROWD: Data Discovery Guided Open-World Object Detection
+  - arXiv: 2510.00303 | https://arxiv.org/abs/2510.00303
+- SCOPE: Semantic Cognition over Potential-Based Exploration for Embodied Visual Navigation
+  - arXiv: 2511.08935 | https://arxiv.org/abs/2511.08935
+- NS-Mem: Advancing Multimodal Agent Reasoning with Long-Term Neuro-Symbolic Memory
+  - arXiv: 2603.15280 | https://arxiv.org/abs/2603.15280
+- VLFM: Vision-Language Frontier Maps for Zero-Shot Semantic Navigation
+  - arXiv: 2312.03275 | https://arxiv.org/abs/2312.03275
+- ReasonNavi: Human-Inspired Global Map Reasoning for Zero-Shot Embodied Navigation
+  - arXiv: 2602.15864 | https://arxiv.org/abs/2602.15864
+- VL-Nav: A Neuro-Symbolic Approach for Reasoning-based Vision-Language Navigation
+  - arXiv: 2502.00931 | https://arxiv.org/abs/2502.00931
+- VLM Can Be a Good Assistant: Enhancing Embodied Visual Tracking with Self-Improving VLMs
+  - arXiv: 2505.20718 | https://arxiv.org/abs/2505.20718
+- Hierarchical Instruction-aware Embodied Visual Tracking
+  - arXiv: 2505.20710 | https://arxiv.org/abs/2505.20710
+- Open-World Drone Active Tracking with Goal-Centered Rewards
+  - arXiv: 2412.00744 | https://arxiv.org/abs/2412.00744
+- UAV-ON: A Benchmark for Open-World Object Goal Navigation for UAVs
+  - arXiv: 2508.00288 | https://arxiv.org/abs/2508.00288
+- BEHAVIOR-1K: A Human-Centered, Embodied AI Benchmark with 1,000 Everyday Activities
+  - arXiv: 2403.09227 | https://arxiv.org/abs/2403.09227
+- EmbodiedBench: Comprehensive Benchmarking Multi-modal Large Language Models for Embodied Agent
+  - arXiv: 2502.09560 | https://arxiv.org/abs/2502.09560
+- OpenVLA: An Open-Source Vision-Language-Action Model
+  - arXiv: 2406.09246 | https://arxiv.org/abs/2406.09246
+- Embrace-3K: Embodied Reasoning and Action in Complex Environments
+  - arXiv: 2507.10548 | https://arxiv.org/abs/2507.10548
+- Empowering Embodied Visual Tracking with Visual Foundation Models and Offline RL
+  - arXiv: 2409.09798 | https://arxiv.org/abs/2409.09798
+- UnrealZOO: Enriching Photo-realistic Virtual Worlds for Embodied AI
+  - arXiv: 2311.05597 | https://arxiv.org/abs/2311.05597
+- TrackVLA++: Unleashing Reasoning and Memory Capabilities in VLA Models for Embodied Visual Tracking
+  - arXiv: 2510.07134 | https://arxiv.org/abs/2510.07134
+- TrackVLA: Embodied Visual Tracking in the Wild
+  - arXiv: 2505.23189 | https://arxiv.org/abs/2505.23189
+
+## Unresolved Records
+
+- UniMapping: Unified SLAM Framework for Map-Centric Embodied Perception: no matching arXiv record found
+- (untitled): no matching arXiv record found
+- (untitled): no matching arXiv record found
+- VL-RL: A Hierarchical Vision-Language and RL Framework for Robotic TAMP: no matching arXiv record found
+- ActionX: Pre-training Action Experts with Reinforcement Learning for VLA Models: no matching arXiv record found
+
+## Still Missing Fields
+
+- VIP: Towards Universal Visual Reward and Representation via Value-Implicit Pre-Training: Authors
+- RoboDuet: Learning a Cooperative Policy for Whole-body Legged Loco-Manipulation: Authors
+- UniMapping: Unified SLAM Framework for Map-Centric Embodied Perception: URL, arXiv ID, Authors
+- (untitled): Name, URL, arXiv ID, Authors, Year, Summary, Key Idea, Limitation, Relevance to My Work
+- (untitled): Name, URL, arXiv ID, Authors, Year, Summary, Key Idea, Limitation, Relevance to My Work
+- What Can RL Bring to VLA Generalization? An Empirical Study: Authors, Limitation, Relevance to My Work
+- DexVLA: VLM with Plug-In Diffusion Expert for Generalist Robot Policy: Authors, Limitation, Relevance to My Work
+- VLA-RL: Towards Masterful and General Robotic Manipulation: Authors, Limitation, Relevance to My Work
+- VL-RL: A Hierarchical Vision-Language and RL Framework for Robotic TAMP: arXiv ID, Authors, Limitation, Relevance to My Work
+- SayCan: Grounding Language in Robotic Affordances: Authors, Limitation, Relevance to My Work
+- Lossless Adaptation of Pretrained Vision Models for Robotic Manipulation: Authors, Limitation, Relevance to My Work
+- VIP: Towards Universal Visual Reward and Representation via Value-Implicit Pre-training: Authors, Limitation, Relevance to My Work
+- R3M: A Universal Visual Representation for Robot Manipulation: Authors, Limitation, Relevance to My Work
+- ActionX: Pre-training Action Experts with Reinforcement Learning for VLA Models: URL, arXiv ID, Authors, Limitation, Relevance to My Work
+- RT-Affordance: Affordances are Versatile Intermediate Representations for Robot Manipulation: Authors, Limitation, Relevance to My Work
+- AffordDP: Generalizable Diffusion Policy with Transferable Affordance: Authors, Limitation, Relevance to My Work
+- SteerVLA: Steering VLA Models in Long-Tail Driving Scenarios: Authors, Limitation, Relevance to My Work
+- MI-VLA: Mechanistic Interpretability for Steering Vision-Language-Action Models: Authors, Limitation, Relevance to My Work
+- Steerable Vision-Language-Action Policies: Authors, Limitation, Relevance to My Work
+- VLS: Steering Pretrained Robot Policies via Vision-Language Models: Authors, Limitation, Relevance to My Work
+- DSRL: Steering Your Diffusion Policy with Latent Space Reinforcement Learning: Authors, Limitation, Relevance to My Work
+- V-GPS: Steering Your Generalists via Value-Guided Policy Steering: Authors, Limitation, Relevance to My Work
+- AwareVLN: Reasoning with Self-awareness for Vision-Language Navigation: Authors, Limitation, Relevance to My Work
+- HTNav: A Hybrid Navigation Framework with Tiered Structure for Urban Aerial Vision-and-Language Navigation: Authors, Limitation, Relevance to My Work
+- SimWorld Studio: Automatic Environment Generation with Evolving Coding Agent for Embodied Agent Learning: Authors, Limitation, Relevance to My Work
+- A0: An Affordance-Aware Hierarchical Model for General Robotic Manipulation: Authors, Limitation, Relevance to My Work
+- TarGF: Learning Target Gradient Field to Rearrange Objects without Explicit Goal Specification: Authors, Limitation, Relevance to My Work
+- SocialGFs: Learning Social Gradient Fields for Adaptive Multi-Agent Systems: Authors, Limitation, Relevance to My Work
+- Collision-Free Humanoid Traversal in Cluttered Indoor Scenes: Authors, Limitation, Relevance to My Work
+- Realtime-VLA FLASH: Speculative Inference for Diffusion-based VLAs: Authors, Limitation
+- Tool-Aligned VLA: Towards Long-horizon Embodied Agents: Authors, Limitation
+- HCSG: Human-Centric Semantic-Geometric Reasoning for VLN: Authors, Limitation
+- StereoNav: What Limits Vision-and-Language Navigation?: Authors, Limitation
+- CoopEval: Benchmarking Cooperation-Sustaining Mechanisms and LLM Agents in Social Dilemmas: Authors, Limitation
+- Proactive Multi-Camera Collaboration for 3D Human Pose Estimation: Authors, Limitation
+- ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning: Authors, Limitation, Relevance to My Work
+- ABot-N0: Technical Report on the VLA Foundation Model for Versatile Embodied Navigation: Authors, Limitation, Relevance to My Work
+- ABot-Claw: A Foundation for Persistent, Cooperative, and Self-Evolving Robotic Agents: Authors, Limitation, Relevance to My Work
+- ABot-PhysWorld: Interactive World Foundation Model for Robotic Manipulation with Physics Alignment: Authors, Limitation, Relevance to My Work
+- RoboBrain 2.5: Depth in Sight, Time in Mind: Authors, Limitation, Relevance to My Work
+- RoboBrain: Large-Scale Knowledge Engine for Robots: Authors, Limitation, Relevance to My Work
+- RoboBrain 2.0 Technical Report: Authors, Limitation, Relevance to My Work
+- ELITE: Experiential Learning and Intent-Aware Transfer
+for Self-improving Embodied Agents
+: Authors, Limitation, Relevance to My Work
+- TrackVLA++: Unleashing Reasoning and Memory Capabilities in VLA Models for Embodied Visual Tracking: Authors, Limitation, Relevance to My Work
+- VISTA: Generative Visual Imagination for Vision-and-Language Navigation: Authors, Limitation, Relevance to My Work
+- NavDP: Learning Sim-to-Real Navigation Diffusion Policy with Privileged Information Guidance: Authors, Limitation, Relevance to My Work
+- Uni-NaVid: A Video-based Vision-Language-Action Model for Unifying Embodied Navigation Tasks: Authors, Limitation, Relevance to My Work
+- ImagiNav: Scalable Embodied Navigation via Generative Visual Prediction: Authors, Limitation, Relevance to My Work
+- Navigation World Models: Authors, Limitation, Relevance to My Work
+- OmniVLA: An Omni-Modal Vision-Language-Action Model for Robot Navigation: Authors, Limitation, Relevance to My Work
+- Embodied Navigation Foundation Model (NavFoM): Authors, Limitation, Relevance to My Work
+- NaVILA: Legged Robot Vision-Language-Action Model for Navigation: Authors, Limitation, Relevance to My Work
+- Open-World Reinforcement Learning over Long Short-Term Imagination: Authors, Limitation, Relevance to My Work
+- Ground Slow, Move Fast: A Dual-System Foundation Model for Generalizable Vision-and-Language Navigation: Authors, Limitation, Relevance to My Work
+- Embodied Navigation Foundation Model: Authors, Limitation, Relevance to My Work
+- Emergence of Social Norms in Generative Agent Societies: Authors, Limitation, Relevance to My Work
+- Embodied AI Agents: Modeling the World: Authors, Limitation, Relevance to My Work
+- Embodied AI: From LLMs to World Models: Authors, Limitation, Relevance to My Work
+- Hierarchical Instruction-aware Embodied Visual Tracking: Authors, Limitation, Relevance to My Work
+- SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning: Authors, Limitation, Relevance to My Work
+- Multi-Agent Systems Shape Social Norms for Prosocial Behavior Change: Authors, Limitation, Relevance to My Work
+- A Comprehensive Survey on World Models for Embodied AI: Authors, Limitation, Relevance to My Work
+- KLong: Training LLM Agent for Extremely Long-horizon Tasks: Authors, Limitation, Relevance to My Work
+- Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers: Authors, Limitation, Relevance to My Work
+- Multi-agent Embodied AI: Advances and Future Directions: Authors, Limitation, Relevance to My Work
+- DeliveryBench: Can Agents Earn Profit in Real World?: Authors, Limitation, Relevance to My Work
+- CROWD: Data Discovery Guided Open-World Object Detection: Authors, Limitation
+- SCOPE: Semantic Cognition over Potential-Based Exploration for Embodied Visual Navigation: Authors, Limitation
+- NS-Mem: Advancing Multimodal Agent Reasoning with Long-Term Neuro-Symbolic Memory: Authors, Limitation
+- VLFM: Vision-Language Frontier Maps for Zero-Shot Semantic Navigation: Authors, Limitation
+- ReasonNavi: Human-Inspired Global Map Reasoning for Zero-Shot Embodied Navigation: Authors, Limitation
+- VL-Nav: A Neuro-Symbolic Approach for Reasoning-based Vision-Language Navigation: Authors, Limitation
+- VLM Can Be a Good Assistant: Enhancing Embodied Visual Tracking with Self-Improving VLMs: Authors, Limitation
+- Hierarchical Instruction-aware Embodied Visual Tracking: Authors, Limitation
+- Open-World Drone Active Tracking with Goal-Centered Rewards: Authors, Limitation
+- UAV-ON: A Benchmark for Open-World Object Goal Navigation for UAVs: Authors, Limitation
+- BEHAVIOR-1K: A Human-Centered, Embodied AI Benchmark with 1,000 Everyday Activities: Authors, Limitation
+- EmbodiedBench: Comprehensive Benchmarking Multi-modal Large Language Models for Embodied Agent: Authors, Limitation
+- OpenVLA: An Open-Source Vision-Language-Action Model: Authors, Limitation
+- Embrace-3K: Embodied Reasoning and Action in Complex Environments: Authors, Limitation

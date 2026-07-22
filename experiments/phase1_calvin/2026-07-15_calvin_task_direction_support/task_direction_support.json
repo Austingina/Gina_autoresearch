@@ -1,0 +1,1194 @@
+{
+  "tasks": {
+    "close_drawer": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 150,
+        "median_displacement": 0.18118110299110413,
+        "median_unit_direction": [
+          0.21568331122398376,
+          -0.09844798594713211,
+          -0.9714878797531128
+        ],
+        "positive_y_fraction": 0.34,
+        "negative_y_fraction": 0.34,
+        "positive_z_fraction": 0.02,
+        "negative_z_fraction": 0.9666666666666667
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 124,
+        "median_displacement": 0.16913223266601562,
+        "median_unit_direction": [
+          9.882386802928522e-05,
+          1.0,
+          -5.003640126233222e-06
+        ],
+        "positive_y_fraction": 1.0,
+        "negative_y_fraction": 0.0,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.0
+      },
+      "active_block_counts": [
+        52,
+        36,
+        63
+      ]
+    },
+    "lift_blue_block_drawer": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 149,
+        "median_displacement": 0.19528387486934662,
+        "median_unit_direction": [
+          0.13149404525756836,
+          0.9466959834098816,
+          0.29406797885894775
+        ],
+        "positive_y_fraction": 0.5100671140939598,
+        "negative_y_fraction": 0.44966442953020136,
+        "positive_z_fraction": 0.436241610738255,
+        "negative_z_fraction": 0.2214765100671141
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.13977719843387604,
+        "median_unit_direction": [
+          -0.05828911066055298,
+          0.31209006905555725,
+          0.948262631893158
+        ],
+        "positive_y_fraction": 0.6133333333333333,
+        "negative_y_fraction": 0.05333333333333334,
+        "positive_z_fraction": 0.98,
+        "negative_z_fraction": 0.02
+      },
+      "active_block_counts": [
+        1,
+        147,
+        2
+      ]
+    },
+    "lift_blue_block_slider": {
+      "eef": {
+        "segments": 154,
+        "moving_segments": 154,
+        "median_displacement": 0.19691498577594757,
+        "median_unit_direction": [
+          -0.7317119240760803,
+          0.6413182616233826,
+          -0.23088659346103668
+        ],
+        "positive_y_fraction": 0.6103896103896104,
+        "negative_y_fraction": 0.07142857142857142,
+        "positive_z_fraction": 0.13636363636363635,
+        "negative_z_fraction": 0.2792207792207792
+      },
+      "active_block": {
+        "segments": 154,
+        "moving_segments": 154,
+        "median_displacement": 0.1083756759762764,
+        "median_unit_direction": [
+          0.05782672017812729,
+          -0.8491382002830505,
+          0.5249956250190735
+        ],
+        "positive_y_fraction": 0.006493506493506494,
+        "negative_y_fraction": 0.974025974025974,
+        "positive_z_fraction": 0.8766233766233766,
+        "negative_z_fraction": 0.025974025974025976
+      },
+      "active_block_counts": [
+        3,
+        150,
+        1
+      ]
+    },
+    "lift_blue_block_table": {
+      "eef": {
+        "segments": 152,
+        "moving_segments": 150,
+        "median_displacement": 0.14179889857769012,
+        "median_unit_direction": [
+          -0.9975369572639465,
+          -0.005622820928692818,
+          0.06991708278656006
+        ],
+        "positive_y_fraction": 0.31333333333333335,
+        "negative_y_fraction": 0.2866666666666667,
+        "positive_z_fraction": 0.26,
+        "negative_z_fraction": 0.14
+      },
+      "active_block": {
+        "segments": 152,
+        "moving_segments": 152,
+        "median_displacement": 0.1419549286365509,
+        "median_unit_direction": [
+          0.2868083119392395,
+          0.06532345712184906,
+          0.955758273601532
+        ],
+        "positive_y_fraction": 0.19078947368421054,
+        "negative_y_fraction": 0.07894736842105263,
+        "positive_z_fraction": 0.9473684210526315,
+        "negative_z_fraction": 0.013157894736842105
+      },
+      "active_block_counts": [
+        0,
+        149,
+        3
+      ]
+    },
+    "lift_pink_block_drawer": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 149,
+        "median_displacement": 0.17320801317691803,
+        "median_unit_direction": [
+          0.24387511610984802,
+          -0.09828981012105942,
+          0.9648129940032959
+        ],
+        "positive_y_fraction": 0.44966442953020136,
+        "negative_y_fraction": 0.436241610738255,
+        "positive_z_fraction": 0.4429530201342282,
+        "negative_z_fraction": 0.2684563758389262
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.1447087526321411,
+        "median_unit_direction": [
+          -0.11797536909580231,
+          0.25156059861183167,
+          0.9606242775917053
+        ],
+        "positive_y_fraction": 0.49333333333333335,
+        "negative_y_fraction": 0.1,
+        "positive_z_fraction": 0.9466666666666667,
+        "negative_z_fraction": 0.02
+      },
+      "active_block_counts": [
+        2,
+        6,
+        142
+      ]
+    },
+    "lift_pink_block_slider": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.20031480491161346,
+        "median_unit_direction": [
+          -0.7377227544784546,
+          0.6697913408279419,
+          -0.08452636003494263
+        ],
+        "positive_y_fraction": 0.7549668874172185,
+        "negative_y_fraction": 0.026490066225165563,
+        "positive_z_fraction": 0.25165562913907286,
+        "negative_z_fraction": 0.23178807947019867
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.11269287765026093,
+        "median_unit_direction": [
+          -0.018281806260347366,
+          -0.8482940196990967,
+          0.5292098522186279
+        ],
+        "positive_y_fraction": 0.039735099337748346,
+        "negative_y_fraction": 0.9271523178807947,
+        "positive_z_fraction": 0.8807947019867549,
+        "negative_z_fraction": 0.026490066225165563
+      },
+      "active_block_counts": [
+        1,
+        7,
+        143
+      ]
+    },
+    "lift_pink_block_table": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 144,
+        "median_displacement": 0.1609382927417755,
+        "median_unit_direction": [
+          -0.9710827469825745,
+          0.23181667923927307,
+          0.05708936229348183
+        ],
+        "positive_y_fraction": 0.4097222222222222,
+        "negative_y_fraction": 0.20833333333333334,
+        "positive_z_fraction": 0.2013888888888889,
+        "negative_z_fraction": 0.10416666666666667
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.11864577978849411,
+        "median_unit_direction": [
+          0.30225348472595215,
+          -0.021048223599791527,
+          0.9529951810836792
+        ],
+        "positive_y_fraction": 0.2251655629139073,
+        "negative_y_fraction": 0.1390728476821192,
+        "positive_z_fraction": 0.9735099337748344,
+        "negative_z_fraction": 0.013245033112582781
+      },
+      "active_block_counts": [
+        1,
+        1,
+        149
+      ]
+    },
+    "lift_red_block_drawer": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 149,
+        "median_displacement": 0.17173194885253906,
+        "median_unit_direction": [
+          -0.13228285312652588,
+          -0.9593766927719116,
+          0.24919380247592926
+        ],
+        "positive_y_fraction": 0.3959731543624161,
+        "negative_y_fraction": 0.4966442953020134,
+        "positive_z_fraction": 0.3691275167785235,
+        "negative_z_fraction": 0.26174496644295303
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.15455418825149536,
+        "median_unit_direction": [
+          -0.09607228636741638,
+          0.3573675751686096,
+          0.9290094375610352
+        ],
+        "positive_y_fraction": 0.5960264900662252,
+        "negative_y_fraction": 0.06622516556291391,
+        "positive_z_fraction": 0.9867549668874173,
+        "negative_z_fraction": 0.013245033112582781
+      },
+      "active_block_counts": [
+        149,
+        2,
+        0
+      ]
+    },
+    "lift_red_block_slider": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 147,
+        "median_displacement": 0.20192481577396393,
+        "median_unit_direction": [
+          -0.7277402281761169,
+          0.6688910126686096,
+          -0.15158842504024506
+        ],
+        "positive_y_fraction": 0.7142857142857143,
+        "negative_y_fraction": 0.06802721088435375,
+        "positive_z_fraction": 0.1836734693877551,
+        "negative_z_fraction": 0.272108843537415
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.11671647429466248,
+        "median_unit_direction": [
+          0.007815184071660042,
+          -0.897959291934967,
+          0.4400089681148529
+        ],
+        "positive_y_fraction": 0.026490066225165563,
+        "negative_y_fraction": 0.9536423841059603,
+        "positive_z_fraction": 0.8741721854304636,
+        "negative_z_fraction": 0.019867549668874173
+      },
+      "active_block_counts": [
+        147,
+        3,
+        1
+      ]
+    },
+    "lift_red_block_table": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 142,
+        "median_displacement": 0.13554725050926208,
+        "median_unit_direction": [
+          -0.9969479441642761,
+          0.03657021000981331,
+          0.0689738318324089
+        ],
+        "positive_y_fraction": 0.31690140845070425,
+        "negative_y_fraction": 0.352112676056338,
+        "positive_z_fraction": 0.2323943661971831,
+        "negative_z_fraction": 0.14084507042253522
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.144027441740036,
+        "median_unit_direction": [
+          0.4138008952140808,
+          0.02979189157485962,
+          0.9098798036575317
+        ],
+        "positive_y_fraction": 0.14,
+        "negative_y_fraction": 0.06,
+        "positive_z_fraction": 0.94,
+        "negative_z_fraction": 0.013333333333333334
+      },
+      "active_block_counts": [
+        146,
+        1,
+        3
+      ]
+    },
+    "move_slider_left": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.25241315364837646,
+        "median_unit_direction": [
+          -0.8985918164253235,
+          0.43838801980018616,
+          0.018671391531825066
+        ],
+        "positive_y_fraction": 0.7218543046357616,
+        "negative_y_fraction": 0.039735099337748346,
+        "positive_z_fraction": 0.12582781456953643,
+        "negative_z_fraction": 0.12582781456953643
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 13,
+        "median_displacement": 0.04556920379400253,
+        "median_unit_direction": [
+          0.6638057231903076,
+          0.12977801263332367,
+          -0.7365593910217285
+        ],
+        "positive_y_fraction": 0.15384615384615385,
+        "negative_y_fraction": 0.07692307692307693,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.7692307692307693
+      },
+      "active_block_counts": [
+        60,
+        54,
+        37
+      ]
+    },
+    "move_slider_right": {
+      "eef": {
+        "segments": 152,
+        "moving_segments": 151,
+        "median_displacement": 0.15000465512275696,
+        "median_unit_direction": [
+          0.7013351321220398,
+          0.6954094171524048,
+          -0.1566358059644699
+        ],
+        "positive_y_fraction": 0.9072847682119205,
+        "negative_y_fraction": 0.013245033112582781,
+        "positive_z_fraction": 0.09933774834437085,
+        "negative_z_fraction": 0.3708609271523179
+      },
+      "active_block": {
+        "segments": 152,
+        "moving_segments": 8,
+        "median_displacement": 0.0640258938074112,
+        "median_unit_direction": [
+          -0.720090925693512,
+          -0.059204719960689545,
+          -0.6913493275642395
+        ],
+        "positive_y_fraction": 0.0,
+        "negative_y_fraction": 0.125,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.75
+      },
+      "active_block_counts": [
+        50,
+        72,
+        30
+      ]
+    },
+    "open_drawer": {
+      "eef": {
+        "segments": 152,
+        "moving_segments": 152,
+        "median_displacement": 0.30869609117507935,
+        "median_unit_direction": [
+          0.3250280022621155,
+          -0.7706819176673889,
+          -0.5480931997299194
+        ],
+        "positive_y_fraction": 0.0,
+        "negative_y_fraction": 1.0,
+        "positive_z_fraction": 0.006578947368421052,
+        "negative_z_fraction": 0.9473684210526315
+      },
+      "active_block": {
+        "segments": 152,
+        "moving_segments": 121,
+        "median_displacement": 0.1683352142572403,
+        "median_unit_direction": [
+          -2.0691992176580243e-05,
+          -1.0,
+          -3.3680714750516927e-06
+        ],
+        "positive_y_fraction": 0.0,
+        "negative_y_fraction": 1.0,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.0
+      },
+      "active_block_counts": [
+        54,
+        41,
+        57
+      ]
+    },
+    "place_in_drawer": {
+      "eef": {
+        "segments": 152,
+        "moving_segments": 151,
+        "median_displacement": 0.17512184381484985,
+        "median_unit_direction": [
+          0.3108721673488617,
+          -0.9251933693885803,
+          -0.21765992045402527
+        ],
+        "positive_y_fraction": 0.026490066225165563,
+        "negative_y_fraction": 0.9536423841059603,
+        "positive_z_fraction": 0.11258278145695365,
+        "negative_z_fraction": 0.423841059602649
+      },
+      "active_block": {
+        "segments": 152,
+        "moving_segments": 151,
+        "median_displacement": 0.22139620780944824,
+        "median_unit_direction": [
+          0.29820194840431213,
+          -0.7616642117500305,
+          -0.5752766132354736
+        ],
+        "positive_y_fraction": 0.006622516556291391,
+        "negative_y_fraction": 0.9801324503311258,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.9735099337748344
+      },
+      "active_block_counts": [
+        55,
+        67,
+        30
+      ]
+    },
+    "place_in_slider": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 149,
+        "median_displacement": 0.18191395699977875,
+        "median_unit_direction": [
+          -0.21878518164157867,
+          0.9637054204940796,
+          0.15298672020435333
+        ],
+        "positive_y_fraction": 0.9261744966442953,
+        "negative_y_fraction": 0.006711409395973154,
+        "positive_z_fraction": 0.3221476510067114,
+        "negative_z_fraction": 0.06711409395973154
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.2336331456899643,
+        "median_unit_direction": [
+          -0.0967133641242981,
+          0.9804240465164185,
+          -0.17150840163230896
+        ],
+        "positive_y_fraction": 1.0,
+        "negative_y_fraction": 0.0,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.32450331125827814
+      },
+      "active_block_counts": [
+        60,
+        52,
+        39
+      ]
+    },
+    "push_blue_block_left": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 147,
+        "median_displacement": 0.1691921353340149,
+        "median_unit_direction": [
+          -0.9488526582717896,
+          0.22744230926036835,
+          -0.2189718782901764
+        ],
+        "positive_y_fraction": 0.38095238095238093,
+        "negative_y_fraction": 0.10204081632653061,
+        "positive_z_fraction": 0.1836734693877551,
+        "negative_z_fraction": 0.41496598639455784
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.18247273564338684,
+        "median_unit_direction": [
+          -0.9985643625259399,
+          0.0535658597946167,
+          -1.3265450888866326e-06
+        ],
+        "positive_y_fraction": 0.3466666666666667,
+        "negative_y_fraction": 0.05333333333333334,
+        "positive_z_fraction": 0.12,
+        "negative_z_fraction": 0.02666666666666667
+      },
+      "active_block_counts": [
+        0,
+        150,
+        0
+      ]
+    },
+    "push_blue_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 149,
+        "median_displacement": 0.18086624145507812,
+        "median_unit_direction": [
+          0.9907589554786682,
+          0.045398905873298645,
+          -0.12781114876270294
+        ],
+        "positive_y_fraction": 0.22818791946308725,
+        "negative_y_fraction": 0.22818791946308725,
+        "positive_z_fraction": 0.14093959731543623,
+        "negative_z_fraction": 0.3825503355704698
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.19742335379123688,
+        "median_unit_direction": [
+          0.9999828338623047,
+          0.004975771531462669,
+          -0.003106719581410289
+        ],
+        "positive_y_fraction": 0.14666666666666667,
+        "negative_y_fraction": 0.24,
+        "positive_z_fraction": 0.09333333333333334,
+        "negative_z_fraction": 0.05333333333333334
+      },
+      "active_block_counts": [
+        0,
+        150,
+        0
+      ]
+    },
+    "push_into_drawer": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.13460096716880798,
+        "median_unit_direction": [
+          0.2060873806476593,
+          -0.9287303686141968,
+          -0.3082009255886078
+        ],
+        "positive_y_fraction": 0.1,
+        "negative_y_fraction": 0.8133333333333334,
+        "positive_z_fraction": 0.13333333333333333,
+        "negative_z_fraction": 0.49333333333333335
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.18280503153800964,
+        "median_unit_direction": [
+          0.07254304736852646,
+          -0.825300931930542,
+          -0.5600141286849976
+        ],
+        "positive_y_fraction": 0.0,
+        "negative_y_fraction": 1.0,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 1.0
+      },
+      "active_block_counts": [
+        51,
+        40,
+        59
+      ]
+    },
+    "push_pink_block_left": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 147,
+        "median_displacement": 0.13300371170043945,
+        "median_unit_direction": [
+          -0.9458048343658447,
+          0.1410042643547058,
+          -0.29252535104751587
+        ],
+        "positive_y_fraction": 0.3129251700680272,
+        "negative_y_fraction": 0.04081632653061224,
+        "positive_z_fraction": 0.08163265306122448,
+        "negative_z_fraction": 0.4965986394557823
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.13936881721019745,
+        "median_unit_direction": [
+          -0.9962435960769653,
+          0.0865950807929039,
+          -7.966194243635982e-05
+        ],
+        "positive_y_fraction": 0.2,
+        "negative_y_fraction": 0.006666666666666667,
+        "positive_z_fraction": 0.013333333333333334,
+        "negative_z_fraction": 0.0
+      },
+      "active_block_counts": [
+        0,
+        0,
+        150
+      ]
+    },
+    "push_pink_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 149,
+        "median_displacement": 0.149403378367424,
+        "median_unit_direction": [
+          0.9697037935256958,
+          0.058108851313591,
+          -0.23727171123027802
+        ],
+        "positive_y_fraction": 0.2080536912751678,
+        "negative_y_fraction": 0.10067114093959731,
+        "positive_z_fraction": 0.1342281879194631,
+        "negative_z_fraction": 0.4697986577181208
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.13286826014518738,
+        "median_unit_direction": [
+          0.9999622702598572,
+          0.008637158200144768,
+          -0.0008648011717014015
+        ],
+        "positive_y_fraction": 0.04,
+        "negative_y_fraction": 0.08,
+        "positive_z_fraction": 0.02,
+        "negative_z_fraction": 0.02
+      },
+      "active_block_counts": [
+        0,
+        0,
+        150
+      ]
+    },
+    "push_red_block_left": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.1664544939994812,
+        "median_unit_direction": [
+          -0.9664481282234192,
+          0.16663338243961334,
+          -0.19547724723815918
+        ],
+        "positive_y_fraction": 0.37333333333333335,
+        "negative_y_fraction": 0.06666666666666667,
+        "positive_z_fraction": 0.14666666666666667,
+        "negative_z_fraction": 0.41333333333333333
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.18060019612312317,
+        "median_unit_direction": [
+          -0.9952185153961182,
+          0.09767360985279083,
+          -0.0001290861255256459
+        ],
+        "positive_y_fraction": 0.31333333333333335,
+        "negative_y_fraction": 0.04,
+        "positive_z_fraction": 0.1,
+        "negative_z_fraction": 0.0
+      },
+      "active_block_counts": [
+        150,
+        0,
+        0
+      ]
+    },
+    "push_red_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.16596224904060364,
+        "median_unit_direction": [
+          0.9731327891349792,
+          0.06384392827749252,
+          -0.22121603786945343
+        ],
+        "positive_y_fraction": 0.23333333333333334,
+        "negative_y_fraction": 0.20666666666666667,
+        "positive_z_fraction": 0.1,
+        "negative_z_fraction": 0.4
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.14259672164916992,
+        "median_unit_direction": [
+          0.9998281002044678,
+          0.018307646736502647,
+          -0.002933366224169731
+        ],
+        "positive_y_fraction": 0.08,
+        "negative_y_fraction": 0.26,
+        "positive_z_fraction": 0.05333333333333334,
+        "negative_z_fraction": 0.07333333333333333
+      },
+      "active_block_counts": [
+        150,
+        0,
+        0
+      ]
+    },
+    "rotate_blue_block_left": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 126,
+        "median_displacement": 0.10328880697488785,
+        "median_unit_direction": [
+          -0.7184568047523499,
+          -0.2962798774242401,
+          -0.6293155550956726
+        ],
+        "positive_y_fraction": 0.23015873015873015,
+        "negative_y_fraction": 0.46825396825396826,
+        "positive_z_fraction": 0.1111111111111111,
+        "negative_z_fraction": 0.6825396825396826
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 87,
+        "median_displacement": 0.039121076464653015,
+        "median_unit_direction": [
+          -0.7184829115867615,
+          -0.1358671933412552,
+          0.6821454763412476
+        ],
+        "positive_y_fraction": 0.21839080459770116,
+        "negative_y_fraction": 0.40229885057471265,
+        "positive_z_fraction": 0.7241379310344828,
+        "negative_z_fraction": 0.034482758620689655
+      },
+      "active_block_counts": [
+        0,
+        150,
+        0
+      ]
+    },
+    "rotate_blue_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 124,
+        "median_displacement": 0.07934397459030151,
+        "median_unit_direction": [
+          0.6084570288658142,
+          -0.28398796916007996,
+          -0.7410336136817932
+        ],
+        "positive_y_fraction": 0.11290322580645161,
+        "negative_y_fraction": 0.3951612903225806,
+        "positive_z_fraction": 0.13709677419354838,
+        "negative_z_fraction": 0.7096774193548387
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 90,
+        "median_displacement": 0.04005032777786255,
+        "median_unit_direction": [
+          0.1463007628917694,
+          -0.48712655901908875,
+          0.860990047454834
+        ],
+        "positive_y_fraction": 0.03333333333333333,
+        "negative_y_fraction": 0.7,
+        "positive_z_fraction": 0.8777777777777778,
+        "negative_z_fraction": 0.08888888888888889
+      },
+      "active_block_counts": [
+        0,
+        150,
+        0
+      ]
+    },
+    "rotate_pink_block_left": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 145,
+        "median_displacement": 0.10761784762144089,
+        "median_unit_direction": [
+          -0.4270176589488983,
+          0.08288239687681198,
+          -0.9004367589950562
+        ],
+        "positive_y_fraction": 0.36551724137931035,
+        "negative_y_fraction": 0.2896551724137931,
+        "positive_z_fraction": 0.0896551724137931,
+        "negative_z_fraction": 0.7586206896551724
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 111,
+        "median_displacement": 0.04748997092247009,
+        "median_unit_direction": [
+          -0.6178059577941895,
+          -0.03942124545574188,
+          0.7853418588638306
+        ],
+        "positive_y_fraction": 0.40540540540540543,
+        "negative_y_fraction": 0.32432432432432434,
+        "positive_z_fraction": 0.7027027027027027,
+        "negative_z_fraction": 0.0
+      },
+      "active_block_counts": [
+        0,
+        0,
+        151
+      ]
+    },
+    "rotate_pink_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 144,
+        "median_displacement": 0.08520634472370148,
+        "median_unit_direction": [
+          -0.3270361125469208,
+          0.32649752497673035,
+          -0.8868183493614197
+        ],
+        "positive_y_fraction": 0.4513888888888889,
+        "negative_y_fraction": 0.19444444444444445,
+        "positive_z_fraction": 0.0625,
+        "negative_z_fraction": 0.7986111111111112
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 120,
+        "median_displacement": 0.04440269619226456,
+        "median_unit_direction": [
+          -0.20575730502605438,
+          0.13231471180915833,
+          0.9696168303489685
+        ],
+        "positive_y_fraction": 0.35833333333333334,
+        "negative_y_fraction": 0.25833333333333336,
+        "positive_z_fraction": 0.7916666666666666,
+        "negative_z_fraction": 0.03333333333333333
+      },
+      "active_block_counts": [
+        0,
+        0,
+        150
+      ]
+    },
+    "rotate_red_block_left": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 128,
+        "median_displacement": 0.09242704510688782,
+        "median_unit_direction": [
+          -0.5808334946632385,
+          0.0003086536889895797,
+          -0.8140223026275635
+        ],
+        "positive_y_fraction": 0.1875,
+        "negative_y_fraction": 0.2890625,
+        "positive_z_fraction": 0.0703125,
+        "negative_z_fraction": 0.765625
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 80,
+        "median_displacement": 0.043196551501750946,
+        "median_unit_direction": [
+          -0.5822356939315796,
+          -0.22470930218696594,
+          0.7813495993614197
+        ],
+        "positive_y_fraction": 0.225,
+        "negative_y_fraction": 0.3875,
+        "positive_z_fraction": 0.7625,
+        "negative_z_fraction": 0.025
+      },
+      "active_block_counts": [
+        149,
+        0,
+        1
+      ]
+    },
+    "rotate_red_block_right": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 124,
+        "median_displacement": 0.08568429946899414,
+        "median_unit_direction": [
+          0.787660539150238,
+          -0.07761654257774353,
+          -0.6112008094787598
+        ],
+        "positive_y_fraction": 0.1935483870967742,
+        "negative_y_fraction": 0.3467741935483871,
+        "positive_z_fraction": 0.0967741935483871,
+        "negative_z_fraction": 0.6935483870967742
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 115,
+        "median_displacement": 0.04534492641687393,
+        "median_unit_direction": [
+          0.24300721287727356,
+          -0.2943068742752075,
+          0.9243002533912659
+        ],
+        "positive_y_fraction": 0.2,
+        "negative_y_fraction": 0.4608695652173913,
+        "positive_z_fraction": 0.8608695652173913,
+        "negative_z_fraction": 0.10434782608695652
+      },
+      "active_block_counts": [
+        149,
+        1,
+        0
+      ]
+    },
+    "stack_block": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 147,
+        "median_displacement": 0.16630259156227112,
+        "median_unit_direction": [
+          0.7875550985336304,
+          0.0846150740981102,
+          0.6104075312614441
+        ],
+        "positive_y_fraction": 0.25170068027210885,
+        "negative_y_fraction": 0.23129251700680273,
+        "positive_z_fraction": 0.5238095238095238,
+        "negative_z_fraction": 0.05442176870748299
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 151,
+        "median_displacement": 0.15803879499435425,
+        "median_unit_direction": [
+          0.9075306057929993,
+          0.03304290771484375,
+          0.41868412494659424
+        ],
+        "positive_y_fraction": 0.19205298013245034,
+        "negative_y_fraction": 0.18543046357615894,
+        "positive_z_fraction": 0.40397350993377484,
+        "negative_z_fraction": 0.06622516556291391
+      },
+      "active_block_counts": [
+        55,
+        60,
+        36
+      ]
+    },
+    "turn_off_led": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 149,
+        "median_displacement": 0.20204579830169678,
+        "median_unit_direction": [
+          -0.9119589328765869,
+          -0.37747976183891296,
+          -0.16074785590171814
+        ],
+        "positive_y_fraction": 0.20134228187919462,
+        "negative_y_fraction": 0.5503355704697986,
+        "positive_z_fraction": 0.18791946308724833,
+        "negative_z_fraction": 0.3288590604026846
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 27,
+        "median_displacement": 0.09488539397716522,
+        "median_unit_direction": [
+          0.0020360127091407776,
+          0.189238503575325,
+          -0.9819290637969971
+        ],
+        "positive_y_fraction": 0.37037037037037035,
+        "negative_y_fraction": 0.18518518518518517,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.5555555555555556
+      },
+      "active_block_counts": [
+        50,
+        57,
+        43
+      ]
+    },
+    "turn_off_lightbulb": {
+      "eef": {
+        "segments": 152,
+        "moving_segments": 149,
+        "median_displacement": 0.26708608865737915,
+        "median_unit_direction": [
+          0.7930813431739807,
+          0.5896501541137695,
+          0.15275709331035614
+        ],
+        "positive_y_fraction": 0.8926174496644296,
+        "negative_y_fraction": 0.0,
+        "positive_z_fraction": 0.35570469798657717,
+        "negative_z_fraction": 0.026845637583892617
+      },
+      "active_block": {
+        "segments": 152,
+        "moving_segments": 17,
+        "median_displacement": 0.06006104499101639,
+        "median_unit_direction": [
+          -0.00013741987640969455,
+          0.14836107194423676,
+          -0.988933265209198
+        ],
+        "positive_y_fraction": 0.35294117647058826,
+        "negative_y_fraction": 0.17647058823529413,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.8235294117647058
+      },
+      "active_block_counts": [
+        51,
+        53,
+        48
+      ]
+    },
+    "turn_on_led": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.1985296905040741,
+        "median_unit_direction": [
+          -0.9187304377555847,
+          -0.39039552211761475,
+          -0.05937601253390312
+        ],
+        "positive_y_fraction": 0.19333333333333333,
+        "negative_y_fraction": 0.5533333333333333,
+        "positive_z_fraction": 0.19333333333333333,
+        "negative_z_fraction": 0.32
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 38,
+        "median_displacement": 0.08842349052429199,
+        "median_unit_direction": [
+          -0.026865361258387566,
+          0.17091231048107147,
+          -0.9849198460578918
+        ],
+        "positive_y_fraction": 0.34210526315789475,
+        "negative_y_fraction": 0.2894736842105263,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.5789473684210527
+      },
+      "active_block_counts": [
+        60,
+        49,
+        41
+      ]
+    },
+    "turn_on_lightbulb": {
+      "eef": {
+        "segments": 150,
+        "moving_segments": 150,
+        "median_displacement": 0.30182981491088867,
+        "median_unit_direction": [
+          0.8133670091629028,
+          0.5211944580078125,
+          0.2584382891654968
+        ],
+        "positive_y_fraction": 0.8266666666666667,
+        "negative_y_fraction": 0.006666666666666667,
+        "positive_z_fraction": 0.5066666666666667,
+        "negative_z_fraction": 0.0
+      },
+      "active_block": {
+        "segments": 150,
+        "moving_segments": 27,
+        "median_displacement": 0.0963316261768341,
+        "median_unit_direction": [
+          0.7242247462272644,
+          -0.24296842515468597,
+          -0.6453408598899841
+        ],
+        "positive_y_fraction": 0.18518518518518517,
+        "negative_y_fraction": 0.4444444444444444,
+        "positive_z_fraction": 0.0,
+        "negative_z_fraction": 0.5925925925925926
+      },
+      "active_block_counts": [
+        62,
+        46,
+        42
+      ]
+    },
+    "unstack_block": {
+      "eef": {
+        "segments": 151,
+        "moving_segments": 149,
+        "median_displacement": 0.18468210101127625,
+        "median_unit_direction": [
+          0.7156764268875122,
+          0.6432456374168396,
+          0.2721070647239685
+        ],
+        "positive_y_fraction": 0.31543624161073824,
+        "negative_y_fraction": 0.2483221476510067,
+        "positive_z_fraction": 0.31543624161073824,
+        "negative_z_fraction": 0.20134228187919462
+      },
+      "active_block": {
+        "segments": 151,
+        "moving_segments": 131,
+        "median_displacement": 0.09551268070936203,
+        "median_unit_direction": [
+          0.4558285176753998,
+          0.0818110927939415,
+          -0.8862997889518738
+        ],
+        "positive_y_fraction": 0.16030534351145037,
+        "negative_y_fraction": 0.030534351145038167,
+        "positive_z_fraction": 0.32061068702290074,
+        "negative_z_fraction": 0.6259541984732825
+      },
+      "active_block_counts": [
+        47,
+        80,
+        24
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "best_val_mse_standardized": 13743.3466796875,
+  "feature_dim": 46,
+  "final_train_mse_standardized": 0.015848170965909958,
+  "final_val_mse_standardized": 366384.40625,
+  "g_dir": "experiments/phase1_calvin/debug_dryrun_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_source",
+  "horizon": 8,
+  "script": "train_candidate_g_predictor.py",
+  "split_mode": "heldout_g_dir",
+  "target_dim": 12,
+  "train_mae_raw": 0.004420981742441654,
+  "train_max_abs_raw": 0.0393369235098362,
+  "train_mse_raw": 7.131094025680795e-05,
+  "train_records": 24,
+  "train_rmse_raw": 0.008444580525805172,
+  "val_g_dir": "experiments/phase1_calvin/debug_dryrun_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_target",
+  "val_mae_raw": 16.00166130065918,
+  "val_max_abs_raw": 206.91659545898438,
+  "val_mse_raw": 1308.9635009765625,
+  "val_records": 8,
+  "val_rmse_raw": 36.17960061936232
+}

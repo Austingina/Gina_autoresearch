@@ -1,0 +1,342 @@
+{
+  "windows": 21160,
+  "segments": 905,
+  "pairs": {
+    "slider": {
+      "task0": "move_slider_left",
+      "task1": "move_slider_right",
+      "windows": 7488,
+      "segments": 303,
+      "state_only_goal_classification": {
+        "eef_xyz_plus_target_mechanism": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.9835674980439997,
+            "p10": 0.9742312700596056,
+            "p50": 0.9875881221961119,
+            "p90": 0.9895795882610601
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 0.9843360529882297,
+            "p10": 0.9733604768454838,
+            "p50": 0.9880794701986755,
+            "p90": 0.9934666666666667
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9827989430997697,
+            "p10": 0.9704925098554533,
+            "p50": 0.9866666666666667,
+            "p90": 0.9916387096774194
+          }
+        },
+        "full_robot_plus_scene": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.9916783942202037,
+            "p10": 0.985340119211371,
+            "p50": 0.9953642384105961,
+            "p90": 0.9957320849759089
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 0.9886747034644982,
+            "p10": 0.9789469050894085,
+            "p50": 0.990728476821192,
+            "p90": 0.9975666666666667
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9946820849759088,
+            "p10": 0.9901333333333333,
+            "p50": 0.9947437582128777,
+            "p90": 0.9989333333333333
+          }
+        }
+      },
+      "task0_to_task1_overlap": {
+        "samples": 3702,
+        "nearest_eef_distance_m": {
+          "count": 3702,
+          "mean": 0.05061540119012894,
+          "p10": 0.010974656554514352,
+          "p50": 0.04271271986347434,
+          "p90": 0.10920531627966984
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3702,
+          "mean": 0.0938322470909247,
+          "p10": 0.006069763004779817,
+          "p50": 0.03305846801958978,
+          "p90": 0.2337881475687027
+        },
+        "mechanism_span": 0.2826466383994557,
+        "matched_2cm_10pct_mechanism_fraction": 0.1612641815235008,
+        "matched_5cm_10pct_mechanism_fraction": 0.33144246353322526,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 1227,
+          "mean": -0.680399361273684,
+          "p10": -0.9873554596462459,
+          "p50": -0.9180648677784707,
+          "p90": -0.10012822598156733
+        }
+      },
+      "task1_to_task0_overlap": {
+        "samples": 3786,
+        "nearest_eef_distance_m": {
+          "count": 3786,
+          "mean": 0.05227226997234628,
+          "p10": 0.011408160950668747,
+          "p50": 0.04706895863760214,
+          "p90": 0.1032401131732532
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3786,
+          "mean": 0.09085731631576842,
+          "p10": 0.006530106067657471,
+          "p50": 0.04033416509628296,
+          "p90": 0.20114624872803688
+        },
+        "mechanism_span": 0.2826466383994557,
+        "matched_2cm_10pct_mechanism_fraction": 0.13391442155309033,
+        "matched_5cm_10pct_mechanism_fraction": 0.25039619651347067,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 948,
+          "mean": -0.6938526294782413,
+          "p10": -0.9974076917007345,
+          "p50": -0.9217194006450544,
+          "p90": -0.08352518793733531
+        }
+      }
+    },
+    "lightbulb": {
+      "task0": "turn_off_lightbulb",
+      "task1": "turn_on_lightbulb",
+      "windows": 7242,
+      "segments": 302,
+      "state_only_goal_classification": {
+        "eef_xyz_plus_target_mechanism": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.9998595505617978,
+            "p10": 0.9995786516853933,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 1.0,
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9997191011235955,
+            "p10": 0.9991573033707865,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        },
+        "full_robot_plus_scene": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.9998595505617978,
+            "p10": 0.9995786516853933,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 1.0,
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9997191011235955,
+            "p10": 0.9991573033707865,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        }
+      },
+      "task0_to_task1_overlap": {
+        "samples": 3697,
+        "nearest_eef_distance_m": {
+          "count": 3697,
+          "mean": 0.07244597298108126,
+          "p10": 0.006764792291930251,
+          "p50": 0.08118389548403242,
+          "p90": 0.13425615023130277
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3697,
+          "mean": 0.5093318907222072,
+          "p10": 0.0,
+          "p50": 1.0,
+          "p90": 1.0
+        },
+        "mechanism_span": 1.0,
+        "matched_2cm_10pct_mechanism_fraction": 0.0,
+        "matched_5cm_10pct_mechanism_fraction": 0.0002704895861509332,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 1,
+          "mean": 0.6590743873991578,
+          "p10": 0.6590743873991578,
+          "p50": 0.6590743873991578,
+          "p90": 0.6590743873991578
+        }
+      },
+      "task1_to_task0_overlap": {
+        "samples": 3545,
+        "nearest_eef_distance_m": {
+          "count": 3545,
+          "mean": 0.019405121340885397,
+          "p10": 0.004583379033522987,
+          "p50": 0.011851003212710235,
+          "p90": 0.0492908593854856
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3545,
+          "mean": 0.9997179125528914,
+          "p10": 1.0,
+          "p50": 1.0,
+          "p90": 1.0
+        },
+        "mechanism_span": 1.0,
+        "matched_2cm_10pct_mechanism_fraction": 0.0,
+        "matched_5cm_10pct_mechanism_fraction": 0.0,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 0,
+          "mean": null,
+          "p10": null,
+          "p50": null,
+          "p90": null
+        }
+      }
+    },
+    "led": {
+      "task0": "turn_off_led",
+      "task1": "turn_on_led",
+      "windows": 6430,
+      "segments": 300,
+      "state_only_goal_classification": {
+        "eef_xyz_plus_target_mechanism": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.999860529986053,
+            "p10": 0.999581589958159,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 1.0,
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9997210599721061,
+            "p10": 0.999163179916318,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        },
+        "full_robot_plus_scene": {
+          "folds": 5,
+          "balanced_accuracy": {
+            "count": 5,
+            "mean": 0.999860529986053,
+            "p10": 0.999581589958159,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class0_recall": {
+            "count": 5,
+            "mean": 1.0,
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          },
+          "class1_recall": {
+            "count": 5,
+            "mean": 0.9997210599721061,
+            "p10": 0.999163179916318,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        }
+      },
+      "task0_to_task1_overlap": {
+        "samples": 3140,
+        "nearest_eef_distance_m": {
+          "count": 3140,
+          "mean": 0.07360521531334509,
+          "p10": 0.009330437413714393,
+          "p50": 0.062048225192418205,
+          "p90": 0.15892968688501458
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3140,
+          "mean": 0.35318471337579616,
+          "p10": 0.0,
+          "p50": 0.0,
+          "p90": 1.0
+        },
+        "mechanism_span": 1.0,
+        "matched_2cm_10pct_mechanism_fraction": 0.006687898089171975,
+        "matched_5cm_10pct_mechanism_fraction": 0.09554140127388536,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 300,
+          "mean": 0.7167988491771793,
+          "p10": 0.25833687180461434,
+          "p50": 0.8826756104817277,
+          "p90": 0.9829252670511172
+        }
+      },
+      "task1_to_task0_overlap": {
+        "samples": 3290,
+        "nearest_eef_distance_m": {
+          "count": 3290,
+          "mean": 0.010915618297841432,
+          "p10": 0.0030415841226561924,
+          "p50": 0.008146414436094823,
+          "p90": 0.021402426782006934
+        },
+        "nearest_mechanism_abs_difference": {
+          "count": 3290,
+          "mean": 0.9996960486322188,
+          "p10": 1.0,
+          "p50": 1.0,
+          "p90": 1.0
+        },
+        "mechanism_span": 1.0,
+        "matched_2cm_10pct_mechanism_fraction": 0.00030395136778115504,
+        "matched_5cm_10pct_mechanism_fraction": 0.00030395136778115504,
+        "first_action_cosine_at_5cm_matches": {
+          "count": 1,
+          "mean": 0.8697957722701712,
+          "p10": 0.8697957722701712,
+          "p50": 0.8697957722701712,
+          "p90": 0.8697957722701712
+        }
+      }
+    }
+  },
+  "missing_inverse_pair": {
+    "mechanism": "drawer",
+    "present": "open_drawer",
+    "held_out": "close_drawer",
+    "interpretation": "No state-matched opposite drawer goal is supervised during policy training."
+  }
+}

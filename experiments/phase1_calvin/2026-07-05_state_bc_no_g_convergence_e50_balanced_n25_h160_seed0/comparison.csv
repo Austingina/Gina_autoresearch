@@ -1,0 +1,2 @@
+mode,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1
+no_g,0.0236070454120636,0.9767794043412418,0.59,0.59

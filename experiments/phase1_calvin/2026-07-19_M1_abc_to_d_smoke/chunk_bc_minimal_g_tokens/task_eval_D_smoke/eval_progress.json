@@ -1,0 +1,29 @@
+{
+  "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-19_M1_abc_to_d_smoke/chunk_bc_minimal_g_tokens/policy.pt",
+  "num_sequences": 1,
+  "ep_len": 10,
+  "eval_mode": "balanced_first_task",
+  "eval_scan_sequences": 10000,
+  "eval_sequence_offset": 0,
+  "g_scale": 1.0,
+  "query_g_control": "normal",
+  "language_control": "normal",
+  "action_execution_horizon": 1,
+  "temporal_ensemble": false,
+  "temporal_ensemble_decay": 0.25,
+  "state_only_observation": true,
+  "policy_sample_seed": null,
+  "fm_reseed_each_episode": true,
+  "selected_tasks": [
+    "push_blue_block_left",
+    "push_red_block_right"
+  ],
+  "selected_sequence_indices": [
+    87,
+    79
+  ],
+  "raw_results": [
+    0,
+    0
+  ]
+}

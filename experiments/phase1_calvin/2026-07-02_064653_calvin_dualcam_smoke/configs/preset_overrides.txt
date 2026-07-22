@@ -1,0 +1,9 @@
+datamodule.datasets.vision_dataset.batch_size=1
+datamodule.datasets.lang_dataset.batch_size=1
+datamodule.datasets.vision_dataset.num_workers=0
+datamodule.datasets.lang_dataset.num_workers=0
+datamodule.datasets.vision_dataset.min_window_size=2
+datamodule.datasets.vision_dataset.max_window_size=2
+datamodule.datasets.lang_dataset.min_window_size=2
+datamodule.datasets.lang_dataset.max_window_size=2
++trainer.fast_dev_run=true

@@ -1,0 +1,32 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "policies": [
+    {
+      "alias": "token_bc",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-16_E0_g_token_bc_fm_matched_d4_seed0/chunk_bc_minimal_g_tokens/policy.pt"
+    },
+    {
+      "alias": "token_fm",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-16_E0_g_token_bc_fm_matched_d4_seed0/chunk_fm_minimal_g_tokens/policy.pt"
+    }
+  ],
+  "eval_task_filter": [
+    "close_drawer"
+  ],
+  "num_sequences_per_task": 100,
+  "ep_len": 160,
+  "eval_scan_sequences": 50000,
+  "eval_sequence_offset": 0,
+  "g_scales": [
+    1.0
+  ],
+  "query_g_controls": [
+    "normal",
+    "zero",
+    "sign_flip",
+    "task:open_drawer"
+  ],
+  "language_controls": [
+    "normal"
+  ]
+}

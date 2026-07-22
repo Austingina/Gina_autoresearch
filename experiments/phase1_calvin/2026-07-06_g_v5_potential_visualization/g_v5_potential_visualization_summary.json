@@ -1,0 +1,45 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "geometry_json": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json",
+  "split": "validation",
+  "samples_per_task": 3,
+  "arrow_scale": 0.055,
+  "tasks": {
+    "close_drawer": {
+      "num_samples": 3,
+      "figure": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_g_v5_potential_visualization/g_v5_potential_close_drawer.png",
+      "episodes": [
+        232801,
+        53377,
+        6879
+      ]
+    },
+    "move_slider_left": {
+      "num_samples": 3,
+      "figure": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_g_v5_potential_visualization/g_v5_potential_move_slider_left.png",
+      "episodes": [
+        239311,
+        237523,
+        44668
+      ]
+    },
+    "move_slider_right": {
+      "num_samples": 3,
+      "figure": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_g_v5_potential_visualization/g_v5_potential_move_slider_right.png",
+      "episodes": [
+        19459,
+        41245,
+        235559
+      ]
+    },
+    "open_drawer": {
+      "num_samples": 3,
+      "figure": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_g_v5_potential_visualization/g_v5_potential_open_drawer.png",
+      "episodes": [
+        235392,
+        16558,
+        401884
+      ]
+    }
+  }
+}

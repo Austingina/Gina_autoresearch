@@ -1,0 +1,198 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "modes": [
+    "chunk_bc_minimal_g_tokens"
+  ],
+  "init_checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-16_E3_factorial_checkerboard_seed0/with_g/chunk_bc_minimal_g_tokens/policy.pt",
+  "source_distill_weight": 1.0,
+  "residual_adapter": true,
+  "residual_adapter_hidden": 64,
+  "reverse_source_loss_weight": 1.0,
+  "reverse_task_loss_weights": {
+    "move_slider_left": 1.0
+  },
+  "residual_adapter_expert_tasks": [
+    "close_drawer",
+    "move_slider_left"
+  ],
+  "residual_router_loss_weight": 1.0,
+  "residual_adapter_source_expert": true,
+  "include_tasks": [
+    "open_drawer",
+    "move_slider_right",
+    "push_red_block_left",
+    "push_blue_block_right",
+    "push_pink_block_left",
+    "push_pink_block_right",
+    "push_into_drawer",
+    "place_in_slider",
+    "turn_on_lightbulb",
+    "turn_off_lightbulb",
+    "turn_on_led",
+    "turn_off_led"
+  ],
+  "task_segment_limits": {},
+  "max_windows": 0,
+  "actual_windows": 44947,
+  "max_segments": 0,
+  "actual_segments": 1807,
+  "actual_segments_by_task": {
+    "push_pink_block_right": 150,
+    "push_pink_block_left": 150,
+    "move_slider_right": 152,
+    "turn_on_led": 150,
+    "push_blue_block_right": 150,
+    "turn_on_lightbulb": 150,
+    "place_in_slider": 151,
+    "turn_off_led": 150,
+    "turn_off_lightbulb": 152,
+    "open_drawer": 152,
+    "push_into_drawer": 150,
+    "push_red_block_left": 150
+  },
+  "actual_windows_by_task": {
+    "push_pink_block_right": 3140,
+    "push_pink_block_left": 3230,
+    "move_slider_right": 3786,
+    "turn_on_led": 3290,
+    "push_blue_block_right": 3138,
+    "turn_on_lightbulb": 3545,
+    "place_in_slider": 2368,
+    "turn_off_led": 3140,
+    "turn_off_lightbulb": 3697,
+    "open_drawer": 3800,
+    "push_into_drawer": 3309,
+    "push_red_block_left": 3518,
+    "close_drawer": 2500,
+    "move_slider_left": 2486
+  },
+  "reverse_open_augmentation": false,
+  "reverse_open_max_segments": 0,
+  "reverse_open_windows": 2500,
+  "reverse_open_source_segments": 100,
+  "reverse_task_pairs": [
+    "open_drawer=close_drawer",
+    "move_slider_right=move_slider_left"
+  ],
+  "reverse_pair_max_segments": 100,
+  "reverse_source_windows": 4986,
+  "reverse_source_segments": 200,
+  "stride": 2,
+  "chunk_size": 16,
+  "epochs": 50,
+  "train_seed": 0,
+  "init_seed": 0,
+  "loader_seed": 0,
+  "data_seed": 0,
+  "split_seed": 0,
+  "num_sequences": 25,
+  "ep_len": 160,
+  "eval_mode": "balanced_first_task",
+  "eval_task_filter": null,
+  "eval_scan_sequences": 5000,
+  "eval_sequence_offset": 0,
+  "checkpoint_epochs": [],
+  "eval_checkpoints": false,
+  "skip_eval": true,
+  "zero_task_onehot": false,
+  "articulation_geometry_json": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json",
+  "minimal_g_scope": "translational",
+  "primitive_geometry": {
+    "place_in_slider": {
+      "flow_dir": [
+        -0.0967133641242981,
+        0.9804240465164185,
+        -0.17150840163230896
+      ],
+      "target_center": [
+        0.03449324145913124,
+        0.08155182749032974,
+        0.46098196506500244
+      ],
+      "active_object_selector": "nearest_eef_3d",
+      "median_displacement": 0.2336331456899643,
+      "num_segments": 151,
+      "active_color_counts": {
+        "red": 60,
+        "blue": 52,
+        "pink": 39
+      }
+    },
+    "push_into_drawer": {
+      "flow_dir": [
+        0.07254304736852646,
+        -0.825300931930542,
+        -0.5600141286849976
+      ],
+      "target_center": [
+        0.17879696190357208,
+        -0.2664671540260315,
+        0.36231809854507446
+      ],
+      "active_object_selector": "nearest_eef_3d",
+      "median_displacement": 0.18280503153800964,
+      "num_segments": 150,
+      "active_color_counts": {
+        "red": 51,
+        "blue": 40,
+        "pink": 59
+      }
+    }
+  },
+  "fm_steps": 10,
+  "g_scale_aug_values": [
+    1.0
+  ],
+  "g_dropout_prob": 0.0,
+  "gate_max": 2.0,
+  "field_alignment_weight": 0.05,
+  "orthogonal_ratio_max": 2.0,
+  "first_action_loss_weight": 16.0,
+  "inverse_pair_loss_weight": 0.0,
+  "inverse_pairs_per_batch": 128,
+  "inverse_pair_max_eef_distance_m": 0.05,
+  "inverse_pair_max_mechanism_fraction": 0.1,
+  "action_execution_horizon": 1,
+  "eval_dir_suffix": "",
+  "temporal_ensemble": false,
+  "temporal_ensemble_decay": 0.25,
+  "query_g_include_token_type": false,
+  "query_g_token_dim": 15,
+  "query_g_token_type_mode": "normal",
+  "tasks": {
+    "close_drawer": 0,
+    "lift_blue_block_drawer": 1,
+    "lift_blue_block_slider": 2,
+    "lift_blue_block_table": 3,
+    "lift_pink_block_drawer": 4,
+    "lift_pink_block_slider": 5,
+    "lift_pink_block_table": 6,
+    "lift_red_block_drawer": 7,
+    "lift_red_block_slider": 8,
+    "lift_red_block_table": 9,
+    "move_slider_left": 10,
+    "move_slider_right": 11,
+    "open_drawer": 12,
+    "place_in_drawer": 13,
+    "place_in_slider": 14,
+    "push_blue_block_left": 15,
+    "push_blue_block_right": 16,
+    "push_into_drawer": 17,
+    "push_pink_block_left": 18,
+    "push_pink_block_right": 19,
+    "push_red_block_left": 20,
+    "push_red_block_right": 21,
+    "rotate_blue_block_left": 22,
+    "rotate_blue_block_right": 23,
+    "rotate_pink_block_left": 24,
+    "rotate_pink_block_right": 25,
+    "rotate_red_block_left": 26,
+    "rotate_red_block_right": 27,
+    "stack_block": 28,
+    "turn_off_led": 29,
+    "turn_off_lightbulb": 30,
+    "turn_on_led": 31,
+    "turn_on_lightbulb": 32,
+    "unstack_block": 33
+  }
+}

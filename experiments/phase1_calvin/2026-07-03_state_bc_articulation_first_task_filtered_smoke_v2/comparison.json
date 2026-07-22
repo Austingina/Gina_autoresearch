@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "no_g",
+    "train_val_mse": 0.1795664131641388,
+    "train_val_gripper_acc": 0.64,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0
+  },
+  {
+    "mode": "canonical_g_film",
+    "train_val_mse": 0.18404000997543335,
+    "train_val_gripper_acc": 0.47,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0
+  }
+]

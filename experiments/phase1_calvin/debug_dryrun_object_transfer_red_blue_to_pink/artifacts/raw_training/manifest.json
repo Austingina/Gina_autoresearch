@@ -1,0 +1,44 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/calvin_debug_dataset",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "pick up the red block on the table",
+      "end": 358793,
+      "index": 6,
+      "length": 65,
+      "split": "training",
+      "start": 358729,
+      "task": "lift_red_block_table"
+    },
+    {
+      "ann": "turn off the light bulb",
+      "end": 360639,
+      "index": 8,
+      "length": 65,
+      "split": "training",
+      "start": 360575,
+      "task": "turn_off_lightbulb"
+    },
+    {
+      "ann": "move the light switch to turn on the yellow light",
+      "end": 358720,
+      "index": 0,
+      "length": 65,
+      "split": "training",
+      "start": 358656,
+      "task": "turn_on_lightbulb"
+    },
+    {
+      "ann": "place the block in the sliding cabinet",
+      "end": 361011,
+      "index": 2,
+      "length": 34,
+      "split": "training",
+      "start": 360978,
+      "task": "place_in_slider"
+    }
+  ],
+  "split": "training",
+  "task_filter": null
+}

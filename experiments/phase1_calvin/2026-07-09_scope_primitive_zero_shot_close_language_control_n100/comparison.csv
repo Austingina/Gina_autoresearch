@@ -1,0 +1,13 @@
+alias,checkpoint,g_scale,query_g_control,language_control,avg_seq_len,sr_1,task_close_drawer_success,task_close_drawer_total,task_close_drawer_sr
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,normal,1.0,1.0,100,100,1.0
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,zero,0.0,0.0,0,100,0.0
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,task:open_drawer,0.0,0.0,0,100,0.0
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,task:push_into_drawer,0.0,0.0,0,100,0.0
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,task:move_slider_left,0.0,0.0,0,100,0.0
+chunk_bc_lang,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt,1.0,normal,task:move_slider_right,0.0,0.0,0,100,0.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,normal,1.0,1.0,100,100,1.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,zero,0.0,0.0,0,100,0.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,task:open_drawer,0.0,0.0,0,100,0.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,task:push_into_drawer,0.0,0.0,0,100,0.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,task:move_slider_left,0.0,0.0,0,100,0.0
+chunk_bc_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,task:move_slider_right,0.01,0.01,1,100,0.01

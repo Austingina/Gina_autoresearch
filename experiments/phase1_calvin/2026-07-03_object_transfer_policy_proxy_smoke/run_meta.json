@@ -1,0 +1,16 @@
+{
+  "action_dim": 7,
+  "action_key": "rel_actions",
+  "base_feature_dim": 24,
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "device": "cuda",
+  "feature_mode": "canonical_nearest",
+  "g_dim": 12,
+  "g_predictions": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_object_transfer_red_blue_to_pink/artifacts/g_predictor_object_transfer_red_blue_to_pink_featcanonical_targetcanonical_scene_clip0.99_h8/predictions.npz",
+  "seed": 0,
+  "source_g_dir": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_source",
+  "split": "training",
+  "target_g_dir": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_task_D_D_g_v2_canonical_nearest_with_scene_clip0.99_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_target",
+  "train_records": 256,
+  "val_records": 256
+}

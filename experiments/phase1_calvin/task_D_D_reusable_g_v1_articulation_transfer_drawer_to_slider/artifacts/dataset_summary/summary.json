@@ -1,0 +1,677 @@
+{
+  "created_at": "2026-07-03_015127",
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "scene_schemas": {
+    "training": {
+      "object_names": [
+        "block_red",
+        "block_blue",
+        "block_pink"
+      ],
+      "scalar_names": [
+        "base__slide",
+        "base__drawer",
+        "base__button",
+        "base__switch",
+        "lightbulb",
+        "led"
+      ],
+      "scene_name": "calvin_scene_D",
+      "source": "hydra"
+    },
+    "validation": {
+      "object_names": [
+        "block_red",
+        "block_blue",
+        "block_pink"
+      ],
+      "scalar_names": [
+        "base__slide",
+        "base__drawer",
+        "base__button",
+        "base__switch",
+        "lightbulb",
+        "led"
+      ],
+      "scene_name": "calvin_scene_D",
+      "source": "hydra"
+    }
+  },
+  "script": "summarize_calvin_dataset.py",
+  "splits": {
+    "training": {
+      "annotation_frames": 308918,
+      "families": {
+        "drawer": 303,
+        "lift": 1360,
+        "light": 602,
+        "place": 303,
+        "push": 900,
+        "push_into": 150,
+        "rotate": 901,
+        "slider": 303,
+        "stack": 302
+      },
+      "first_frame_id": 53819,
+      "keys": {
+        "actions": {
+          "dtype": "float64",
+          "shape": [
+            7
+          ]
+        },
+        "depth_gripper": {
+          "dtype": "float32",
+          "shape": [
+            84,
+            84
+          ]
+        },
+        "depth_static": {
+          "dtype": "float32",
+          "shape": [
+            200,
+            200
+          ]
+        },
+        "depth_tactile": {
+          "dtype": "float32",
+          "shape": [
+            160,
+            120,
+            2
+          ]
+        },
+        "rel_actions": {
+          "dtype": "float64",
+          "shape": [
+            7
+          ]
+        },
+        "rgb_gripper": {
+          "dtype": "uint8",
+          "shape": [
+            84,
+            84,
+            3
+          ]
+        },
+        "rgb_static": {
+          "dtype": "uint8",
+          "shape": [
+            200,
+            200,
+            3
+          ]
+        },
+        "rgb_tactile": {
+          "dtype": "uint8",
+          "shape": [
+            160,
+            120,
+            6
+          ]
+        },
+        "robot_obs": {
+          "dtype": "float64",
+          "shape": [
+            15
+          ]
+        },
+        "scene_obs": {
+          "dtype": "float64",
+          "shape": [
+            24
+          ]
+        }
+      },
+      "last_frame_id": 611098,
+      "num_annotations": 5124,
+      "num_episode_files": 512077,
+      "object_colors": {
+        "blue": 1056,
+        "none": 1963,
+        "pink": 1053,
+        "red": 1052
+      },
+      "robot_obs_stats": {
+        "max": [
+          0.33742,
+          0.097835,
+          0.678158,
+          3.141453,
+          0.257941,
+          2.986795,
+          0.081767,
+          0.390462,
+          1.341314,
+          2.513134,
+          -0.515716,
+          -0.391326,
+          2.503184,
+          1.878192,
+          1.0
+        ],
+        "mean": [
+          0.050835,
+          -0.121593,
+          0.509278,
+          0.96443,
+          -0.042482,
+          1.579282,
+          0.056878,
+          -0.683065,
+          1.007434,
+          1.777513,
+          -2.025708,
+          -0.990733,
+          1.739701,
+          0.580729,
+          0.132
+        ],
+        "min": [
+          -0.329593,
+          -0.465938,
+          0.303563,
+          -3.141584,
+          -0.376621,
+          0.121263,
+          -0.002976,
+          -1.637007,
+          0.288878,
+          1.264115,
+          -2.811556,
+          -1.59128,
+          1.272415,
+          -0.881268,
+          -1.0
+        ],
+        "shape": [
+          1000,
+          15
+        ],
+        "std": [
+          0.16303,
+          0.110403,
+          0.064375,
+          2.926459,
+          0.102394,
+          0.252086,
+          0.028853,
+          0.3376,
+          0.164665,
+          0.257081,
+          0.440512,
+          0.203433,
+          0.153197,
+          0.335853,
+          0.99125
+        ]
+      },
+      "sampled_frames_for_stats": 1000,
+      "scene_obs_stats": {
+        "max": [
+          0.280129,
+          0.22,
+          0.02649,
+          0.088584,
+          1.0,
+          1.0,
+          0.30087,
+          0.107476,
+          0.566264,
+          3.141593,
+          1.570796,
+          4.699651,
+          0.349145,
+          0.106162,
+          0.578933,
+          3.141593,
+          1.570796,
+          4.707108,
+          0.348063,
+          0.103428,
+          0.563378,
+          3.141593,
+          1.570796,
+          3.136132
+        ],
+        "mean": [
+          0.170502,
+          0.118802,
+          0.000235,
+          0.042981,
+          0.502,
+          0.471,
+          0.048967,
+          -0.088316,
+          0.433999,
+          0.020208,
+          -0.071601,
+          -0.048176,
+          0.058229,
+          -0.095695,
+          0.432387,
+          -0.124799,
+          0.006273,
+          0.305021,
+          0.062522,
+          -0.107926,
+          0.427873,
+          0.021651,
+          0.003061,
+          -0.235619
+        ],
+        "min": [
+          -0.0,
+          -0.000102,
+          0.0,
+          -0.000945,
+          0.0,
+          0.0,
+          -0.339988,
+          -0.343126,
+          0.360204,
+          -3.141593,
+          -1.570796,
+          -3.302212,
+          -0.36142,
+          -0.348366,
+          0.361424,
+          -3.141593,
+          -1.570796,
+          -4.655179,
+          -0.351022,
+          -0.329982,
+          0.359141,
+          -3.141593,
+          -0.214671,
+          -3.134836
+        ],
+        "shape": [
+          1000,
+          24
+        ],
+        "std": [
+          0.122296,
+          0.094177,
+          0.002137,
+          0.041786,
+          0.499996,
+          0.499158,
+          0.175611,
+          0.113957,
+          0.049557,
+          1.260092,
+          0.503842,
+          2.042035,
+          0.175524,
+          0.113711,
+          0.050202,
+          1.434737,
+          0.701867,
+          1.949864,
+          0.166158,
+          0.103821,
+          0.049935,
+          1.437519,
+          0.073398,
+          1.693478
+        ]
+      },
+      "tasks": {
+        "close_drawer": 151,
+        "lift_blue_block_drawer": 150,
+        "lift_blue_block_slider": 154,
+        "lift_blue_block_table": 152,
+        "lift_pink_block_drawer": 150,
+        "lift_pink_block_slider": 151,
+        "lift_pink_block_table": 151,
+        "lift_red_block_drawer": 151,
+        "lift_red_block_slider": 151,
+        "lift_red_block_table": 150,
+        "move_slider_left": 151,
+        "move_slider_right": 152,
+        "open_drawer": 152,
+        "place_in_drawer": 152,
+        "place_in_slider": 151,
+        "push_blue_block_left": 150,
+        "push_blue_block_right": 150,
+        "push_into_drawer": 150,
+        "push_pink_block_left": 150,
+        "push_pink_block_right": 150,
+        "push_red_block_left": 150,
+        "push_red_block_right": 150,
+        "rotate_blue_block_left": 150,
+        "rotate_blue_block_right": 150,
+        "rotate_pink_block_left": 151,
+        "rotate_pink_block_right": 150,
+        "rotate_red_block_left": 150,
+        "rotate_red_block_right": 150,
+        "stack_block": 151,
+        "turn_off_led": 150,
+        "turn_off_lightbulb": 152,
+        "turn_on_led": 150,
+        "turn_on_lightbulb": 150,
+        "unstack_block": 151
+      }
+    },
+    "validation": {
+      "annotation_frames": 60575,
+      "families": {
+        "drawer": 59,
+        "lift": 268,
+        "light": 123,
+        "place": 59,
+        "push": 175,
+        "push_into": 30,
+        "rotate": 178,
+        "slider": 61,
+        "stack": 58
+      },
+      "first_frame_id": 0,
+      "keys": {
+        "actions": {
+          "dtype": "float64",
+          "shape": [
+            7
+          ]
+        },
+        "depth_gripper": {
+          "dtype": "float32",
+          "shape": [
+            84,
+            84
+          ]
+        },
+        "depth_static": {
+          "dtype": "float32",
+          "shape": [
+            200,
+            200
+          ]
+        },
+        "depth_tactile": {
+          "dtype": "float32",
+          "shape": [
+            160,
+            120,
+            2
+          ]
+        },
+        "rel_actions": {
+          "dtype": "float64",
+          "shape": [
+            7
+          ]
+        },
+        "rgb_gripper": {
+          "dtype": "uint8",
+          "shape": [
+            84,
+            84,
+            3
+          ]
+        },
+        "rgb_static": {
+          "dtype": "uint8",
+          "shape": [
+            200,
+            200,
+            3
+          ]
+        },
+        "rgb_tactile": {
+          "dtype": "uint8",
+          "shape": [
+            160,
+            120,
+            6
+          ]
+        },
+        "robot_obs": {
+          "dtype": "float64",
+          "shape": [
+            15
+          ]
+        },
+        "scene_obs": {
+          "dtype": "float64",
+          "shape": [
+            24
+          ]
+        }
+      },
+      "last_frame_id": 420498,
+      "num_annotations": 1011,
+      "num_episode_files": 99022,
+      "object_colors": {
+        "blue": 205,
+        "none": 390,
+        "pink": 207,
+        "red": 209
+      },
+      "robot_obs_stats": {
+        "max": [
+          0.32317,
+          0.095094,
+          0.653002,
+          3.141152,
+          0.258586,
+          3.125222,
+          0.080751,
+          0.412397,
+          1.30602,
+          2.531995,
+          -0.507443,
+          0.165602,
+          2.412548,
+          2.358057,
+          1.0
+        ],
+        "mean": [
+          0.034015,
+          -0.114824,
+          0.511248,
+          1.364725,
+          -0.031157,
+          1.552669,
+          0.057224,
+          -0.684076,
+          0.975372,
+          1.792695,
+          -2.059889,
+          -0.968502,
+          1.751429,
+          0.62062,
+          0.186
+        ],
+        "min": [
+          -0.394514,
+          -0.456174,
+          0.309508,
+          -3.14145,
+          -0.360342,
+          -3.13387,
+          -0.001961,
+          -1.658493,
+          -0.087719,
+          1.277311,
+          -2.763894,
+          -1.467806,
+          1.342898,
+          -1.035509,
+          -1.0
+        ],
+        "shape": [
+          1000,
+          15
+        ],
+        "std": [
+          0.16102,
+          0.105893,
+          0.060455,
+          2.762368,
+          0.098712,
+          0.369128,
+          0.029289,
+          0.32315,
+          0.174681,
+          0.252395,
+          0.405044,
+          0.200252,
+          0.15266,
+          0.328442,
+          0.98255
+        ]
+      },
+      "sampled_frames_for_stats": 1000,
+      "scene_obs_stats": {
+        "max": [
+          0.280254,
+          0.220025,
+          0.027949,
+          0.089182,
+          1.0,
+          1.0,
+          0.293283,
+          0.09352,
+          0.571775,
+          3.141593,
+          1.570796,
+          4.681924,
+          0.303005,
+          0.095978,
+          0.552402,
+          3.141593,
+          1.570796,
+          4.568555,
+          0.338029,
+          0.098168,
+          0.589439,
+          3.141593,
+          0.235187,
+          3.125534
+        ],
+        "mean": [
+          0.149937,
+          0.120238,
+          0.000283,
+          0.046254,
+          0.537,
+          0.506,
+          0.058322,
+          -0.092628,
+          0.432466,
+          -0.335134,
+          0.149155,
+          -0.098788,
+          0.034181,
+          -0.101408,
+          0.42877,
+          -0.251388,
+          0.034897,
+          0.184263,
+          0.078882,
+          -0.110582,
+          0.421476,
+          0.100414,
+          -0.000556,
+          -0.334958
+        ],
+        "min": [
+          -0.000254,
+          -5e-06,
+          0.0,
+          -0.001666,
+          0.0,
+          0.0,
+          -0.328173,
+          -0.329113,
+          0.361318,
+          -3.141593,
+          -1.570796,
+          -3.135957,
+          -0.342105,
+          -0.341802,
+          0.360169,
+          -3.141593,
+          -1.570796,
+          -4.612004,
+          -0.355898,
+          -0.306341,
+          0.36147,
+          -3.141593,
+          -1.504985,
+          -3.137441
+        ],
+        "shape": [
+          1000,
+          24
+        ],
+        "std": [
+          0.124293,
+          0.092237,
+          0.002525,
+          0.041642,
+          0.498629,
+          0.499964,
+          0.158369,
+          0.113472,
+          0.050277,
+          1.550328,
+          0.470488,
+          1.962328,
+          0.174296,
+          0.114329,
+          0.050281,
+          1.799735,
+          0.530852,
+          1.829147,
+          0.187371,
+          0.111223,
+          0.053023,
+          1.757929,
+          0.053352,
+          1.54156
+        ]
+      },
+      "tasks": {
+        "close_drawer": 29,
+        "lift_blue_block_drawer": 30,
+        "lift_blue_block_slider": 29,
+        "lift_blue_block_table": 30,
+        "lift_pink_block_drawer": 30,
+        "lift_pink_block_slider": 31,
+        "lift_pink_block_table": 29,
+        "lift_red_block_drawer": 31,
+        "lift_red_block_slider": 29,
+        "lift_red_block_table": 29,
+        "move_slider_left": 32,
+        "move_slider_right": 29,
+        "open_drawer": 30,
+        "place_in_drawer": 29,
+        "place_in_slider": 30,
+        "push_blue_block_left": 29,
+        "push_blue_block_right": 29,
+        "push_into_drawer": 30,
+        "push_pink_block_left": 29,
+        "push_pink_block_right": 29,
+        "push_red_block_left": 30,
+        "push_red_block_right": 29,
+        "rotate_blue_block_left": 29,
+        "rotate_blue_block_right": 29,
+        "rotate_pink_block_left": 29,
+        "rotate_pink_block_right": 30,
+        "rotate_red_block_left": 31,
+        "rotate_red_block_right": 30,
+        "stack_block": 29,
+        "turn_off_led": 32,
+        "turn_off_lightbulb": 29,
+        "turn_on_led": 29,
+        "turn_on_lightbulb": 33,
+        "unstack_block": 29
+      }
+    }
+  }
+}

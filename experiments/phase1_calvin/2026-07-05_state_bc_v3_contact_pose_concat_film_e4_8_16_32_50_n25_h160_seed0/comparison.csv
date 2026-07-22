@@ -1,0 +1,11 @@
+mode,checkpoint_epoch,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1,close_drawer_success,close_drawer_total,close_drawer_sr,move_slider_left_success,move_slider_left_total,move_slider_left_sr,move_slider_right_success,move_slider_right_total,move_slider_right_sr,open_drawer_success,open_drawer_total,open_drawer_sr
+articulation_g_v3_contact_concat,4,0.03118913248181343,0.9747602221100454,0.67,0.67,25,25,1.0,13,25,0.52,25,25,1.0,4,25,0.16
+articulation_g_v3_contact_concat,8,0.027340875938534737,0.9762746087834427,0.62,0.62,24,25,0.96,4,25,0.16,23,25,0.92,11,25,0.44
+articulation_g_v3_contact_concat,16,0.025019017979502678,0.9767794043412418,0.51,0.51,24,25,0.96,2,25,0.08,20,25,0.8,5,25,0.2
+articulation_g_v3_contact_concat,32,0.02361307479441166,0.9767794043412418,0.63,0.63,25,25,1.0,6,25,0.24,21,25,0.84,11,25,0.44
+articulation_g_v3_contact_concat,50,0.02273482270538807,0.9767794043412418,0.62,0.62,25,25,1.0,10,25,0.4,16,25,0.64,11,25,0.44
+articulation_g_v3_contact_film,4,0.030996354296803474,0.9752650176678446,0.61,0.61,25,25,1.0,5,25,0.2,25,25,1.0,6,25,0.24
+articulation_g_v3_contact_film,8,0.027337869629263878,0.9767794043412418,0.49,0.49,24,25,0.96,0,25,0.0,25,25,1.0,0,25,0.0
+articulation_g_v3_contact_film,16,0.025316623970866203,0.9767794043412418,0.5,0.5,25,25,1.0,0,25,0.0,25,25,1.0,0,25,0.0
+articulation_g_v3_contact_film,32,0.023725321516394615,0.9767794043412418,0.55,0.55,24,25,0.96,1,25,0.04,25,25,1.0,5,25,0.2
+articulation_g_v3_contact_film,50,0.023109396919608116,0.9767794043412418,0.48,0.48,22,25,0.88,1,25,0.04,20,25,0.8,5,25,0.2

@@ -1,0 +1,19 @@
+{
+  "policy": "checkpoint",
+  "dataset_path": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/calvin_debug_dataset",
+  "train_folder": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-02_064810_calvin_dualcam_debug_train/calvin_logs/runs/2026-07-02/06-48-20",
+  "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-02_064810_calvin_dualcam_debug_train/calvin_logs/runs/2026-07-02/06-48-20/saved_models/epoch=0.ckpt",
+  "num_sequences": 1,
+  "ep_len": 5,
+  "avg_seq_len": 0.0,
+  "chain_sr": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0
+  },
+  "raw_results": [
+    0
+  ]
+}

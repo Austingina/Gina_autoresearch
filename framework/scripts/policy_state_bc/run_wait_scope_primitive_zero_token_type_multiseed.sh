@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="${AUTORESEARCH_ROOT:-/mnt/nvme33n1/wuk_code/AutoResearch}"
+RUN_SCRIPT="${ROOT}/framework/scripts/policy_state_bc/run_scope_primitive_zero_token_type_seed.sh"
+LOG_ROOT="${ROOT}/logs/2026-07-12_scope_primitive_zero_token_type_multiseed"
+STATUS_ROOT="${LOG_ROOT}/status"
+SEEDS=(${SEEDS:-0 1 2 3 4})
+GPUS=(${GPUS:-4 5 6 7})
+MAX_PARALLEL="${MAX_PARALLEL:-4}"
+POLL_SECONDS="${POLL_SECONDS:-30}"
+
+mkdir -p "${LOG_ROOT}" "${STATUS_ROOT}"
+
+declare -A JOB_PIDS=()
+declare -A JOB_GPUS=()
+pending=("${SEEDS[@]}")
+
+timestamp() {
+  date '+%F %T'
+}
+
+gpu_is_assigned() {
+  local gpu="$1"
+  local seed
+  for seed in "${!JOB_GPUS[@]}"; do
+    [[ "${JOB_GPUS[${seed}]}" == "${gpu}" ]] && return 0
+  done
+  return 1
+}
+
+launch_seed() {
+  local seed="$1"
+  local gpu="$2"
+  local log="${LOG_ROOT}/seed${seed}.log"
+  local status="${STATUS_ROOT}/seed${seed}.status"
+  (
+    export CUDA_VISIBLE_DEVICES="${gpu}"
+    export DEVICE="cuda:0"
+    export SEED="${seed}"
+    if bash "${RUN_SCRIPT}" >"${log}" 2>&1; then
+      printf 'complete\n' >"${status}"
+    else
+      printf 'failed\n' >"${status}"
+      exit 1
+    fi
+  ) &
+  JOB_PIDS["${seed}"]=$!
+  JOB_GPUS["${seed}"]="${gpu}"
+  printf '[%s] launched seed=%s gpu=%s pid=%s log=%s\n' \
+    "$(timestamp)" "${seed}" "${gpu}" "${JOB_PIDS[${seed}]}" "${log}"
+}
+
+while [[ "${#pending[@]}" -gt 0 || "${#JOB_PIDS[@]}" -gt 0 ]]; do
+  for seed in "${!JOB_PIDS[@]}"; do
+    pid="${JOB_PIDS[${seed}]}"
+    if ! kill -0 "${pid}" 2>/dev/null; then
+      if wait "${pid}"; then
+        printf '[%s] completed seed=%s gpu=%s\n' "$(timestamp)" "${seed}" "${JOB_GPUS[${seed}]}"
+      else
+        printf '[%s] failed seed=%s gpu=%s\n' "$(timestamp)" "${seed}" "${JOB_GPUS[${seed}]}"
+      fi
+      unset 'JOB_PIDS['"${seed}"']'
+      unset 'JOB_GPUS['"${seed}"']'
+    fi
+  done
+
+  while [[ "${#pending[@]}" -gt 0 && "${#JOB_PIDS[@]}" -lt "${MAX_PARALLEL}" ]]; do
+    selected_gpu=""
+    for gpu in "${GPUS[@]}"; do
+      if ! gpu_is_assigned "${gpu}"; then
+        selected_gpu="${gpu}"
+        break
+      fi
+    done
+    [[ -z "${selected_gpu}" ]] && break
+    seed="${pending[0]}"
+    pending=("${pending[@]:1}")
+    launch_seed "${seed}" "${selected_gpu}"
+  done
+
+  [[ "${#pending[@]}" -gt 0 || "${#JOB_PIDS[@]}" -gt 0 ]] && sleep "${POLL_SECONDS}"
+done
+
+printf '[%s] all requested seeds finished\n' "$(timestamp)"

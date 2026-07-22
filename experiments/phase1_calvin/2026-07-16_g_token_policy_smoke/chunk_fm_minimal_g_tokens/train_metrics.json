@@ -1,0 +1,36 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.9073742032051086,
+      "val_chunk_mse": 0.2559337019920349,
+      "val_first_action_mse": 0.2896897792816162,
+      "val_first_gripper_acc": 0.56
+    }
+  ],
+  "final": {
+    "epoch": 1,
+    "train_loss": 1.9073742032051086,
+    "val_chunk_mse": 0.2559337019920349,
+    "val_first_action_mse": 0.2896897792816162,
+    "val_first_gripper_acc": 0.56
+  },
+  "num_records": 512,
+  "num_train_records": 462,
+  "num_val_records": 50,
+  "condition_meta": {
+    "condition": "state_plus_minimal_g_with_direct_language_masked_when_g_is_valid"
+  },
+  "base_dim": 73,
+  "g_dim": 6,
+  "g_scale_aug_values": [
+    1.0
+  ],
+  "g_dropout_prob": 0.0,
+  "gate_max": 2.0,
+  "query_g_include_token_type": true,
+  "query_g_token_type_mode": "normal",
+  "field_alignment_weight": 0.05,
+  "structured_field_config": {},
+  "first_action_loss_weight": 1.0
+}

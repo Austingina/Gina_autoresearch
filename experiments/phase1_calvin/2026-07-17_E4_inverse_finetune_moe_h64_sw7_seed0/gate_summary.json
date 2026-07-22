@@ -1,0 +1,24 @@
+{
+  "date": "2026-07-17",
+  "checkpoint_label": "moe_h64_sw7",
+  "seed": 0,
+  "action_execution_horizon": 2,
+  "g_scale": 1.0,
+  "num_rollouts_per_task": 100,
+  "task_order": [
+    "close_drawer",
+    "move_slider_left",
+    "push_red_block_right",
+    "push_blue_block_left"
+  ],
+  "normal_g_success": [51, 32, 47, 44],
+  "zero_g_success": [0, 0, 0, 0],
+  "sign_flip_g_success": [0, 1, 0, 0],
+  "normal_g_gap": 19,
+  "gate": {
+    "all_nonzero": true,
+    "gap_strictly_less_than_20": true,
+    "passed": true
+  }
+}
+

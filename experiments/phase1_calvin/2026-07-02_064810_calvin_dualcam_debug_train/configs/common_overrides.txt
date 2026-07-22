@@ -1,0 +1,7 @@
+logger=tb_logger
+datamodule/datasets=vision_lang
+datamodule/observation_space=lang_rgb_static_gripper_rel_act
+model/perceptual_encoder=gripper_cam
+datamodule.root_data_dir=/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/calvin_debug_dataset
+trainer.devices=1
+log_dir=/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-02_064810_calvin_dualcam_debug_train/calvin_logs

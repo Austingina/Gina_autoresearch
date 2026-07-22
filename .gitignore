@@ -47,6 +47,24 @@ simulators/arena/
 !simulators/maniskill/
 !simulators/maniskill/**
 
+# CALVIN external workspace (symlinks / large data)
+phase1_calvin/calvin_g
+phase1_calvin/calvin_code
+phase1_calvin/envs/
+phase1_calvin/data/
+phase1_calvin/logs/
+phase1_calvin/results/
+phase1_calvin/checkpoints/
+
+# Experiment weights / heavy dumps (keep metrics + notes)
+experiments/**/*.pt
+experiments/**/*.pth
+experiments/**/*.ckpt
+experiments/**/calvin_logs/
+experiments/**/lightning_logs/
+experiments/**/*.mp4
+_sync_from_server/
+
 # Track small provenance files
 !data/README.md
 !data/manifests/

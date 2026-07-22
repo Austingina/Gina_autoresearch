@@ -1,0 +1,2 @@
+alias,checkpoint,g_scale,query_g_control,language_control,avg_seq_len,sr_1,task_close_drawer_success,task_close_drawer_total,task_close_drawer_sr
+seed0_projected,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-13_minimal_g_concat_structured_e50_n100_h160_seed0/chunk_bc_lang_minimal_g_projected/policy.pt,1.0,normal,zero,0.05,0.05,5,100,0.05

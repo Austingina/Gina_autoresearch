@@ -1,0 +1,11 @@
+mode,checkpoint_epoch,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1,close_drawer_success,close_drawer_total,close_drawer_sr,move_slider_left_success,move_slider_left_total,move_slider_left_sr,move_slider_right_success,move_slider_right_total,move_slider_right_sr,open_drawer_success,open_drawer_total,open_drawer_sr
+articulation_g_v4_mechanism_concat,4,0.03236580640077591,0.9767794043412418,0.45,0.45,25,25,1.0,14,25,0.56,6,25,0.24,0,25,0.0
+articulation_g_v4_mechanism_concat,8,0.028594985604286194,0.9767794043412418,0.45,0.45,25,25,1.0,8,25,0.32,11,25,0.44,1,25,0.04
+articulation_g_v4_mechanism_concat,16,0.02573915757238865,0.9767794043412418,0.39,0.39,25,25,1.0,0,25,0.0,7,25,0.28,7,25,0.28
+articulation_g_v4_mechanism_concat,32,0.02412235364317894,0.9767794043412418,0.55,0.55,25,25,1.0,8,25,0.32,12,25,0.48,10,25,0.4
+articulation_g_v4_mechanism_concat,50,0.02323661558330059,0.9767794043412418,0.5,0.5,25,25,1.0,4,25,0.16,10,25,0.4,11,25,0.44
+articulation_g_v4_mechanism_film,4,0.03231365978717804,0.9767794043412418,0.57,0.57,25,25,1.0,7,25,0.28,22,25,0.88,3,25,0.12
+articulation_g_v4_mechanism_film,8,0.028582390397787094,0.9767794043412418,0.55,0.55,25,25,1.0,5,25,0.2,25,25,1.0,0,25,0.0
+articulation_g_v4_mechanism_film,16,0.026091303676366806,0.9767794043412418,0.51,0.51,25,25,1.0,0,25,0.0,22,25,0.88,4,25,0.16
+articulation_g_v4_mechanism_film,32,0.024243434891104698,0.9767794043412418,0.53,0.53,25,25,1.0,12,25,0.48,12,25,0.48,4,25,0.16
+articulation_g_v4_mechanism_film,50,0.023351671174168587,0.9767794043412418,0.46,0.46,25,25,1.0,7,25,0.28,10,25,0.4,4,25,0.16

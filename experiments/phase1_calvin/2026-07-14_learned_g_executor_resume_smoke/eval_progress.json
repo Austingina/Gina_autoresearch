@@ -1,0 +1,21 @@
+{
+  "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-14_learned_g_executor_chunk16_exec16_e50_n100_h160_seed0/chunk_bc_lang/policy.pt",
+  "num_sequences": 2,
+  "ep_len": 1,
+  "eval_mode": "balanced_first_task",
+  "eval_scan_sequences": 5000,
+  "eval_sequence_offset": 0,
+  "action_execution_horizon": 16,
+  "selected_tasks": [
+    "close_drawer",
+    "close_drawer"
+  ],
+  "selected_sequence_indices": [
+    0,
+    6
+  ],
+  "raw_results": [
+    0,
+    0
+  ]
+}

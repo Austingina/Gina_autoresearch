@@ -1,0 +1,1243 @@
+{
+  "protocol": {
+    "task_pairs": [
+      [
+        "move_slider_right",
+        "move_slider_left"
+      ]
+    ],
+    "num_segments_per_pair": 25,
+    "seed": 0,
+    "variants": [
+      "negated_recorded_rel",
+      "previous_pose_feedback"
+    ],
+    "position_action_scale_m": 0.02,
+    "orientation_action_scale_rad": 0.05,
+    "state_only_observation": true
+  },
+  "aggregate": {
+    "move_slider_right=move_slider_left": {
+      "negated_recorded_rel": {
+        "count": 25,
+        "success": 24,
+        "success_rate": 0.96,
+        "position_tracking_rmse": {
+          "p50": 0.009370853574240227,
+          "p90": 0.028889342080797183
+        }
+      },
+      "previous_pose_feedback": {
+        "count": 25,
+        "success": 25,
+        "success_rate": 1.0,
+        "position_tracking_rmse": {
+          "p50": 0.003220659120763598,
+          "p90": 0.08376980110142535
+        }
+      }
+    }
+  },
+  "rollouts": [
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 442180,
+      "segment_end": 442244,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 12,
+      "eef_displacement": [
+        0.04275348410010338,
+        -0.10798297077417374,
+        0.01289588212966919
+      ],
+      "scene_displacement_l2": 0.22214488685131073,
+      "position_tracking_rmse": 0.009761800931378456,
+      "orientation_tracking_rmse": 0.017097954076397383,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 0
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 442180,
+      "segment_end": 442244,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 11,
+      "eef_displacement": [
+        0.049617648124694824,
+        -0.10704654455184937,
+        0.009850800037384033
+      ],
+      "scene_displacement_l2": 0.22073471546173096,
+      "position_tracking_rmse": 0.10724997044037526,
+      "orientation_tracking_rmse": 0.32935087443248884,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 0
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 484914,
+      "segment_end": 484978,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        -0.11766709387302399,
+        -0.10192921757698059,
+        0.026379406452178955
+      ],
+      "scene_displacement_l2": 0.19151470065116882,
+      "position_tracking_rmse": 0.007155781014793688,
+      "orientation_tracking_rmse": 0.013616191631624752,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 1
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 484914,
+      "segment_end": 484978,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        -0.1105690747499466,
+        -0.09974043816328049,
+        0.029874324798583984
+      ],
+      "scene_displacement_l2": 0.19449396431446075,
+      "position_tracking_rmse": 0.0014032425995349962,
+      "orientation_tracking_rmse": 0.00473388198273332,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 1
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 353385,
+      "segment_end": 353449,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 12,
+      "eef_displacement": [
+        -0.12657010555267334,
+        -0.06514046341180801,
+        0.06438803672790527
+      ],
+      "scene_displacement_l2": 6.280322074890137,
+      "position_tracking_rmse": 0.009370853574240227,
+      "orientation_tracking_rmse": 0.020108635543626827,
+      "gripper_commands": {
+        "-1": 22,
+        "1": 43
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 2
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 353385,
+      "segment_end": 353449,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        -0.12230264395475388,
+        -0.06485489010810852,
+        0.06402605772018433
+      ],
+      "scene_displacement_l2": 0.22359073162078857,
+      "position_tracking_rmse": 0.030220193058719896,
+      "orientation_tracking_rmse": 0.050429228474940045,
+      "gripper_commands": {
+        "-1": 22,
+        "1": 43
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 2
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 248006,
+      "segment_end": 248070,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        0.04790612682700157,
+        -0.084358349442482,
+        0.017295658588409424
+      ],
+      "scene_displacement_l2": 6.284865856170654,
+      "position_tracking_rmse": 0.007001882573047433,
+      "orientation_tracking_rmse": 0.011053491326989792,
+      "gripper_commands": {
+        "-1": 24,
+        "1": 41
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 3
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 248006,
+      "segment_end": 248070,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        0.054762519896030426,
+        -0.0858217179775238,
+        0.015300512313842773
+      ],
+      "scene_displacement_l2": 6.285813331604004,
+      "position_tracking_rmse": 0.001390195143020769,
+      "orientation_tracking_rmse": 0.0034548673134610526,
+      "gripper_commands": {
+        "-1": 24,
+        "1": 41
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 3
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 341330,
+      "segment_end": 341394,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.005351746454834938,
+        0.01157885417342186,
+        0.009502291679382324
+      ],
+      "scene_displacement_l2": 0.010127813555300236,
+      "position_tracking_rmse": 0.09113796197323837,
+      "orientation_tracking_rmse": 0.15421769609880323,
+      "gripper_commands": {
+        "-1": 28,
+        "1": 37
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 4
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 341330,
+      "segment_end": 341394,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 21,
+      "eef_displacement": [
+        0.012945253401994705,
+        -0.13580265641212463,
+        0.10012096166610718
+      ],
+      "scene_displacement_l2": 6.287635326385498,
+      "position_tracking_rmse": 0.08333237410218665,
+      "orientation_tracking_rmse": 0.2974511971100724,
+      "gripper_commands": {
+        "-1": 28,
+        "1": 37
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 4
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 164537,
+      "segment_end": 164601,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 29,
+      "eef_displacement": [
+        -0.2887844145298004,
+        -0.06304436922073364,
+        -0.0625002384185791
+      ],
+      "scene_displacement_l2": 0.22154824435710907,
+      "position_tracking_rmse": 0.043657427064812786,
+      "orientation_tracking_rmse": 0.09090007731281995,
+      "gripper_commands": {
+        "-1": 28,
+        "1": 37
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 5
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 164537,
+      "segment_end": 164601,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        -0.2906164824962616,
+        -0.05943220108747482,
+        -0.0702182948589325
+      ],
+      "scene_displacement_l2": 6.270554065704346,
+      "position_tracking_rmse": 0.002498321192606325,
+      "orientation_tracking_rmse": 0.008066676560753314,
+      "gripper_commands": {
+        "-1": 28,
+        "1": 37
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 5
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 68245,
+      "segment_end": 68309,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.05424048751592636,
+        -0.08338955044746399,
+        0.08713763952255249
+      ],
+      "scene_displacement_l2": 0.202829509973526,
+      "position_tracking_rmse": 0.006392060899542594,
+      "orientation_tracking_rmse": 0.012310682783286647,
+      "gripper_commands": {
+        "-1": 30,
+        "1": 35
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 6
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 68245,
+      "segment_end": 68309,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.048776090145111084,
+        -0.08332319557666779,
+        0.08617264032363892
+      ],
+      "scene_displacement_l2": 0.20418015122413635,
+      "position_tracking_rmse": 0.0014831049742515458,
+      "orientation_tracking_rmse": 0.008535224009815406,
+      "gripper_commands": {
+        "-1": 30,
+        "1": 35
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 6
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 366511,
+      "segment_end": 366575,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.10721908509731293,
+        -0.10340838879346848,
+        -0.03416755795478821
+      ],
+      "scene_displacement_l2": 6.284374237060547,
+      "position_tracking_rmse": 0.00762992076548802,
+      "orientation_tracking_rmse": 0.016188971124323832,
+      "gripper_commands": {
+        "-1": 29,
+        "1": 36
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 7
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 366511,
+      "segment_end": 366575,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        -0.11269170045852661,
+        -0.10860535502433777,
+        -0.04138052463531494
+      ],
+      "scene_displacement_l2": 6.285946369171143,
+      "position_tracking_rmse": 0.0032491196139640545,
+      "orientation_tracking_rmse": 0.010703432762177072,
+      "gripper_commands": {
+        "-1": 29,
+        "1": 36
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 7
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 99797,
+      "segment_end": 99861,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        -0.07760004699230194,
+        -0.1145588755607605,
+        0.01236039400100708
+      ],
+      "scene_displacement_l2": 0.22165727615356445,
+      "position_tracking_rmse": 0.017255865963780724,
+      "orientation_tracking_rmse": 0.026753805520850535,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 8
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 99797,
+      "segment_end": 99861,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        -0.09364186972379684,
+        -0.11557425558567047,
+        0.00563281774520874
+      ],
+      "scene_displacement_l2": 0.23848623037338257,
+      "position_tracking_rmse": 0.004637694248636735,
+      "orientation_tracking_rmse": 0.014304364064415365,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 8
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 385733,
+      "segment_end": 385797,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 13,
+      "eef_displacement": [
+        0.11631728708744049,
+        -0.08461190015077591,
+        0.03976947069168091
+      ],
+      "scene_displacement_l2": 0.19591306149959564,
+      "position_tracking_rmse": 0.00844910299410347,
+      "orientation_tracking_rmse": 0.014385614290687732,
+      "gripper_commands": {
+        "-1": 20,
+        "1": 45
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 9
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 385733,
+      "segment_end": 385797,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 12,
+      "eef_displacement": [
+        0.12106829881668091,
+        -0.08468952775001526,
+        0.033069074153900146
+      ],
+      "scene_displacement_l2": 6.285594463348389,
+      "position_tracking_rmse": 0.0020357522128214988,
+      "orientation_tracking_rmse": 0.007990358753269134,
+      "gripper_commands": {
+        "-1": 20,
+        "1": 45
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 9
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 491724,
+      "segment_end": 491788,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 21,
+      "eef_displacement": [
+        -0.14343689382076263,
+        -0.1222827285528183,
+        0.015100300312042236
+      ],
+      "scene_displacement_l2": 0.25584930181503296,
+      "position_tracking_rmse": 0.017465198315400766,
+      "orientation_tracking_rmse": 0.03131310255522917,
+      "gripper_commands": {
+        "-1": 29,
+        "1": 36
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 10
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 491724,
+      "segment_end": 491788,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 19,
+      "eef_displacement": [
+        -0.14163468778133392,
+        -0.12411655485630035,
+        0.005769312381744385
+      ],
+      "scene_displacement_l2": 6.288360595703125,
+      "position_tracking_rmse": 0.004889863767228235,
+      "orientation_tracking_rmse": 0.012720843939495663,
+      "gripper_commands": {
+        "-1": 29,
+        "1": 36
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 10
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 317053,
+      "segment_end": 317117,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 19,
+      "eef_displacement": [
+        -0.11145423352718353,
+        -0.06528189778327942,
+        0.029174745082855225
+      ],
+      "scene_displacement_l2": 6.2888031005859375,
+      "position_tracking_rmse": 0.007198777202765595,
+      "orientation_tracking_rmse": 0.016423824262947355,
+      "gripper_commands": {
+        "-1": 36,
+        "1": 29
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 11
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 317053,
+      "segment_end": 317117,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 18,
+      "eef_displacement": [
+        -0.11457584798336029,
+        -0.058190785348415375,
+        0.026565253734588623
+      ],
+      "scene_displacement_l2": 4.877910137176514,
+      "position_tracking_rmse": 0.0012445038479816407,
+      "orientation_tracking_rmse": 0.004200844791864733,
+      "gripper_commands": {
+        "-1": 36,
+        "1": 29
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 11
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 395114,
+      "segment_end": 395178,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        0.0016258079558610916,
+        -0.04744754731655121,
+        0.013913273811340332
+      ],
+      "scene_displacement_l2": 0.21948164701461792,
+      "position_tracking_rmse": 0.016436135076472878,
+      "orientation_tracking_rmse": 0.04195178773187732,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 12
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 395114,
+      "segment_end": 395178,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        -0.00842251256108284,
+        -0.04219109192490578,
+        0.014293432235717773
+      ],
+      "scene_displacement_l2": 0.2335057407617569,
+      "position_tracking_rmse": 0.005722430750303293,
+      "orientation_tracking_rmse": 0.029929404209275666,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 12
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 67277,
+      "segment_end": 67341,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        0.035326920449733734,
+        -0.05940066650509834,
+        0.0526270866394043
+      ],
+      "scene_displacement_l2": 0.18299664556980133,
+      "position_tracking_rmse": 0.007188243761691149,
+      "orientation_tracking_rmse": 0.012105065029338558,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 13
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 67277,
+      "segment_end": 67341,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        0.04428789019584656,
+        -0.05678735300898552,
+        0.05255347490310669
+      ],
+      "scene_displacement_l2": 0.1829313039779663,
+      "position_tracking_rmse": 0.001906831966755528,
+      "orientation_tracking_rmse": 0.006602398004048493,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 13
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 560606,
+      "segment_end": 560670,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 12,
+      "eef_displacement": [
+        -0.023430190980434418,
+        -0.01815357618033886,
+        0.03129392862319946
+      ],
+      "scene_displacement_l2": 0.2426479160785675,
+      "position_tracking_rmse": 0.009856714819705315,
+      "orientation_tracking_rmse": 0.020997721141027357,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 14
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 560606,
+      "segment_end": 560670,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 11,
+      "eef_displacement": [
+        -0.01946943998336792,
+        -0.011204641312360764,
+        0.03086954355239868
+      ],
+      "scene_displacement_l2": 0.24733158946037292,
+      "position_tracking_rmse": 0.0037092550429264595,
+      "orientation_tracking_rmse": 0.012632442509648229,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 14
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 245942,
+      "segment_end": 246006,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        0.07108642905950546,
+        -0.06714776158332825,
+        0.050917625427246094
+      ],
+      "scene_displacement_l2": 0.23463594913482666,
+      "position_tracking_rmse": 0.009100970469567494,
+      "orientation_tracking_rmse": 0.01378581792951284,
+      "gripper_commands": {
+        "-1": 25,
+        "1": 40
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 15
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 245942,
+      "segment_end": 246006,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 13,
+      "eef_displacement": [
+        0.08265984058380127,
+        -0.06287315487861633,
+        0.049606263637542725
+      ],
+      "scene_displacement_l2": 0.2383003681898117,
+      "position_tracking_rmse": 0.0019558024561916946,
+      "orientation_tracking_rmse": 0.006220472115963782,
+      "gripper_commands": {
+        "-1": 25,
+        "1": 40
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 15
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 308809,
+      "segment_end": 308873,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 13,
+      "eef_displacement": [
+        -0.023138975724577904,
+        -0.05202705040574074,
+        0.03311920166015625
+      ],
+      "scene_displacement_l2": 0.2368278205394745,
+      "position_tracking_rmse": 0.0171674504731142,
+      "orientation_tracking_rmse": 0.019476912628876058,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 16
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 308809,
+      "segment_end": 308873,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        0.00142175133805722,
+        -0.04753585904836655,
+        0.03305506706237793
+      ],
+      "scene_displacement_l2": 0.22216808795928955,
+      "position_tracking_rmse": 0.0014656163524486008,
+      "orientation_tracking_rmse": 0.0044743986660441895,
+      "gripper_commands": {
+        "-1": 26,
+        "1": 39
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 16
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 246737,
+      "segment_end": 246801,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        -0.0596257708966732,
+        -0.07268058508634567,
+        0.03362184762954712
+      ],
+      "scene_displacement_l2": 0.2315920740365982,
+      "position_tracking_rmse": 0.006163518537660976,
+      "orientation_tracking_rmse": 0.00824062023015649,
+      "gripper_commands": {
+        "-1": 33,
+        "1": 32
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 17
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 246737,
+      "segment_end": 246801,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.06259342283010483,
+        -0.0657731369137764,
+        0.0334509015083313
+      ],
+      "scene_displacement_l2": 6.28750467300415,
+      "position_tracking_rmse": 0.0011958142461917548,
+      "orientation_tracking_rmse": 0.00353182353929622,
+      "gripper_commands": {
+        "-1": 33,
+        "1": 32
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 17
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 477938,
+      "segment_end": 478002,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.10710358619689941,
+        -0.07318521291017532,
+        0.057238101959228516
+      ],
+      "scene_displacement_l2": 0.260603129863739,
+      "position_tracking_rmse": 0.010934648716418829,
+      "orientation_tracking_rmse": 0.02096439776529263,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 18
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 477938,
+      "segment_end": 478002,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 23,
+      "eef_displacement": [
+        -0.10427367687225342,
+        -0.07291603088378906,
+        0.05747365951538086
+      ],
+      "scene_displacement_l2": 0.26793235540390015,
+      "position_tracking_rmse": 0.08406141910091781,
+      "orientation_tracking_rmse": 0.31100917031199693,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 18
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 123609,
+      "segment_end": 123673,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.2561180591583252,
+        -0.08783378452062607,
+        0.012279927730560303
+      ],
+      "scene_displacement_l2": 0.009130141697824001,
+      "position_tracking_rmse": 0.00598932157397167,
+      "orientation_tracking_rmse": 0.011481864265048195,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 19
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 123609,
+      "segment_end": 123673,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 25,
+      "eef_displacement": [
+        -0.259198397397995,
+        -0.0905708596110344,
+        0.011577606201171875
+      ],
+      "scene_displacement_l2": 0.0081992382183671,
+      "position_tracking_rmse": 0.004578603140058746,
+      "orientation_tracking_rmse": 0.015321944691132756,
+      "gripper_commands": {
+        "-1": 27,
+        "1": 38
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 19
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 101998,
+      "segment_end": 102062,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 14,
+      "eef_displacement": [
+        0.1443530023097992,
+        -0.08391071110963821,
+        0.005207359790802002
+      ],
+      "scene_displacement_l2": 0.23933924734592438,
+      "position_tracking_rmse": 0.010096600520317885,
+      "orientation_tracking_rmse": 0.0154665188968693,
+      "gripper_commands": {
+        "-1": 24,
+        "1": 41
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 20
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 101998,
+      "segment_end": 102062,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 13,
+      "eef_displacement": [
+        0.14902786910533905,
+        -0.08309261500835419,
+        -0.002069711685180664
+      ],
+      "scene_displacement_l2": 0.24445472657680511,
+      "position_tracking_rmse": 0.002540486719064254,
+      "orientation_tracking_rmse": 0.010895777705906665,
+      "gripper_commands": {
+        "-1": 24,
+        "1": 41
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 20
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 282153,
+      "segment_end": 282217,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 20,
+      "eef_displacement": [
+        -0.14837369322776794,
+        -0.05220232903957367,
+        0.07827705144882202
+      ],
+      "scene_displacement_l2": 0.23272022604942322,
+      "position_tracking_rmse": 0.006569580781379222,
+      "orientation_tracking_rmse": 0.008883541253432365,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 21
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 282153,
+      "segment_end": 282217,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 19,
+      "eef_displacement": [
+        -0.13870581984519958,
+        -0.05106247961521149,
+        0.08257412910461426
+      ],
+      "scene_displacement_l2": 0.2344553917646408,
+      "position_tracking_rmse": 0.0010787679577578205,
+      "orientation_tracking_rmse": 0.003752129523293404,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 21
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 126728,
+      "segment_end": 126792,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 28,
+      "eef_displacement": [
+        -0.16894492506980896,
+        -0.07199530303478241,
+        0.040573835372924805
+      ],
+      "scene_displacement_l2": 0.21130412817001343,
+      "position_tracking_rmse": 0.03650543792439475,
+      "orientation_tracking_rmse": 0.07449793426419553,
+      "gripper_commands": {
+        "-1": 33,
+        "1": 32
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 22
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 126728,
+      "segment_end": 126792,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 47,
+      "eef_displacement": [
+        -0.7705988883972168,
+        -0.08347022533416748,
+        -0.09260088205337524
+      ],
+      "scene_displacement_l2": 0.28000298142433167,
+      "position_tracking_rmse": 0.30423721214522703,
+      "orientation_tracking_rmse": 0.3347619250162712,
+      "gripper_commands": {
+        "-1": 33,
+        "1": 32
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 22
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 142859,
+      "segment_end": 142923,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 16,
+      "eef_displacement": [
+        -0.3083761930465698,
+        -0.08619008958339691,
+        0.02519780397415161
+      ],
+      "scene_displacement_l2": 0.23850329220294952,
+      "position_tracking_rmse": 0.010434075054526211,
+      "orientation_tracking_rmse": 0.017722979054403808,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 23
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 142859,
+      "segment_end": 142923,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 15,
+      "eef_displacement": [
+        -0.3137066662311554,
+        -0.0816659927368164,
+        0.02134239673614502
+      ],
+      "scene_displacement_l2": 0.2583385407924652,
+      "position_tracking_rmse": 0.003220659120763598,
+      "orientation_tracking_rmse": 0.016259099729165807,
+      "gripper_commands": {
+        "-1": 23,
+        "1": 42
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 23
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "move_slider_left",
+      "segment_start": 289116,
+      "segment_end": 289180,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        -0.03834974020719528,
+        -0.07389616966247559,
+        0.04464441537857056
+      ],
+      "scene_displacement_l2": 6.287548542022705,
+      "position_tracking_rmse": 0.00860794713362985,
+      "orientation_tracking_rmse": 0.015027986267392622,
+      "gripper_commands": {
+        "-1": 32,
+        "1": 33
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 24
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "move_slider_left",
+      "segment_start": 289116,
+      "segment_end": 289180,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 17,
+      "eef_displacement": [
+        -0.027025099843740463,
+        -0.07344614714384079,
+        0.043341100215911865
+      ],
+      "scene_displacement_l2": 6.284520149230957,
+      "position_tracking_rmse": 0.022449299906374575,
+      "orientation_tracking_rmse": 0.0349118946323551,
+      "gripper_commands": {
+        "-1": 32,
+        "1": 33
+      },
+      "source_task": "move_slider_right",
+      "pair_index": 0,
+      "segment_index": 24
+    }
+  ]
+}

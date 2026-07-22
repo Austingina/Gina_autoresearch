@@ -1,0 +1,1237 @@
+{
+  "protocol": {
+    "task_pairs": [
+      [
+        "push_blue_block_right",
+        "push_blue_block_left"
+      ]
+    ],
+    "num_segments_per_pair": 25,
+    "seed": 0,
+    "variants": [
+      "negated_recorded_rel",
+      "previous_pose_feedback"
+    ],
+    "position_action_scale_m": 0.02,
+    "orientation_action_scale_rad": 0.05,
+    "state_only_observation": true
+  },
+  "aggregate": {
+    "push_blue_block_right=push_blue_block_left": {
+      "negated_recorded_rel": {
+        "count": 25,
+        "success": 5,
+        "success_rate": 0.2,
+        "position_tracking_rmse": {
+          "p50": 0.006906488141079484,
+          "p90": 0.008480942621376154
+        }
+      },
+      "previous_pose_feedback": {
+        "count": 25,
+        "success": 5,
+        "success_rate": 0.2,
+        "position_tracking_rmse": {
+          "p50": 0.0014745479016879835,
+          "p90": 0.002232934173067845
+        }
+      }
+    }
+  },
+  "rollouts": [
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 101498,
+      "segment_end": 101562,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 38,
+      "eef_displacement": [
+        -0.16774161159992218,
+        -0.005424670875072479,
+        0.013851165771484375
+      ],
+      "scene_displacement_l2": 0.42814862728118896,
+      "position_tracking_rmse": 0.008198335220704412,
+      "orientation_tracking_rmse": 0.011771217718322265,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 0
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 101498,
+      "segment_end": 101562,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 37,
+      "eef_displacement": [
+        -0.15561029314994812,
+        -0.005491882562637329,
+        0.017457902431488037
+      ],
+      "scene_displacement_l2": 0.44141504168510437,
+      "position_tracking_rmse": 0.0018387283418459684,
+      "orientation_tracking_rmse": 0.004655424881041938,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 0
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 261199,
+      "segment_end": 261263,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.1739400327205658,
+        -0.0487300381064415,
+        0.07239833474159241
+      ],
+      "scene_displacement_l2": 0.0061858901754021645,
+      "position_tracking_rmse": 0.008222975437153801,
+      "orientation_tracking_rmse": 0.013673867409011529,
+      "gripper_commands": {
+        "-1": 62,
+        "1": 3
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 1
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 261199,
+      "segment_end": 261263,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.15804153680801392,
+        -0.05114958435297012,
+        0.07043138146400452
+      ],
+      "scene_displacement_l2": 0.0058250343427062035,
+      "position_tracking_rmse": 0.0008260777967426678,
+      "orientation_tracking_rmse": 0.004106833345938115,
+      "gripper_commands": {
+        "-1": 62,
+        "1": 3
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 1
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 476983,
+      "segment_end": 477047,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 37,
+      "eef_displacement": [
+        -0.21293479204177856,
+        0.09884226322174072,
+        0.03225982189178467
+      ],
+      "scene_displacement_l2": 0.2915709316730499,
+      "position_tracking_rmse": 0.0070838782307379115,
+      "orientation_tracking_rmse": 0.010607668245816678,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 2
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 476983,
+      "segment_end": 477047,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 36,
+      "eef_displacement": [
+        -0.20844081044197083,
+        0.113740935921669,
+        0.031725943088531494
+      ],
+      "scene_displacement_l2": 6.290499687194824,
+      "position_tracking_rmse": 0.00143404338757691,
+      "orientation_tracking_rmse": 0.004668252127704162,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 2
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 593016,
+      "segment_end": 593080,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.3323290944099426,
+        0.0698770135641098,
+        0.05305725336074829
+      ],
+      "scene_displacement_l2": 0.00558045506477356,
+      "position_tracking_rmse": 0.006568611613312659,
+      "orientation_tracking_rmse": 0.010365129489059158,
+      "gripper_commands": {
+        "-1": 48,
+        "1": 17
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 3
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 593016,
+      "segment_end": 593080,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.3352043628692627,
+        0.07610327005386353,
+        0.04832768440246582
+      ],
+      "scene_displacement_l2": 0.004615836311131716,
+      "position_tracking_rmse": 0.0012765136868452505,
+      "orientation_tracking_rmse": 0.004133719226430788,
+      "gripper_commands": {
+        "-1": 48,
+        "1": 17
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 3
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 436171,
+      "segment_end": 436235,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.18563398718833923,
+        0.012665681540966034,
+        0.019514739513397217
+      ],
+      "scene_displacement_l2": 0.006656538229435682,
+      "position_tracking_rmse": 0.00785309429714509,
+      "orientation_tracking_rmse": 0.010939032180124413,
+      "gripper_commands": {
+        "-1": 32,
+        "1": 33
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 4
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 436171,
+      "segment_end": 436235,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.19574293494224548,
+        0.0071725621819496155,
+        0.018711626529693604
+      ],
+      "scene_displacement_l2": 6.282160758972168,
+      "position_tracking_rmse": 0.0020175486483961476,
+      "orientation_tracking_rmse": 0.005663146100302554,
+      "gripper_commands": {
+        "-1": 32,
+        "1": 33
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 4
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 264099,
+      "segment_end": 264163,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.186231330037117,
+        0.01987820863723755,
+        0.0016109347343444824
+      ],
+      "scene_displacement_l2": 0.018446024507284164,
+      "position_tracking_rmse": 0.002769977010546238,
+      "orientation_tracking_rmse": 0.003500047323520188,
+      "gripper_commands": {
+        "-1": 65
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 5
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 264099,
+      "segment_end": 264163,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.18894024193286896,
+        0.019753120839595795,
+        0.0006788969039916992
+      ],
+      "scene_displacement_l2": 0.017856493592262268,
+      "position_tracking_rmse": 0.0003927626420068843,
+      "orientation_tracking_rmse": 0.0011031266479060763,
+      "gripper_commands": {
+        "-1": 65
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 5
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 570683,
+      "segment_end": 570747,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        0.017151325941085815,
+        -0.21130292117595673,
+        0.09324237704277039
+      ],
+      "scene_displacement_l2": 0.05683637410402298,
+      "position_tracking_rmse": 0.006906488141079484,
+      "orientation_tracking_rmse": 0.007668260613118226,
+      "gripper_commands": {
+        "-1": 34,
+        "1": 31
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 6
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 570683,
+      "segment_end": 570747,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        0.029105231165885925,
+        -0.20865052938461304,
+        0.0945526659488678
+      ],
+      "scene_displacement_l2": 0.0767228901386261,
+      "position_tracking_rmse": 0.0015324317206128377,
+      "orientation_tracking_rmse": 0.004192658965988977,
+      "gripper_commands": {
+        "-1": 34,
+        "1": 31
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 6
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 593014,
+      "segment_end": 593078,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.3227189779281616,
+        0.07748457789421082,
+        0.055786073207855225
+      ],
+      "scene_displacement_l2": 0.17609909176826477,
+      "position_tracking_rmse": 0.006751752916558812,
+      "orientation_tracking_rmse": 0.011020223768667495,
+      "gripper_commands": {
+        "-1": 48,
+        "1": 17
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 7
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 593014,
+      "segment_end": 593078,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.3198978900909424,
+        0.08111007511615753,
+        0.05416226387023926
+      ],
+      "scene_displacement_l2": 0.171697735786438,
+      "position_tracking_rmse": 0.001297598601281035,
+      "orientation_tracking_rmse": 0.004563699246240816,
+      "gripper_commands": {
+        "-1": 48,
+        "1": 17
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 7
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 521659,
+      "segment_end": 521723,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.2009352594614029,
+        -0.02867751568555832,
+        0.08731630444526672
+      ],
+      "scene_displacement_l2": 0.1419743299484253,
+      "position_tracking_rmse": 0.008648276396383936,
+      "orientation_tracking_rmse": 0.011109034791899166,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 8
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 521659,
+      "segment_end": 521723,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.19166254997253418,
+        -0.026150323450565338,
+        0.08907344937324524
+      ],
+      "scene_displacement_l2": 0.11795608699321747,
+      "position_tracking_rmse": 0.0014745479016879835,
+      "orientation_tracking_rmse": 0.005655891251470333,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 28
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 8
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 570686,
+      "segment_end": 570750,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.029531240463256836,
+        -0.20799624919891357,
+        0.07897436618804932
+      ],
+      "scene_displacement_l2": 0.04260089248418808,
+      "position_tracking_rmse": 0.006679435708560425,
+      "orientation_tracking_rmse": 0.00819491575580069,
+      "gripper_commands": {
+        "-1": 34,
+        "1": 31
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 9
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 570686,
+      "segment_end": 570750,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.020418882369995117,
+        -0.20756423473358154,
+        0.08251440525054932
+      ],
+      "scene_displacement_l2": 0.32048299908638,
+      "position_tracking_rmse": 0.002274776713509224,
+      "orientation_tracking_rmse": 0.0037248313698527886,
+      "gripper_commands": {
+        "-1": 34,
+        "1": 31
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 9
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 542305,
+      "segment_end": 542345,
+      "num_actions": 41,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.1677805483341217,
+        -0.010351486504077911,
+        0.04970240592956543
+      ],
+      "scene_displacement_l2": 0.004698310513049364,
+      "position_tracking_rmse": 0.0047961446342905814,
+      "orientation_tracking_rmse": 0.00536202203221249,
+      "gripper_commands": {
+        "-1": 41
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 10
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 542305,
+      "segment_end": 542345,
+      "num_actions": 41,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.16709455847740173,
+        -0.010266609489917755,
+        0.05406796932220459
+      ],
+      "scene_displacement_l2": 0.003409706288948655,
+      "position_tracking_rmse": 0.0008503459696480169,
+      "orientation_tracking_rmse": 0.0018785347148906487,
+      "gripper_commands": {
+        "-1": 41
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 10
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 605961,
+      "segment_end": 605996,
+      "num_actions": 36,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.15791621804237366,
+        -0.036641091108322144,
+        0.02804669737815857
+      ],
+      "scene_displacement_l2": 0.004614184610545635,
+      "position_tracking_rmse": 0.004590939544907567,
+      "orientation_tracking_rmse": 0.00886215456201816,
+      "gripper_commands": {
+        "-1": 36
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 11
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 605961,
+      "segment_end": 605996,
+      "num_actions": 36,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.1575143039226532,
+        -0.03636724501848221,
+        0.031878262758255005
+      ],
+      "scene_displacement_l2": 5.0294599533081055,
+      "position_tracking_rmse": 0.0008159300009807892,
+      "orientation_tracking_rmse": 0.002068767564460214,
+      "gripper_commands": {
+        "-1": 36
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 11
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 317941,
+      "segment_end": 317989,
+      "num_actions": 49,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.09898119419813156,
+        0.21044662594795227,
+        -0.04601415991783142
+      ],
+      "scene_displacement_l2": 0.020055625587701797,
+      "position_tracking_rmse": 0.0070193485614425555,
+      "orientation_tracking_rmse": 0.010299499019372924,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 12
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 317941,
+      "segment_end": 317989,
+      "num_actions": 49,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.09066982567310333,
+        0.2103048861026764,
+        -0.04341477155685425
+      ],
+      "scene_displacement_l2": 5.647264003753662,
+      "position_tracking_rmse": 0.00599778378255765,
+      "orientation_tracking_rmse": 0.009839008863077328,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 12
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 502094,
+      "segment_end": 502142,
+      "num_actions": 49,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.1372814178466797,
+        0.14992858469486237,
+        -0.019183844327926636
+      ],
+      "scene_displacement_l2": 0.21715205907821655,
+      "position_tracking_rmse": 0.007006661077814239,
+      "orientation_tracking_rmse": 0.008160823216303523,
+      "gripper_commands": {
+        "-1": 38,
+        "1": 11
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 13
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 502094,
+      "segment_end": 502142,
+      "num_actions": 49,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.13709060847759247,
+        0.14669808745384216,
+        -0.01566767692565918
+      ],
+      "scene_displacement_l2": 0.21993154287338257,
+      "position_tracking_rmse": 0.001486732348820143,
+      "orientation_tracking_rmse": 0.004493812876978678,
+      "gripper_commands": {
+        "-1": 38,
+        "1": 11
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 13
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 174842,
+      "segment_end": 174889,
+      "num_actions": 48,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.09678957611322403,
+        -0.1823667585849762,
+        -0.1500164270401001
+      ],
+      "scene_displacement_l2": 4.5650553703308105,
+      "position_tracking_rmse": 0.007286232564696608,
+      "orientation_tracking_rmse": 0.00963269693227276,
+      "gripper_commands": {
+        "-1": 42,
+        "1": 6
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 14
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 174842,
+      "segment_end": 174889,
+      "num_actions": 48,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.09552180767059326,
+        -0.1829138994216919,
+        -0.1542641520500183
+      ],
+      "scene_displacement_l2": 4.4665327072143555,
+      "position_tracking_rmse": 0.0014107730543336864,
+      "orientation_tracking_rmse": 0.0058327692960930275,
+      "gripper_commands": {
+        "-1": 42,
+        "1": 6
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 14
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 461020,
+      "segment_end": 461084,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.07980767637491226,
+        -0.010549694299697876,
+        0.004864126443862915
+      ],
+      "scene_displacement_l2": 6.280423641204834,
+      "position_tracking_rmse": 0.0068198047035696934,
+      "orientation_tracking_rmse": 0.011833822246627998,
+      "gripper_commands": {
+        "-1": 38,
+        "1": 27
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 15
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 461020,
+      "segment_end": 461084,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.08156618475914001,
+        -0.007949680089950562,
+        -0.000504612922668457
+      ],
+      "scene_displacement_l2": 0.007984857074916363,
+      "position_tracking_rmse": 0.0014746608368637658,
+      "orientation_tracking_rmse": 0.005283536732903486,
+      "gripper_commands": {
+        "-1": 38,
+        "1": 27
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 15
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 286113,
+      "segment_end": 286177,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.08974791318178177,
+        -0.006224624812602997,
+        0.03752073645591736
+      ],
+      "scene_displacement_l2": 0.010051591321825981,
+      "position_tracking_rmse": 0.004723836453830905,
+      "orientation_tracking_rmse": 0.09965309835599263,
+      "gripper_commands": {
+        "-1": 40,
+        "1": 25
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 16
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 286113,
+      "segment_end": 286177,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.08572843670845032,
+        -0.0029175132513046265,
+        0.03563675284385681
+      ],
+      "scene_displacement_l2": 0.01161370612680912,
+      "position_tracking_rmse": 0.0009393099033762265,
+      "orientation_tracking_rmse": 0.06905555872927951,
+      "gripper_commands": {
+        "-1": 40,
+        "1": 25
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 16
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 308117,
+      "segment_end": 308181,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 38,
+      "eef_displacement": [
+        -0.14010508358478546,
+        -0.002787351608276367,
+        0.03072822093963623
+      ],
+      "scene_displacement_l2": 0.1743279993534088,
+      "position_tracking_rmse": 0.004382013941581017,
+      "orientation_tracking_rmse": 0.006096558763250371,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 17
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 308117,
+      "segment_end": 308181,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 37,
+      "eef_displacement": [
+        -0.14054784178733826,
+        -0.005289196968078613,
+        0.034063637256622314
+      ],
+      "scene_displacement_l2": 0.18298527598381042,
+      "position_tracking_rmse": 0.001209310326885272,
+      "orientation_tracking_rmse": 0.002985836098507578,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 17
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 100598,
+      "segment_end": 100662,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.23424163460731506,
+        -0.17150944471359253,
+        0.01508110761642456
+      ],
+      "scene_displacement_l2": 0.00688985176384449,
+      "position_tracking_rmse": 0.00822994195886448,
+      "orientation_tracking_rmse": 0.010513332165906109,
+      "gripper_commands": {
+        "-1": 42,
+        "1": 23
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 18
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 100598,
+      "segment_end": 100662,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.2296285331249237,
+        -0.1721429079771042,
+        0.016357839107513428
+      ],
+      "scene_displacement_l2": 2.4142913818359375,
+      "position_tracking_rmse": 0.0019704028380862857,
+      "orientation_tracking_rmse": 0.006633206859822241,
+      "gripper_commands": {
+        "-1": 42,
+        "1": 23
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 18
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 308115,
+      "segment_end": 308179,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 36,
+      "eef_displacement": [
+        -0.1516326367855072,
+        -0.007943972945213318,
+        0.054079532623291016
+      ],
+      "scene_displacement_l2": 0.17958086729049683,
+      "position_tracking_rmse": 0.004223746976486316,
+      "orientation_tracking_rmse": 0.005976075135332474,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 19
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 308115,
+      "segment_end": 308179,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 36,
+      "eef_displacement": [
+        -0.15291781723499298,
+        -0.01030188798904419,
+        0.05816364288330078
+      ],
+      "scene_displacement_l2": 0.1823478490114212,
+      "position_tracking_rmse": 0.0010602309174660785,
+      "orientation_tracking_rmse": 0.0029935903563754794,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 19
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 532055,
+      "segment_end": 532098,
+      "num_actions": 44,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.10083746165037155,
+        -0.185362309217453,
+        -0.15753483772277832
+      ],
+      "scene_displacement_l2": 3.819730520248413,
+      "position_tracking_rmse": 0.00920738097153831,
+      "orientation_tracking_rmse": 0.014176328262789925,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 7
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 20
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 532055,
+      "segment_end": 532098,
+      "num_actions": 44,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.10101033747196198,
+        -0.18412697315216064,
+        -0.16305693984031677
+      ],
+      "scene_displacement_l2": 2.1415884494781494,
+      "position_tracking_rmse": 0.0018940595760575242,
+      "orientation_tracking_rmse": 0.005409409836627363,
+      "gripper_commands": {
+        "-1": 37,
+        "1": 7
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 20
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 159018,
+      "segment_end": 159082,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 44,
+      "eef_displacement": [
+        -0.1315271109342575,
+        -0.07021254301071167,
+        0.013811707496643066
+      ],
+      "scene_displacement_l2": 6.285242557525635,
+      "position_tracking_rmse": 0.007612315823338448,
+      "orientation_tracking_rmse": 0.006753115827528014,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 21
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 159018,
+      "segment_end": 159082,
+      "num_actions": 65,
+      "success": true,
+      "success_step": 43,
+      "eef_displacement": [
+        -0.127427339553833,
+        -0.07492485642433167,
+        0.015264630317687988
+      ],
+      "scene_displacement_l2": 6.287699222564697,
+      "position_tracking_rmse": 0.002228573881514567,
+      "orientation_tracking_rmse": 0.003973193283379383,
+      "gripper_commands": {
+        "-1": 35,
+        "1": 30
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 21
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 382006,
+      "segment_end": 382070,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.15821464359760284,
+        -0.04543088376522064,
+        0.09362664818763733
+      ],
+      "scene_displacement_l2": 0.00815699715167284,
+      "position_tracking_rmse": 0.0030828282829474763,
+      "orientation_tracking_rmse": 0.004795354091380577,
+      "gripper_commands": {
+        "-1": 55,
+        "1": 10
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 22
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 382006,
+      "segment_end": 382070,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.1554509699344635,
+        -0.04390978813171387,
+        0.09296151995658875
+      ],
+      "scene_displacement_l2": 0.013646669685840607,
+      "position_tracking_rmse": 0.0006801849894805597,
+      "orientation_tracking_rmse": 0.002653105803955332,
+      "gripper_commands": {
+        "-1": 55,
+        "1": 10
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 22
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 436199,
+      "segment_end": 436240,
+      "num_actions": 42,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.05410083383321762,
+        0.1616813838481903,
+        -0.06984126567840576
+      ],
+      "scene_displacement_l2": 0.006860184948891401,
+      "position_tracking_rmse": 0.008962094289071684,
+      "orientation_tracking_rmse": 0.02011923111757778,
+      "gripper_commands": {
+        "-1": 30,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 23
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 436199,
+      "segment_end": 436240,
+      "num_actions": 42,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.05431140959262848,
+        0.16842538118362427,
+        -0.07355314493179321
+      ],
+      "scene_displacement_l2": 6.283371448516846,
+      "position_tracking_rmse": 0.0022358410341033635,
+      "orientation_tracking_rmse": 0.013023958143786952,
+      "gripper_commands": {
+        "-1": 30,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 23
+    },
+    {
+      "variant": "negated_recorded_rel",
+      "target_task": "push_blue_block_left",
+      "segment_start": 101604,
+      "segment_end": 101668,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.0874737799167633,
+        -0.008540630340576172,
+        -0.05029243230819702
+      ],
+      "scene_displacement_l2": 0.01078618224710226,
+      "position_tracking_rmse": 0.005464984294030947,
+      "orientation_tracking_rmse": 0.008967261290167507,
+      "gripper_commands": {
+        "-1": 53,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 24
+    },
+    {
+      "variant": "previous_pose_feedback",
+      "target_task": "push_blue_block_left",
+      "segment_start": 101604,
+      "segment_end": 101668,
+      "num_actions": 65,
+      "success": false,
+      "success_step": null,
+      "eef_displacement": [
+        -0.08449705690145493,
+        -0.0060647353529930115,
+        -0.05753445625305176
+      ],
+      "scene_displacement_l2": 6.235177516937256,
+      "position_tracking_rmse": 0.0015168159542746208,
+      "orientation_tracking_rmse": 0.004731614465262694,
+      "gripper_commands": {
+        "-1": 53,
+        "1": 12
+      },
+      "source_task": "push_blue_block_right",
+      "pair_index": 0,
+      "segment_index": 24
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "checkpoint_root": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_g_balanced_n25_h160_seed0_rerun",
+  "videos": [
+    {
+      "mode": "no_g",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 64,
+      "frames": 39,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/no_g/close_drawer/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "no_g",
+      "task": "move_slider_left",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/no_g/move_slider_left/rollout_00_success_0.mp4"
+    },
+    {
+      "mode": "no_g",
+      "task": "move_slider_right",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 73,
+      "frames": 43,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/no_g/move_slider_right/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "no_g",
+      "task": "open_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/no_g/open_drawer/rollout_00_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_concat",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 66,
+      "frames": 40,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_concat/close_drawer/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_concat",
+      "task": "move_slider_left",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_concat/move_slider_left/rollout_00_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_concat",
+      "task": "move_slider_right",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 70,
+      "frames": 42,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_concat/move_slider_right/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_concat",
+      "task": "open_drawer",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 142,
+      "frames": 78,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_concat/open_drawer/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_film",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 61,
+      "frames": 37,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_film/close_drawer/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_film",
+      "task": "move_slider_left",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_film/move_slider_left/rollout_00_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_film",
+      "task": "move_slider_right",
+      "rollout_idx": 0,
+      "success": true,
+      "success_step": 76,
+      "frames": 45,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_film/move_slider_right/rollout_00_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v2_film",
+      "task": "open_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-04_state_bc_articulation_v1_v2_video_rollouts/articulation_g_v2_film/open_drawer/rollout_00_success_0.mp4"
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+[
+  {
+    "mode": "no_g",
+    "checkpoint_epoch": 4,
+    "train_val_mse": 0.038223665207624435,
+    "train_val_gripper_acc": 0.9758713136729222,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "no_g",
+    "checkpoint_epoch": 8,
+    "train_val_mse": 0.0327063649892807,
+    "train_val_gripper_acc": 0.9772117962466488,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "no_g",
+    "checkpoint_epoch": 16,
+    "train_val_mse": 0.02809029445052147,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "no_g",
+    "checkpoint_epoch": 32,
+    "train_val_mse": 0.025225389748811722,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "no_g",
+    "checkpoint_epoch": 50,
+    "train_val_mse": 0.02390177920460701,
+    "train_val_gripper_acc": 0.9772117962466488,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_concat",
+    "checkpoint_epoch": 4,
+    "train_val_mse": 0.03225008025765419,
+    "train_val_gripper_acc": 0.9731903485254692,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_concat",
+    "checkpoint_epoch": 8,
+    "train_val_mse": 0.026716766878962517,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_concat",
+    "checkpoint_epoch": 16,
+    "train_val_mse": 0.02462892234325409,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_concat",
+    "checkpoint_epoch": 32,
+    "train_val_mse": 0.023361271247267723,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_concat",
+    "checkpoint_epoch": 50,
+    "train_val_mse": 0.022622063755989075,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_film",
+    "checkpoint_epoch": 4,
+    "train_val_mse": 0.03500249609351158,
+    "train_val_gripper_acc": 0.9738605898123325,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_film",
+    "checkpoint_epoch": 8,
+    "train_val_mse": 0.02831263653934002,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_film",
+    "checkpoint_epoch": 16,
+    "train_val_mse": 0.02547307312488556,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_film",
+    "checkpoint_epoch": 32,
+    "train_val_mse": 0.02383144199848175,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "close_drawer_success": 0,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.0
+  },
+  {
+    "mode": "articulation_g_v7_unified_field_film",
+    "checkpoint_epoch": 50,
+    "train_val_mse": 0.02301526442170143,
+    "train_val_gripper_acc": 0.9778820375335121,
+    "avg_seq_len": 0.04,
+    "sr_1": 0.04,
+    "close_drawer_success": 1,
+    "close_drawer_total": 25,
+    "close_drawer_sr": 0.04
+  }
+]

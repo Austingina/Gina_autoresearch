@@ -1,0 +1,292 @@
+{
+  "checkpoint_root": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_train_open_left_right_test_close_no_task_v7_e4_8_16_32_50_n25_h160_seed0",
+  "videos": [
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_10_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 12,
+      "success": true,
+      "success_step": 131,
+      "frames": 72,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_12_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 16,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_16_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 20,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_20_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 21,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_21_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 22,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_22_success_0.mp4"
+    }
+  ],
+  "attempts": [
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 0,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 1,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 2,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 3,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 4,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 5,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 6,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 7,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 8,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 9,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 10,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_10_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 11,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 12,
+      "success": true,
+      "success_step": 131,
+      "frames": 72,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_12_success_1.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 13,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 14,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 15,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 16,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_16_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 17,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 18,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 19,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 20,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_20_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 21,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_21_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 22,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": true,
+      "video": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-06_transfer_close_visual_selected_rollouts/articulation_g_v7_unified_field_film/close_drawer/rollout_22_success_0.mp4"
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 23,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    },
+    {
+      "mode": "articulation_g_v7_unified_field_film",
+      "task": "close_drawer",
+      "rollout_idx": 24,
+      "success": false,
+      "success_step": null,
+      "frames": 81,
+      "saved": false
+    }
+  ]
+}

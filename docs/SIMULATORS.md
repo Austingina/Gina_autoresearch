@@ -2,9 +2,8 @@
 
 ## Why
 
-Experiments (especially lift DAgger) run on **Isaac Lab**, but AutoResearch also
-uses **ManiSkill** (and may add more). Platforms are nested under `simulators/`
-so the research repo owns orchestration while each engine keeps its own checkout.
+Physics / rendering engines are **pluggable backends**. AutoResearch owns the
+research flywheel; each platform keeps its own checkout or external tree.
 
 ## Default paths
 
@@ -13,33 +12,44 @@ so the research repo owns orchestration while each engine keeps its own checkout
 | `AUTORESEARCH_ROOT` | this repo |
 | `ISAACLAB_ROOT` | `$AUTORESEARCH_ROOT/simulators/isaaclab` |
 | `MANISKILL_ROOT` | `$AUTORESEARCH_ROOT/simulators/maniskill` |
+| `CALVIN_G_ROOT` | `/mnt/nvme33n1/wuk_code/calvin_g` (H200) or `phase1_calvin/calvin_g` |
+| `CALVIN_CODE` / `CALVIN_ENV` / `CALVIN_DATASET` | resolved by `simulators/resolve_paths.sh` |
 
-Override any time: `export ISAACLAB_ROOT=/elsewhere/IsaacLab`.
-
-Legacy sibling path `/home/l/code/IsaacLab` is supported via symlink after migration.
+```bash
+source simulators/resolve_paths.sh
+```
 
 ## Nested IsaacLab git
 
 `simulators/isaaclab` is a **nested git repository** (not vendored into AutoResearch history).
 
-- Push/pull IsaacLab code with its own `origin` (recreate on GitHub if deleted).
+- Push/pull IsaacLab with its own `origin` (recreate on GitHub if deleted).
 - AutoResearch `.gitignore` ignores the nested tree except platform docs.
-- Do not commit `simulators/isaaclab/runs/` or `datasets/` (local only).
+- Do not commit `simulators/isaaclab/runs/` or `datasets/`.
 
 ```bash
-# Recreate remote after deletion (example)
 cd simulators/isaaclab
-git remote remove origin 2>/dev/null || true
-git remote add origin git@github.com:<you>/IsaacLab.git
+git remote add origin git@github.com:<you>/IsaacLab.git   # if missing
 git push -u origin main
 ```
 
-## Launch pattern
+## CALVIN (Phase 1)
+
+CALVIN is an **external** workspace (`calvin_g`), linked under `phase1_calvin/`.
+Code entry: `framework/scripts/`. Env recipe: `docs/ENVIRONMENTS.md`.
+
+## Registry
+
+See `simulators/registry.yaml` for declared platforms.
+
+## Launch pattern (Isaac)
 
 ```bash
 source simulators/resolve_paths.sh
 cd "$ISAACLAB_ROOT"
-./isaaclab.sh -p scripts/reinforcement_learning/train_lift_cube_dagger_vision_binary_gripper.py ...
+./isaaclab.sh -p scripts/…
 ```
 
 Wrappers under `scripts/*.sh` source `resolve_paths.sh` automatically.
+
+Full recovery: [BOOTSTRAP.md](BOOTSTRAP.md) · Hosts: [HOSTS.md](HOSTS.md).

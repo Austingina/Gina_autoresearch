@@ -1,0 +1,9 @@
+[
+  {
+    "mode": "no_g",
+    "train_val_mse": 0.0236070454120636,
+    "train_val_gripper_acc": 0.9767794043412418,
+    "avg_seq_len": 0.59,
+    "sr_1": 0.59
+  }
+]

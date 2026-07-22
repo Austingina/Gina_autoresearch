@@ -1,0 +1,188 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "push the pink block to the left",
+      "end": 507029,
+      "index": 3155,
+      "length": 65,
+      "split": "training",
+      "start": 506965,
+      "task": "push_pink_block_left"
+    },
+    {
+      "ann": "grasp the blue block lying in the cabinet",
+      "end": 186087,
+      "index": 3445,
+      "length": 65,
+      "split": "training",
+      "start": 186023,
+      "task": "lift_blue_block_slider"
+    },
+    {
+      "ann": "put the block in the drawer",
+      "end": 532330,
+      "index": 331,
+      "length": 65,
+      "split": "training",
+      "start": 532266,
+      "task": "place_in_drawer"
+    },
+    {
+      "ann": "in the cabinet grasp the red block",
+      "end": 303651,
+      "index": 2121,
+      "length": 65,
+      "split": "training",
+      "start": 303587,
+      "task": "lift_red_block_slider"
+    },
+    {
+      "ann": "place the block on top of another block",
+      "end": 496885,
+      "index": 4188,
+      "length": 43,
+      "split": "training",
+      "start": 496843,
+      "task": "stack_block"
+    },
+    {
+      "ann": "move the light switch to turn on the yellow light",
+      "end": 353651,
+      "index": 3980,
+      "length": 65,
+      "split": "training",
+      "start": 353587,
+      "task": "turn_on_lightbulb"
+    },
+    {
+      "ann": "grasp the handle of the drawer and open it",
+      "end": 338509,
+      "index": 3317,
+      "length": 65,
+      "split": "training",
+      "start": 338445,
+      "task": "open_drawer"
+    },
+    {
+      "ann": "rotate left the pink block",
+      "end": 479967,
+      "index": 2484,
+      "length": 65,
+      "split": "training",
+      "start": 479903,
+      "task": "rotate_pink_block_left"
+    },
+    {
+      "ann": "push down the button to turn on the led light",
+      "end": 272783,
+      "index": 3904,
+      "length": 65,
+      "split": "training",
+      "start": 272719,
+      "task": "turn_on_led"
+    },
+    {
+      "ann": "unstack the blocks",
+      "end": 449271,
+      "index": 2933,
+      "length": 42,
+      "split": "training",
+      "start": 449230,
+      "task": "unstack_block"
+    },
+    {
+      "ann": "pick up the pink block",
+      "end": 485127,
+      "index": 4779,
+      "length": 65,
+      "split": "training",
+      "start": 485063,
+      "task": "lift_pink_block_table"
+    },
+    {
+      "ann": "turn the blue block left",
+      "end": 592290,
+      "index": 1789,
+      "length": 65,
+      "split": "training",
+      "start": 592226,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "move the light switch to turn on the light bulb",
+      "end": 85214,
+      "index": 4134,
+      "length": 65,
+      "split": "training",
+      "start": 85150,
+      "task": "turn_on_lightbulb"
+    },
+    {
+      "ann": "rotate the red block to the left",
+      "end": 538242,
+      "index": 1140,
+      "length": 65,
+      "split": "training",
+      "start": 538178,
+      "task": "rotate_red_block_left"
+    },
+    {
+      "ann": "grasp the red block on the table and lift it up",
+      "end": 301824,
+      "index": 2308,
+      "length": 65,
+      "split": "training",
+      "start": 301760,
+      "task": "lift_red_block_table"
+    },
+    {
+      "ann": "grasp the blue block from the drawer",
+      "end": 93481,
+      "index": 1144,
+      "length": 65,
+      "split": "training",
+      "start": 93417,
+      "task": "lift_blue_block_drawer"
+    },
+    {
+      "ann": "rotate the red block 90 degrees to the left",
+      "end": 354464,
+      "index": 776,
+      "length": 65,
+      "split": "training",
+      "start": 354400,
+      "task": "rotate_red_block_left"
+    },
+    {
+      "ann": "take the red block and turn it right",
+      "end": 387718,
+      "index": 5065,
+      "length": 65,
+      "split": "training",
+      "start": 387654,
+      "task": "rotate_red_block_right"
+    },
+    {
+      "ann": "toggle the button to turn on the led light",
+      "end": 90425,
+      "index": 2052,
+      "length": 65,
+      "split": "training",
+      "start": 90361,
+      "task": "turn_on_led"
+    },
+    {
+      "ann": "pick up the pink block from the shelf",
+      "end": 92486,
+      "index": 4362,
+      "length": 65,
+      "split": "training",
+      "start": 92422,
+      "task": "lift_pink_block_slider"
+    }
+  ],
+  "split": "training",
+  "task_filter": null
+}

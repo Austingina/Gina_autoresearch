@@ -1,0 +1,26 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "rotate the blue block 90 degrees to the left",
+      "end": 407693,
+      "index": 864,
+      "length": 65,
+      "split": "validation",
+      "start": 407629,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "rotate the pink block towards the right",
+      "end": 33287,
+      "index": 394,
+      "length": 65,
+      "split": "validation",
+      "start": 33223,
+      "task": "rotate_pink_block_right"
+    }
+  ],
+  "split": "validation",
+  "task_filter": null
+}

@@ -1,0 +1,33 @@
+{
+  "data_root": "/mnt/nvme33n1/wuk_code/AutoResearch/phase1_calvin/data/task_D_D",
+  "policies": [
+    {
+      "alias": "chunk_bc_lang",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang/policy.pt"
+    },
+    {
+      "alias": "chunk_bc_lang_query_g",
+      "path": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-09_scope_primitive_zero_shot_close_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt"
+    }
+  ],
+  "eval_task_filter": [
+    "close_drawer"
+  ],
+  "num_sequences_per_task": 100,
+  "ep_len": 160,
+  "eval_scan_sequences": 10000,
+  "g_scales": [
+    1.0
+  ],
+  "query_g_controls": [
+    "normal"
+  ],
+  "language_controls": [
+    "normal",
+    "zero",
+    "task:open_drawer",
+    "task:push_into_drawer",
+    "task:move_slider_left",
+    "task:move_slider_right"
+  ]
+}

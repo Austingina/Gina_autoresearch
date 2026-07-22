@@ -1,0 +1,210 @@
+{
+  "counts": {
+    "all": {
+      "by_family": {
+        "lift": 3,
+        "light": 3,
+        "place": 2,
+        "push": 1
+      },
+      "by_object_color": {
+        "blue": 1,
+        "none": 5,
+        "pink": 1,
+        "red": 2
+      },
+      "by_task": {
+        "lift_blue_block_slider": 1,
+        "lift_red_block_table": 2,
+        "place_in_slider": 2,
+        "push_pink_block_right": 1,
+        "turn_off_lightbulb": 2,
+        "turn_on_lightbulb": 1
+      },
+      "num_frames": 503,
+      "num_sequences": 9
+    },
+    "holdout": {
+      "by_family": {
+        "light": 3,
+        "place": 2
+      },
+      "by_object_color": {
+        "none": 5
+      },
+      "by_task": {
+        "place_in_slider": 2,
+        "turn_off_lightbulb": 2,
+        "turn_on_lightbulb": 1
+      },
+      "num_frames": 264,
+      "num_sequences": 5
+    },
+    "source": {
+      "by_family": {
+        "lift": 3
+      },
+      "by_object_color": {
+        "blue": 1,
+        "red": 2
+      },
+      "by_task": {
+        "lift_blue_block_slider": 1,
+        "lift_red_block_table": 2
+      },
+      "num_frames": 195,
+      "num_sequences": 3
+    },
+    "target": {
+      "by_family": {
+        "push": 1
+      },
+      "by_object_color": {
+        "pink": 1
+      },
+      "by_task": {
+        "push_pink_block_right": 1
+      },
+      "num_frames": 44,
+      "num_sequences": 1
+    }
+  },
+  "created_at": "2026-07-02_092018",
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/calvin_debug_dataset",
+  "holdout": [
+    {
+      "ann": "move the light switch to turn on the yellow light",
+      "end": 358720,
+      "index": 0,
+      "length": 65,
+      "split": "training",
+      "start": 358656,
+      "task": "turn_on_lightbulb"
+    },
+    {
+      "ann": "place the block in the sliding cabinet",
+      "end": 361011,
+      "index": 2,
+      "length": 34,
+      "split": "training",
+      "start": 360978,
+      "task": "place_in_slider"
+    },
+    {
+      "ann": "slide down the switch",
+      "end": 360635,
+      "index": 5,
+      "length": 65,
+      "split": "training",
+      "start": 360571,
+      "task": "turn_off_lightbulb"
+    },
+    {
+      "ann": "place in slider",
+      "end": 359103,
+      "index": 7,
+      "length": 35,
+      "split": "training",
+      "start": 359069,
+      "task": "place_in_slider"
+    },
+    {
+      "ann": "turn off the light bulb",
+      "end": 360639,
+      "index": 8,
+      "length": 65,
+      "split": "training",
+      "start": 360575,
+      "task": "turn_off_lightbulb"
+    }
+  ],
+  "low_data_target_subsets": {
+    "001pct": [
+      {
+        "ann": "sweep the pink block to the right",
+        "end": 359757,
+        "index": 1,
+        "length": 44,
+        "split": "training",
+        "start": 359714,
+        "task": "push_pink_block_right"
+      }
+    ],
+    "005pct": [
+      {
+        "ann": "sweep the pink block to the right",
+        "end": 359757,
+        "index": 1,
+        "length": 44,
+        "split": "training",
+        "start": 359714,
+        "task": "push_pink_block_right"
+      }
+    ],
+    "010pct": [
+      {
+        "ann": "sweep the pink block to the right",
+        "end": 359757,
+        "index": 1,
+        "length": 44,
+        "split": "training",
+        "start": 359714,
+        "task": "push_pink_block_right"
+      }
+    ],
+    "100pct": [
+      {
+        "ann": "sweep the pink block to the right",
+        "end": 359757,
+        "index": 1,
+        "length": 44,
+        "split": "training",
+        "start": 359714,
+        "task": "push_pink_block_right"
+      }
+    ]
+  },
+  "recipe": "object_transfer_red_blue_to_pink",
+  "script": "make_calvin_task_split_manifest.py",
+  "source": [
+    {
+      "ann": "pick up the red block from the table",
+      "end": 358792,
+      "index": 3,
+      "length": 65,
+      "split": "training",
+      "start": 358728,
+      "task": "lift_red_block_table"
+    },
+    {
+      "ann": "in the slider grasp the blue block",
+      "end": 359598,
+      "index": 4,
+      "length": 65,
+      "split": "training",
+      "start": 359534,
+      "task": "lift_blue_block_slider"
+    },
+    {
+      "ann": "pick up the red block on the table",
+      "end": 358793,
+      "index": 6,
+      "length": 65,
+      "split": "training",
+      "start": 358729,
+      "task": "lift_red_block_table"
+    }
+  ],
+  "split": "training",
+  "target": [
+    {
+      "ann": "sweep the pink block to the right",
+      "end": 359757,
+      "index": 1,
+      "length": 44,
+      "split": "training",
+      "start": 359714,
+      "task": "push_pink_block_right"
+    }
+  ]
+}

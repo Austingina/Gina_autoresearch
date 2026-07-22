@@ -1,0 +1,24 @@
+[
+  {
+    "mode": "no_g",
+    "train_val_mse": 0.18560802936553955,
+    "train_val_gripper_acc": 0.5909090909090909,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "sr_2": 0.0,
+    "sr_3": 0.0,
+    "sr_4": 0.0,
+    "sr_5": 0.0
+  },
+  {
+    "mode": "oracle_g",
+    "train_val_mse": 0.1773458868265152,
+    "train_val_gripper_acc": 0.5,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "sr_2": 0.0,
+    "sr_3": 0.0,
+    "sr_4": 0.0,
+    "sr_5": 0.0
+  }
+]

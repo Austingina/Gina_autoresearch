@@ -1,0 +1,18 @@
+# AutoResearch Phase 0
+08b824a009413e5ac9d789f8c12be5870de20c9e
+ M PROGRESS.md
+ M findings.md
+ M scripts/run_s1_b1_fresh.sh
+ M scripts/run_s1_b7_fresh.sh
+ M scripts/run_s1_dagger_smoke.sh
+
+# CALVIN
+fa03f01f19c65920e18cf37398a9ce859274af76
+ m calvin_env
+
+# CALVIN env submodule
+1431a46bd36bde5903fb6345e68b5ccc30def666
+ M egl_check/build.sh
+
+# MacroRobotics reference
+b8e67ca6027ef901950398c22b0fd353a7fa269c

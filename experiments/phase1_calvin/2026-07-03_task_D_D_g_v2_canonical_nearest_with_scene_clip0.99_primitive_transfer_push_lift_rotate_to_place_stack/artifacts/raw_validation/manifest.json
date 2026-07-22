@@ -1,0 +1,80 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "script": "visualize_calvin_episode.py",
+  "selected": [
+    {
+      "ann": "rotate the blue block 90 degrees to the left",
+      "end": 407693,
+      "index": 864,
+      "length": 65,
+      "split": "validation",
+      "start": 407629,
+      "task": "rotate_blue_block_left"
+    },
+    {
+      "ann": "rotate the pink block towards the right",
+      "end": 33287,
+      "index": 394,
+      "length": 65,
+      "split": "validation",
+      "start": 33223,
+      "task": "rotate_pink_block_right"
+    },
+    {
+      "ann": "lift the red block lying in the cabinet",
+      "end": 43478,
+      "index": 776,
+      "length": 65,
+      "split": "validation",
+      "start": 43414,
+      "task": "lift_red_block_slider"
+    },
+    {
+      "ann": "grasp the door handle, then slide the door to the left",
+      "end": 38637,
+      "index": 911,
+      "length": 65,
+      "split": "validation",
+      "start": 38573,
+      "task": "move_slider_left"
+    },
+    {
+      "ann": "move down the switch",
+      "end": 243764,
+      "index": 430,
+      "length": 65,
+      "split": "validation",
+      "start": 243700,
+      "task": "turn_off_lightbulb"
+    },
+    {
+      "ann": "push down the button to turn on the led",
+      "end": 227953,
+      "index": 41,
+      "length": 44,
+      "split": "validation",
+      "start": 227910,
+      "task": "turn_on_led"
+    },
+    {
+      "ann": "put the block in the drawer",
+      "end": 47439,
+      "index": 265,
+      "length": 37,
+      "split": "validation",
+      "start": 47403,
+      "task": "place_in_drawer"
+    },
+    {
+      "ann": "lift the pink block lying on the shelf",
+      "end": 416845,
+      "index": 988,
+      "length": 36,
+      "split": "validation",
+      "start": 416810,
+      "task": "lift_pink_block_slider"
+    }
+  ],
+  "split": "validation",
+  "task_filter": null
+}

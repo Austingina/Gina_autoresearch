@@ -1,0 +1,242 @@
+[
+  {
+    "max_segments_per_task": 20,
+    "seed": 0,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999982184873684,
+    "q_mid_point_delta_m": 0.0034604477617785163,
+    "slope_delta": 0.008871076808601462,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 1156
+  },
+  {
+    "max_segments_per_task": 20,
+    "seed": 0,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9994837600480905,
+    "q_mid_point_delta_m": 0.002449309611691612,
+    "slope_delta": 0.03416157223939002,
+    "threshold_delta_m": 0.001366084837921902,
+    "num_actuation_samples": 1033
+  },
+  {
+    "max_segments_per_task": 20,
+    "seed": 1,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999514097062574,
+    "q_mid_point_delta_m": 0.002846439109417846,
+    "slope_delta": 0.011345751273078594,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 1131
+  },
+  {
+    "max_segments_per_task": 20,
+    "seed": 1,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9996442858051151,
+    "q_mid_point_delta_m": 0.0046428928174412545,
+    "slope_delta": 0.03063727383442032,
+    "threshold_delta_m": 0.0016168874038293979,
+    "num_actuation_samples": 1012
+  },
+  {
+    "max_segments_per_task": 20,
+    "seed": 2,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9996597605575723,
+    "q_mid_point_delta_m": 0.0025520114747938473,
+    "slope_delta": 0.029125338204946113,
+    "threshold_delta_m": 0.0006137057318546246,
+    "num_actuation_samples": 1105
+  },
+  {
+    "max_segments_per_task": 20,
+    "seed": 2,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9993256474889903,
+    "q_mid_point_delta_m": 0.001650260462246489,
+    "slope_delta": 0.0355149444734395,
+    "threshold_delta_m": 0.0007492623444294855,
+    "num_actuation_samples": 1067
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 0,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999869116848383,
+    "q_mid_point_delta_m": 0.0017820840867818627,
+    "slope_delta": 0.007552449832364503,
+    "threshold_delta_m": 6.431320845052407e-05,
+    "num_actuation_samples": 2885
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 0,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999787650328594,
+    "q_mid_point_delta_m": 0.0017253577124775948,
+    "slope_delta": 0.007916658181665231,
+    "threshold_delta_m": 0.000992031627642373,
+    "num_actuation_samples": 2567
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 1,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999827534600607,
+    "q_mid_point_delta_m": 0.0014748004166505954,
+    "slope_delta": 0.006490111007791259,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 2797
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 1,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9997884818418622,
+    "q_mid_point_delta_m": 0.0035669566966591536,
+    "slope_delta": 0.022361411363536806,
+    "threshold_delta_m": 0.0009175848177459811,
+    "num_actuation_samples": 2571
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 2,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999434722305505,
+    "q_mid_point_delta_m": 0.000940961472461907,
+    "slope_delta": 0.011134399968970646,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 2768
+  },
+  {
+    "max_segments_per_task": 50,
+    "seed": 2,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.99975729078817,
+    "q_mid_point_delta_m": 0.001776580143411758,
+    "slope_delta": 0.021136602452163148,
+    "threshold_delta_m": 0.0008751345255479243,
+    "num_actuation_samples": 2629
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 0,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999981971127706,
+    "q_mid_point_delta_m": 0.0007280715626151334,
+    "slope_delta": 0.002068044781745613,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 5669
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 0,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999850504927164,
+    "q_mid_point_delta_m": 0.0008996946154475056,
+    "slope_delta": 0.007864374210572142,
+    "threshold_delta_m": 8.49127223991053e-05,
+    "num_actuation_samples": 5221
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 1,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999980897912999,
+    "q_mid_point_delta_m": 0.0007120290967513268,
+    "slope_delta": 0.001961599628933255,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 5599
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 1,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999936355604894,
+    "q_mid_point_delta_m": 0.0004516859808860961,
+    "slope_delta": 0.006701157928702636,
+    "threshold_delta_m": 0.0004612259013914849,
+    "num_actuation_samples": 5142
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 2,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999995847715645,
+    "q_mid_point_delta_m": 0.0007982604766597577,
+    "slope_delta": 0.0013045640169146145,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 5605
+  },
+  {
+    "max_segments_per_task": 100,
+    "seed": 2,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9998341717208201,
+    "q_mid_point_delta_m": 0.0006619582906643124,
+    "slope_delta": 0.019288965650965027,
+    "threshold_delta_m": 0.0010746416849096857,
+    "num_actuation_samples": 5226
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 0,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999999933837934,
+    "q_mid_point_delta_m": 0.00010147818664894949,
+    "slope_delta": 0.00011842969352277197,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 8396
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 0,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999999785192479,
+    "q_mid_point_delta_m": 5.9954627043277276e-05,
+    "slope_delta": 0.000426248609036104,
+    "threshold_delta_m": 3.1729552129378114e-05,
+    "num_actuation_samples": 7794
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 1,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999999575561064,
+    "q_mid_point_delta_m": 1.841702770569199e-05,
+    "slope_delta": 0.00033938383046489354,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 8419
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 1,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999988888611391,
+    "q_mid_point_delta_m": 0.00012312261770087299,
+    "slope_delta": 0.0014412365575795052,
+    "threshold_delta_m": 5.86244340375075e-05,
+    "num_actuation_samples": 7785
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 2,
+    "joint": "slider",
+    "axis_cosine_to_full": 0.9999999883440642,
+    "q_mid_point_delta_m": 6.251209794413414e-05,
+    "slope_delta": 0.00020003389263997332,
+    "threshold_delta_m": 0.0,
+    "num_actuation_samples": 8412
+  },
+  {
+    "max_segments_per_task": 150,
+    "seed": 2,
+    "joint": "drawer",
+    "axis_cosine_to_full": 0.9999965735812057,
+    "q_mid_point_delta_m": 8.31313842771563e-05,
+    "slope_delta": 0.002507740896755271,
+    "threshold_delta_m": 5.6475773447445254e-05,
+    "num_actuation_samples": 7761
+  }
+]

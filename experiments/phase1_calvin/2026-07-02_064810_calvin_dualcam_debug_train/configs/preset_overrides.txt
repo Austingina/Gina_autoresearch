@@ -1,0 +1,13 @@
+datamodule.datasets.vision_dataset.batch_size=1
+datamodule.datasets.lang_dataset.batch_size=1
+datamodule.datasets.vision_dataset.num_workers=0
+datamodule.datasets.lang_dataset.num_workers=0
+datamodule.datasets.vision_dataset.min_window_size=2
+datamodule.datasets.vision_dataset.max_window_size=2
+datamodule.datasets.lang_dataset.min_window_size=2
+datamodule.datasets.lang_dataset.max_window_size=2
+trainer.max_epochs=1
++trainer.limit_train_batches=1
++trainer.limit_val_batches=0
++trainer.num_sanity_val_steps=0
++trainer.log_every_n_steps=1

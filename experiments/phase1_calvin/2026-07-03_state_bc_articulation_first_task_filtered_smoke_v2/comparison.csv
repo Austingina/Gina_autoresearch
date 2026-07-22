@@ -1,0 +1,3 @@
+mode,train_val_mse,train_val_gripper_acc,avg_seq_len,sr_1
+no_g,0.1795664131641388,0.64,0.0,0.0
+canonical_g_film,0.18404000997543335,0.47,0.0,0.0

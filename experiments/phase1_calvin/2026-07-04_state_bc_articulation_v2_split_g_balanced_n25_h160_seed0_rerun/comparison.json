@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "articulation_g_v2_split_concat",
+    "train_val_mse": 0.02777544967830181,
+    "train_val_gripper_acc": 0.9762746087834427,
+    "avg_seq_len": 0.7,
+    "sr_1": 0.7
+  },
+  {
+    "mode": "articulation_g_v2_split_film",
+    "train_val_mse": 0.027888808399438858,
+    "train_val_gripper_acc": 0.9762746087834427,
+    "avg_seq_len": 0.61,
+    "sr_1": 0.61
+  }
+]

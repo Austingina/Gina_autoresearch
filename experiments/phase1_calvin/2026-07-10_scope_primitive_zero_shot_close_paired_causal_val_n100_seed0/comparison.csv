@@ -1,0 +1,5 @@
+alias,checkpoint,g_scale,query_g_control,language_control,avg_seq_len,sr_1,task_close_drawer_success,task_close_drawer_total,task_close_drawer_sr
+seed0_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-10_scope_primitive_zero_shot_close_paired_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,normal,normal,0.18,0.18,18,100,0.18
+seed0_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-10_scope_primitive_zero_shot_close_paired_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,zero,normal,0.0,0.0,0,100,0.0
+seed0_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-10_scope_primitive_zero_shot_close_paired_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,sign_flip,normal,0.01,0.01,1,100,0.01
+seed0_lang_query_g,/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-10_scope_primitive_zero_shot_close_paired_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt,1.0,task:open_drawer,normal,0.0,0.0,0,100,0.0

@@ -1,0 +1,22 @@
+{
+  "eval_mode": "first_task",
+  "avg_seq_len": 0.0,
+  "chain_sr": {
+    "1": 0.0
+  },
+  "raw_results": [
+    0,
+    0
+  ],
+  "task_info": {
+    "move_slider_right": {
+      "success": 0,
+      "total": 2,
+      "sr": 0.0
+    }
+  },
+  "selected_tasks": [
+    "move_slider_right",
+    "move_slider_right"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.0202327072620392,
+      "val_mse": 0.18404000997543335,
+      "val_gripper_acc": 0.47
+    }
+  ],
+  "final": {
+    "epoch": 1,
+    "train_loss": 1.0202327072620392,
+    "val_mse": 0.18404000997543335,
+    "val_gripper_acc": 0.47
+  },
+  "num_records": 1000
+}

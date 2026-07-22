@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="${AUTORESEARCH_ROOT:-/mnt/nvme33n1/wuk_code/AutoResearch}"
+PY="${PY:-/mnt/nvme33n1/wuk_code/calvin_g/envs/calvin_h200/bin/python}"
+DATA_ROOT="${DATA_ROOT:-/mnt/nvme33n1/wuk_code/calvin_g/data/calvin_debug_dataset}"
+TAG="${TAG:-$(date +%F_%H%M%S)_reusable_g_v1}"
+RECIPE="${RECIPE:-object_transfer_red_blue_to_pink}"
+SPLIT="${SPLIT:-training}"
+RAW_NUM_SEQUENCES="${RAW_NUM_SEQUENCES:-20}"
+RAW_MAX_FRAMES="${RAW_MAX_FRAMES:-6}"
+G_MAX_SEQUENCES="${G_MAX_SEQUENCES:-0}"
+G_MAX_FRAMES_PER_SEQUENCE="${G_MAX_FRAMES_PER_SEQUENCE:-16}"
+G_VIS_NUM_SEQUENCES="${G_VIS_NUM_SEQUENCES:-20}"
+G_VIS_MAX_FRAMES="${G_VIS_MAX_FRAMES:-8}"
+PREDICTOR_EPOCHS="${PREDICTOR_EPOCHS:-150}"
+PREDICTOR_HORIZON="${PREDICTOR_HORIZON:-8}"
+PREDICTOR_HIDDEN="${PREDICTOR_HIDDEN:-128}"
+PREDICTOR_DEPTH="${PREDICTOR_DEPTH:-2}"
+G_TARGET_MODE="${G_TARGET_MODE:-raw}"
+G_TARGET_CLIP_QUANTILE="${G_TARGET_CLIP_QUANTILE:-0}"
+SKIP_PREDICTOR="${SKIP_PREDICTOR:-0}"
+
+cd "$ROOT"
+
+RUN_DIR="$ROOT/experiments/phase1_calvin/${TAG}_${RECIPE}"
+mkdir -p "$RUN_DIR"/{logs,artifacts}
+
+exec > >(tee "$RUN_DIR/logs/stdout.log") 2>&1
+
+echo "[run_dir] $RUN_DIR"
+echo "[data_root] $DATA_ROOT"
+echo "[recipe] $RECIPE"
+echo "[split] $SPLIT"
+echo "[python] $PY"
+
+test -x "$PY"
+test -d "$DATA_ROOT/$SPLIT"
+
+"$PY" -m py_compile \
+  framework/scripts/visual_checks/*.py \
+  framework/scripts/g_models/train_candidate_g_predictor.py
+
+SUMMARY_DIR="$RUN_DIR/artifacts/dataset_summary"
+SPLIT_MANIFEST="$RUN_DIR/artifacts/${RECIPE}.json"
+RAW_TRAIN_DIR="$RUN_DIR/artifacts/raw_${SPLIT}"
+RAW_VAL_DIR="$RUN_DIR/artifacts/raw_validation"
+G_SOURCE_DIR="$RUN_DIR/artifacts/g_${RECIPE}_source"
+G_TARGET_DIR="$RUN_DIR/artifacts/g_${RECIPE}_target"
+G_VIS_SOURCE_DIR="$RUN_DIR/artifacts/g_vis_${RECIPE}_source"
+PREDICTOR_DIR="$RUN_DIR/artifacts/g_predictor_${RECIPE}_${G_TARGET_MODE}_clip${G_TARGET_CLIP_QUANTILE}_h${PREDICTOR_HORIZON}"
+
+echo "[step] dataset summary"
+"$PY" framework/scripts/visual_checks/summarize_calvin_dataset.py \
+  --dataset-root "$DATA_ROOT" \
+  --out-dir "$SUMMARY_DIR"
+
+echo "[step] split manifest"
+"$PY" framework/scripts/visual_checks/make_calvin_task_split_manifest.py \
+  --dataset-root "$DATA_ROOT" \
+  --split "$SPLIT" \
+  --recipe "$RECIPE" \
+  --out "$SPLIT_MANIFEST"
+
+echo "[step] raw visual checks: $SPLIT"
+"$PY" framework/scripts/visual_checks/visualize_calvin_episode.py \
+  --dataset-root "$DATA_ROOT" \
+  --split "$SPLIT" \
+  --num-sequences "$RAW_NUM_SEQUENCES" \
+  --max-frames "$RAW_MAX_FRAMES" \
+  --seed 0 \
+  --out-dir "$RAW_TRAIN_DIR"
+
+if [ -d "$DATA_ROOT/validation" ]; then
+  echo "[step] raw visual checks: validation"
+  "$PY" framework/scripts/visual_checks/visualize_calvin_episode.py \
+    --dataset-root "$DATA_ROOT" \
+    --split validation \
+    --num-sequences "$RAW_NUM_SEQUENCES" \
+    --max-frames "$RAW_MAX_FRAMES" \
+    --seed 0 \
+    --out-dir "$RAW_VAL_DIR"
+fi
+
+echo "[step] source G labels"
+"$PY" framework/scripts/visual_checks/extract_candidate_g_labels.py \
+  --dataset-root "$DATA_ROOT" \
+  --split-manifest "$SPLIT_MANIFEST" \
+  --partition source \
+  --max-sequences "$G_MAX_SEQUENCES" \
+  --max-frames-per-sequence "$G_MAX_FRAMES_PER_SEQUENCE" \
+  --out-dir "$G_SOURCE_DIR"
+
+echo "[step] target G labels"
+"$PY" framework/scripts/visual_checks/extract_candidate_g_labels.py \
+  --dataset-root "$DATA_ROOT" \
+  --split-manifest "$SPLIT_MANIFEST" \
+  --partition target \
+  --max-sequences "$G_MAX_SEQUENCES" \
+  --max-frames-per-sequence "$G_MAX_FRAMES_PER_SEQUENCE" \
+  --out-dir "$G_TARGET_DIR"
+
+echo "[step] source G visualization"
+"$PY" framework/scripts/visual_checks/visualize_interaction_geometry.py \
+  --dataset-root "$DATA_ROOT" \
+  --g-dir "$G_SOURCE_DIR" \
+  --num-sequences "$G_VIS_NUM_SEQUENCES" \
+  --max-frames "$G_VIS_MAX_FRAMES" \
+  --out-dir "$G_VIS_SOURCE_DIR"
+
+if [ "$SKIP_PREDICTOR" != "1" ]; then
+  echo "[step] source-to-target G predictor"
+  "$PY" framework/scripts/g_models/train_candidate_g_predictor.py \
+    --g-dir "$G_SOURCE_DIR" \
+    --val-g-dir "$G_TARGET_DIR" \
+    --horizon "$PREDICTOR_HORIZON" \
+    --target-mode "$G_TARGET_MODE" \
+    --target-clip-quantile "$G_TARGET_CLIP_QUANTILE" \
+    --epochs "$PREDICTOR_EPOCHS" \
+    --batch-size 64 \
+    --hidden "$PREDICTOR_HIDDEN" \
+    --depth "$PREDICTOR_DEPTH" \
+    --out-dir "$PREDICTOR_DIR"
+fi
+
+cat > "$RUN_DIR/README.md" <<EOF
+# Reusable G Validation V1
+
+- data_root: \`$DATA_ROOT\`
+- recipe: \`$RECIPE\`
+- split: \`$SPLIT\`
+- g_target_mode: \`$G_TARGET_MODE\`
+- g_target_clip_quantile: \`$G_TARGET_CLIP_QUANTILE\`
+
+## Artifacts
+
+- dataset summary: \`$SUMMARY_DIR\`
+- split manifest: \`$SPLIT_MANIFEST\`
+- raw train visuals: \`$RAW_TRAIN_DIR\`
+- raw validation visuals: \`$RAW_VAL_DIR\`
+- source G labels: \`$G_SOURCE_DIR\`
+- target G labels: \`$G_TARGET_DIR\`
+- source G visuals: \`$G_VIS_SOURCE_DIR\`
+- G predictor: \`$PREDICTOR_DIR\`
+EOF
+
+echo "[done] $RUN_DIR"

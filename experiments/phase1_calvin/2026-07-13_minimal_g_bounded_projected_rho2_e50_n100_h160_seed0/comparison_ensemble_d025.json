@@ -1,0 +1,16 @@
+[
+  {
+    "mode": "chunk_bc_minimal_g_bounded_projected",
+    "checkpoint_epoch": null,
+    "train_val_chunk_mse": 0.04695196449756622,
+    "train_val_first_gripper_acc": 0.9667286629468899,
+    "action_execution_horizon": 1,
+    "temporal_ensemble": true,
+    "temporal_ensemble_decay": 0.25,
+    "avg_seq_len": 0.38,
+    "sr_1": 0.38,
+    "task_close_drawer_success": 38,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.38
+  }
+]

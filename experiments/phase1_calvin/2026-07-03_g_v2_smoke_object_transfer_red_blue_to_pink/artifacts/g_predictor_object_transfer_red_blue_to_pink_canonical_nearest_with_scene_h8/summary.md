@@ -1,0 +1,19 @@
+# Candidate G Predictor Smoke
+
+- g_dir: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_g_v2_smoke_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_source`
+- val_g_dir: `/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-03_g_v2_smoke_object_transfer_red_blue_to_pink/artifacts/g_object_transfer_red_blue_to_pink_target`
+- split_mode: heldout_g_dir
+- horizon: 8
+- target_mode: canonical_nearest_with_scene
+- train/val: 240/240
+- feature_dim: 46
+- target_dim: 12
+- final_train_mse_standardized: 0.634311
+- final_val_mse_standardized: 13.592101
+- best_val_mse_standardized: 13.537327
+- train_rmse_raw: 0.030730
+- val_rmse_raw: 0.040603
+- train_mae_raw: 0.017309
+- val_mae_raw: 0.022124
+- zero_train_rmse_raw: 0.019288
+- zero_val_rmse_raw: 0.016641

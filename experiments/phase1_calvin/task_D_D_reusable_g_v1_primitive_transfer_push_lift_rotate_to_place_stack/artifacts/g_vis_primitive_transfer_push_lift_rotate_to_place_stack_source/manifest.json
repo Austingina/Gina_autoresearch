@@ -1,0 +1,27 @@
+{
+  "dataset_root": "/mnt/nvme33n1/wuk_code/calvin_g/data/task_D_D",
+  "g_dir": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/task_D_D_reusable_g_v1_primitive_transfer_push_lift_rotate_to_place_stack/artifacts/g_primitive_transfer_push_lift_rotate_to_place_stack_source",
+  "script": "visualize_interaction_geometry.py",
+  "selected_sequence_indices": [
+    16,
+    20,
+    23,
+    26,
+    27,
+    31,
+    32,
+    33,
+    35,
+    37,
+    38,
+    40,
+    42,
+    45,
+    47,
+    52,
+    57,
+    67,
+    68,
+    69
+  ]
+}

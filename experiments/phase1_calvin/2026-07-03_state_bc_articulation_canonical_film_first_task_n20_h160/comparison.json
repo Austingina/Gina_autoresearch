@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "no_g",
+    "train_val_mse": 0.028374409303069115,
+    "train_val_gripper_acc": 0.9772841998990409,
+    "avg_seq_len": 0.5,
+    "sr_1": 0.5
+  },
+  {
+    "mode": "oracle_g",
+    "train_val_mse": 0.030852288007736206,
+    "train_val_gripper_acc": 0.9727410398788491,
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0
+  },
+  {
+    "mode": "canonical_no_g",
+    "train_val_mse": 0.027390312403440475,
+    "train_val_gripper_acc": 0.9803129732458354,
+    "avg_seq_len": 0.4,
+    "sr_1": 0.4
+  },
+  {
+    "mode": "canonical_g_film",
+    "train_val_mse": 0.02761564403772354,
+    "train_val_gripper_acc": 0.9762746087834427,
+    "avg_seq_len": 0.1,
+    "sr_1": 0.1
+  }
+]

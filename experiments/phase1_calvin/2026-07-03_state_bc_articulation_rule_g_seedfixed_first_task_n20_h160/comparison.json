@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "no_g",
+    "train_val_mse": 0.02899143099784851,
+    "train_val_gripper_acc": 0.9767794043412418,
+    "avg_seq_len": 0.6,
+    "sr_1": 0.6
+  },
+  {
+    "mode": "canonical_no_g",
+    "train_val_mse": 0.028987349942326546,
+    "train_val_gripper_acc": 0.9767794043412418,
+    "avg_seq_len": 0.3,
+    "sr_1": 0.3
+  },
+  {
+    "mode": "canonical_articulation_g_concat",
+    "train_val_mse": 0.028457440435886383,
+    "train_val_gripper_acc": 0.9767794043412418,
+    "avg_seq_len": 0.3,
+    "sr_1": 0.3
+  },
+  {
+    "mode": "canonical_articulation_g_film",
+    "train_val_mse": 0.02845383621752262,
+    "train_val_gripper_acc": 0.9767794043412418,
+    "avg_seq_len": 0.1,
+    "sr_1": 0.1
+  }
+]

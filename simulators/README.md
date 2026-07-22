@@ -16,8 +16,9 @@ a_t = π(o_t, M_t, G_t)     # research interface (platform-agnostic)
 |------|------|
 | `simulators/registry.yaml` | Declared platforms + env vars |
 | `simulators/resolve_paths.sh` | Shell helper: set `AUTORESEARCH_ROOT`, `ISAACLAB_ROOT`, … |
-| `simulators/isaaclab/` | **Isaac Lab** checkout (nested git repo; primary lift/DAgger backend) |
+| `simulators/isaaclab/` | **Isaac Lab** checkout (nested git; Phase-0 lift/DAgger) |
 | `simulators/maniskill/` | Adapter notes for ManiSkill (code in `goals/maniskill_bridge.py`) |
+| `phase1_calvin/` + `framework/` | **CALVIN** (Phase-1; external `CALVIN_G_ROOT`, not under `simulators/`) |
 
 ## Contract for a platform
 

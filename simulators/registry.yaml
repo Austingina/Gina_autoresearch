@@ -36,3 +36,17 @@ platforms:
     default_relpath: simulators/arena
     notes: >
       Optional; may remain an external clone until vendored.
+
+  calvin:
+    id: calvin
+    display_name: CALVIN
+    role: phase1_primary
+    env_var: CALVIN_G_ROOT
+    default_relpath: phase1_calvin/calvin_g
+    conda_env: calvin_h200
+    code_env_var: CALVIN_CODE
+    launcher: framework/scripts/run_calvin_dualcam.sh
+    notes: >
+      External workspace (not nested under simulators/). Link phase1_calvin/*
+      to $CALVIN_G_ROOT. Train with torch 2.3.1+cu121 (sm_90) on H200.
+      See docs/ENVIRONMENTS.md and docs/progress_phase1_calvin.md.

@@ -1,0 +1,100 @@
+{
+  "bc_e50_g2": {
+    "close_drawer": {
+      "sr": 0.76,
+      "success": 19,
+      "count": 25,
+      "categories": {
+        "near_part_no_joint_progress": 6,
+        "success": 19
+      },
+      "near_axis_line_steps_p50": 61.0,
+      "near_part_steps_p50": 59.0,
+      "axis_command_no_progress_steps_p50": 0.0,
+      "weird_axis_satisfied_steps_p50": 0.0,
+      "wrong_side_axis_command_steps_p50": 0.0,
+      "useful_push_steps_p50": 0.0,
+      "min_dist_to_part_p50": 0.017099266542345594,
+      "min_dist_to_axis_line_p50": 0.01357349280351038,
+      "first_near_part_step_p50": 60.0,
+      "first_near_axis_line_step_p50": 59.0,
+      "q_progress_after_first_near_part_p50": 0.5980568208372421,
+      "pre_contact_mean_action_desired_axis_p50": -0.0032717622241973045,
+      "post_contact_mean_action_desired_axis_p50": 0.002363286425507307,
+      "pre_contact_mean_eef_delta_desired_axis_p50": -0.0032945105915892065,
+      "post_contact_mean_eef_delta_desired_axis_p50": 0.0023970820808635585,
+      "pre_contact_sum_q_delta_desired_p50": 0.0,
+      "post_contact_sum_q_delta_desired_p50": 0.1320815533399582,
+      "post_contact_mean_q_delta_desired_p50": 0.002227809393044674,
+      "near_axis_mean_part_to_eef_axis_p50": -0.008075357158003378,
+      "near_axis_mean_height_offset_p50": 0.02862941112665614,
+      "weird_mean_action_desired_axis_p50": null,
+      "weird_mean_q_delta_desired_p50": null
+    }
+  },
+  "scale_aug_e50_g2": {
+    "close_drawer": {
+      "sr": 0.0,
+      "success": 0,
+      "count": 25,
+      "categories": {
+        "no_axis_contact": 25
+      },
+      "near_axis_line_steps_p50": 0.0,
+      "near_part_steps_p50": 0.0,
+      "axis_command_no_progress_steps_p50": 0.0,
+      "weird_axis_satisfied_steps_p50": 0.0,
+      "wrong_side_axis_command_steps_p50": 0.0,
+      "useful_push_steps_p50": 0.0,
+      "min_dist_to_part_p50": 0.24056302746602093,
+      "min_dist_to_axis_line_p50": 0.13940279401042266,
+      "first_near_part_step_p50": null,
+      "first_near_axis_line_step_p50": null,
+      "q_progress_after_first_near_part_p50": null,
+      "pre_contact_mean_action_desired_axis_p50": 0.00035817383719151006,
+      "post_contact_mean_action_desired_axis_p50": null,
+      "pre_contact_mean_eef_delta_desired_axis_p50": 0.0002743706696454756,
+      "post_contact_mean_eef_delta_desired_axis_p50": null,
+      "pre_contact_sum_q_delta_desired_p50": 0.012782424688339233,
+      "post_contact_sum_q_delta_desired_p50": null,
+      "post_contact_mean_q_delta_desired_p50": null,
+      "near_axis_mean_part_to_eef_axis_p50": null,
+      "near_axis_mean_height_offset_p50": null,
+      "weird_mean_action_desired_axis_p50": null,
+      "weird_mean_q_delta_desired_p50": null
+    }
+  },
+  "gated_e50_g2": {
+    "close_drawer": {
+      "sr": 0.0,
+      "success": 0,
+      "count": 25,
+      "categories": {
+        "near_axis_line_wrong_offset": 3,
+        "no_axis_contact": 22
+      },
+      "near_axis_line_steps_p50": 0.0,
+      "near_part_steps_p50": 0.0,
+      "axis_command_no_progress_steps_p50": 0.0,
+      "weird_axis_satisfied_steps_p50": 0.0,
+      "wrong_side_axis_command_steps_p50": 0.0,
+      "useful_push_steps_p50": 0.0,
+      "min_dist_to_part_p50": 0.22868551580996865,
+      "min_dist_to_axis_line_p50": 0.1472897643403952,
+      "first_near_part_step_p50": null,
+      "first_near_axis_line_step_p50": 109.0,
+      "q_progress_after_first_near_part_p50": null,
+      "pre_contact_mean_action_desired_axis_p50": 5.523877473245242e-05,
+      "post_contact_mean_action_desired_axis_p50": null,
+      "pre_contact_mean_eef_delta_desired_axis_p50": 5.532943519082187e-05,
+      "post_contact_mean_eef_delta_desired_axis_p50": null,
+      "pre_contact_sum_q_delta_desired_p50": 0.0,
+      "post_contact_sum_q_delta_desired_p50": null,
+      "post_contact_mean_q_delta_desired_p50": null,
+      "near_axis_mean_part_to_eef_axis_p50": 0.15245641781276928,
+      "near_axis_mean_height_offset_p50": -0.0008617719473043257,
+      "weird_mean_action_desired_axis_p50": null,
+      "weird_mean_q_delta_desired_p50": null
+    }
+  }
+}

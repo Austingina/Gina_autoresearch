@@ -1,0 +1,14 @@
+[
+  {
+    "alias": "seed0_zero_type",
+    "checkpoint": "/mnt/nvme33n1/wuk_code/AutoResearch/experiments/phase1_calvin/2026-07-12_scope_primitive_zero_token_type_e50_n100_h160_seed0/chunk_bc_lang_query_g/policy.pt",
+    "g_scale": 1.0,
+    "query_g_control": "normal",
+    "language_control": "zero",
+    "avg_seq_len": 0.0,
+    "sr_1": 0.0,
+    "task_close_drawer_success": 0,
+    "task_close_drawer_total": 100,
+    "task_close_drawer_sr": 0.0
+  }
+]
