@@ -4,9 +4,21 @@
 
 **Focus:** Tier 0→2 validation only. Long-term routes (3D G, TarGF, text condition) → [docs/FUTURE_RESEARCH_ROUTES.md](docs/FUTURE_RESEARCH_ROUTES.md) (**deferred**).
 
+**Current status (2026-07-16):** B1 vision bring-up on **fixed cube + EE-visible init + fixed mask** finished three long runs. Strict success@2cm still **0%**, but failure mode moved from `never_reached_cube` → `grasp_then_dropped` / `lifted_not_at_goal`. Next bottleneck is **stable grasp/hold + ACTUATE**, not approach geometry. See Day 3 below and `findings.md` § fixed-cube B1.
+
 ---
 
 ## S1 — random cube (current)
+
+### Active experiments (2026-07-16)
+
+| ID | script / run | input | β | status |
+|----|--------------|-------|---|--------|
+| **B1 fixed-cube linβ** | `..._linbeta_20260713_163917` | 8ch@64 | linear 100→800 | **done** 2000; final `lifted_not_at_goal`, pre≈2.4cm |
+| **B1 gripw50 hold15** | `..._gripw50_hold15_20260715_155957` | 8ch@64 | linear + BCE×50 + hold=15 | **done** 2000; final `grasp_then_dropped`; peak train-eval grasp **15%** @1950 |
+| **B1 mosaic / random-cube** | earlier June runs | mosaic / 240px | mixed | paused; bring-up moved to fixed cube |
+
+Launcher: `scripts/run_s1_b1_fixedcube_eevisible_fixedmask.sh` (defaults: `ROBOT_X_OFFSET=-0.10`, `PANDA_JOINT6=2.7`, fixed cube, fixed mask, linear β).
 
 ### Pipeline
 ```bash
@@ -19,6 +31,9 @@ bash scripts/run_s1_step1.sh
 # 3. Step 2 — DAgger
 MAX_ITERS=300 bash scripts/run_s1_dagger_smoke.sh B1
 MAX_ITERS=300 bash scripts/run_s1_dagger_smoke.sh B7
+
+# Mosaic ablation (B1, fixed β, spatial 3-frame input)
+bash scripts/run_s1_b1_mosaic.sh
 ```
 
 ### Eval metrics
@@ -197,27 +212,82 @@ bash scripts/play_teacher_g_check.sh
 | 2026-06-22 | **S1** | — | — | — | subgoal field + dagger scripts ready |
 | 2026-06-23 | S1 collect | — | — | — | clean240, 100% success, archived 17 GB |
 | 2026-06-23 | S1 Step 2 | — | 0% | 0% | 300 iters each; stale G; buffers archived |
-| 2026-06-30 | S1 B1 no-G | — | **0%** | — | EE-visible init; 2000 iters; ok=0 fragment buffer; β=1; play fails |
+| 2026-06-30 | S1 B1 no-G `175108` | — | **0%** | — | flush+reset; ok=0 fragment buffer; β=1 |
+| 2026-06-30 | S1 B1 no-G `094041` | — | **0%*** | — | **~948/2000**; segment continue; ok=88; eval grasp spikes 33% @710/790 |
+| 2026-07-13 | S0 exact repro | — | 0% | — | 100 iters; `grasp_then_dropped` @100; did not recover old 85% grasp |
+| 2026-07-14 | B1 fixedcube linβ | — | **0%** | — | 2000 iters; late `lifted_not_at_goal`; pre 32→2.4cm |
+| 2026-07-16 | B1 gripw50 hold15 | — | **0%** (grasp† 15%@1950) | — | BCE×50 + hold15; earlier close; final drop |
+
+\* strict success@2cm; † train-eval grasp rate (n=20)
+
+---
+
+## Day 3 — 2026-07-13…16 (fixed-cube B1 bring-up)
+
+### Done
+- [x] Aligned train/play defaults: EE-visible pose, fixed cube, fixed mask palette
+- [x] Diagnosed **adaptive β on strict success** → β stuck at 1.0 (pure BC, frozen buffer)
+- [x] Switched to **linear β** (warmup 100, decay 800) → student mixing + growing buffer
+- [x] Long train `linbeta_...163917` (2000 iters): approach recovered; late failure = lift not at goal
+- [x] Gripper fix attempt: `gripper_bce_weight=50`, `teacher_grasp_hold_steps=15`
+- [x] Long train `gripw50_hold15_...155957` (2000 iters): earlier `grasp_then_dropped`; peak grasp 15% @1950
+- [x] Play vs eval gap identified: play default `arm_scale=0.5` vs train `1.0`; phase-stall only in eval
+
+### Key results
+
+| run | final mode | pre_grasp | notes |
+|-----|------------|-----------|-------|
+| adaptive β (stopped ~465) | `never_reached_cube` | ~11cm | β=1 forever; buffer frozen ~175 |
+| linear β 2000 | **`lifted_not_at_goal`** | **2.4cm** | β→0; approach OK; ACTUATE incomplete |
+| gripw50+hold15 2000 | **`grasp_then_dropped`** | 5.2cm | close earlier; hold unstable; success still 0% |
+
+### Insights
+1. **β schedule dominates early learning** — success-gated adaptive β never unlocks on-policy collect when SR=0.
+2. **Linear β unlocks approach** — pre_grasp 32→~2cm; failure shifts from reach → post-grasp.
+3. **Gripper head is under-trained structurally** — BCE ≪ arm_kl; encoder frozen during gripper pass; fast teacher `hold=2` gave almost no CLOSE labels. Weight×50 + hold15 helped close, not hold.
+4. **Play ≠ eval can exaggerate space gap** — use `arm_scale=1.0`, `episode_length_s=25`, fixed mask; prefer `student_iter_1800` over `1900` for gripw50 run.
+
+### Next
+- [ ] Fix play defaults to match train (`arm_scale=1.0`, goal thr 0.025)
+- [ ] Consider gripper BCE through encoder (or close pos_weight) before another 2000-iter B1
+- [ ] Resume B7 comparison once B1 can hold + lift@5cm on fixed cube
+- [ ] Do not treat train-eval `grasp=0` as ground truth when diagnostics say `lifted_not_at_goal`
 
 ---
 
 ## Day 2 — 2026-06-30 (S1 B1 without G ablation)
 
 ### Done
-- [x] B1 fresh run under EE-visible init matching B7 (`run_s1_b1_fresh.sh`)
-- [x] Diagnosed invalid first run: partial discard → empty buffer, KL=0
-- [x] Fixed partial handling (IsaacLab flush-at-cap); valid rerun completed 2000 iters
-- [x] Play script: `robot_x_offset`, `panda_joint6`; updated S1 G checkpoint paths
+- [x] B1 fresh run under EE-visible init (`run_s1_b1_fresh.sh`)
+- [x] Diagnosed invalid run `172231`: partial discard → empty buffer, KL=0
+- [x] Run `175108`: flush+reset at cap → buffer grows but `ok=0`, eval 0%
+- [x] **IsaacLab fix:** segment flush + buffer shift, **no env reset** on training envs
+- [x] Run `094041` launched with segment continue; **~948/2000** as of last snapshot
+- [x] Play script EE init; remote setup scripts; findings synced to git (`04a3dd9`, push pending auth)
 
-### Findings
-- Buffer never had successful teacher episodes (`ok=0`); only 256-step APPROACH fragments
-- Adaptive β locked at 1.0 (eval success@5cm always 0)
-- Eval/play: mostly `never_reached_cube`; pure vision insufficient without G under this profile
-- See `findings.md` → "S1 B1 without G — EE-visible ablation"
+### Run `094041` snapshot (~iter 948/2000)
+| metric | value |
+|--------|-------|
+| buffer | 250 ep / 61k steps (`ok=88` success pool) |
+| rollout (teacher) | `grasp=1.0 lift=1.0` every ~10 iters on completion iters |
+| train loss | `arm_kl` ~24, `bce` ~0.01–0.06 |
+| β | ~0.999 (brief drop to 0.8 after eval@710) |
+| eval strict SR | **0%** entire run so far |
+| eval best grasp | **33%** @ iter 710, 790 (3 eps only) |
+| eval `pre_grasp_ee_cube` | typical 0.15–0.25 m; best **~0.08 m** on good evals |
+
+### Insights
+1. **Segment continue unblocks training** — teacher demos with grasp/lift now in buffer; prior `175108` failure was infra not task impossibility.
+2. **Rollout grasp≠eval grasp** — training log `grasp=1.0` is teacher; student eval mostly `never_reached_cube` with occasional `grasp_then_dropped`.
+3. **n=3 eval is misleading** — single-episode luck moves grasp 0↔33% and triggers adaptive β; use ≥20 eps for decisions.
+4. **Pure vision B1 weak on S1 EE-visible** — student learns approach-ish behavior but not stable manipulation; B7 comparison is the real test.
+5. **Play overlay:** green G* in preview is oracle debug, not student input (`anchor_only` 8ch).
 
 ### Next
-- Rerun B1/B7 with `COLLECT_STEPS=256` and/or longer partial cap so teacher completes
-- Optional: linear β decay (`BETA_ADAPTIVE=0`) to break β deadlock
+- [ ] Let `094041` finish 2000 iters
+- [ ] Diagnostic eval 20+ ep on `student_best.pt`
+- [ ] B7 with same segment-continue IsaacLab + `EVAL_EPISODES=20` for fair β
+- [ ] Consider `BETA_ADAPTIVE=0` or grasp-based β with larger eval batch
 
 ---
 

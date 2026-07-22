@@ -19,7 +19,7 @@ exec env -i \
   SHELL="${SHELL:-/bin/bash}" \
   TERM="${TERM:-xterm-256color}" \
   OMNI_KIT_ACCEPT_EULA="${OMNI_KIT_ACCEPT_EULA:-YES}" \
-  ISAACLAB_ROOT="${ISAACLAB_ROOT:-/home/l/code/IsaacLab}" \
+  ISAACLAB_ROOT="${ISAACLAB_ROOT:-$HOME/code/IsaacLab}" \
   CONDA_ENV="${CONDA_ENV:-env_isaaclab}" \
   AUTORESEARCH_ROOT="${ROOT}" \
   RUN_TAG="${RUN_TAG}" \
