@@ -5,7 +5,7 @@
 **Focus:** Tier 0→2 validation only. Long-term routes (3D G, TarGF, text condition) → [docs/FUTURE_RESEARCH_ROUTES.md](docs/FUTURE_RESEARCH_ROUTES.md) (**deferred**).
 
 **Current status (2026-07-22):** Simulator backends live under `simulators/`.
-Isaac Lab is nested at `simulators/isaaclab` (legacy symlink `/home/l/code/IsaacLab`).
+Isaac Lab is vendored at `simulators/isaaclab` (legacy symlink `/home/l/code/IsaacLab`).
 B1 fixed-cube bring-up finished earlier (success@2cm still 0%); see Day 3 / `findings.md`.
 
 ---
