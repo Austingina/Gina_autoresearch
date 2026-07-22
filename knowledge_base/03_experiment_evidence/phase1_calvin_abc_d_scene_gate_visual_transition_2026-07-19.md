@@ -1,7 +1,7 @@
 # CALVIN ABC-to-D Scene Gate and Visual Transition
 
 Date: 2026-07-19
-Status: visual seed-0 scene gate complete; source-scene health diagnostic next
+Status: visual seed-0 scene gate, source-scene health, and corrected-NVIDIA rerun complete
 
 ## Question
 
@@ -112,7 +112,7 @@ ImageNet normalization online.
   uses the same physical id for policy (`cuda:N`) and EGL. It returns complete
   frames; NVIDIA-vs-llvmpipe pixel MAE on the same D state is only `1.32`
   static and `0.76` gripper.
-- All four fresh D evaluations completed on the validated EGL-16 path, using
+- All four initial D evaluations completed on the validated EGL-16 llvmpipe path, using
   the same 100 official sequence indices per held-out task:
 
 | Visual executor | Blue left | Red right | Total |
@@ -129,11 +129,8 @@ shared successes (`p=0.0352`). Oracle G therefore remains causally effective
 after replacing privileged scene state with frozen visual features, but the
 absolute success rate and color-direction asymmetry fail a robust scene gate.
 All four rows used the same llvmpipe backend, so normal/zero/sign-flip causal
-comparisons remain matched. Absolute policy quality should still be rechecked
-with corrected NVIDIA EGL to remove train/render backend shift.
-The next diagnostic must measure source-scene closed-loop health before
-changing G: low source health would identify the visual executor, whereas high
-source health with low D performance would identify scene transfer.
+comparisons remain matched. This result motivated the corrected-NVIDIA rerun
+and source-scene health diagnostic reported below.
 
 Source-scene reconstruction uses official `scene_info.npy`, per-scene CALVIN
 YAML, and each demonstration's first robot/scene state. Scene A reset fidelity
@@ -145,8 +142,24 @@ starts per source task, visual+G reaches `72/100` and visual+MiniLM/no-G reaches
 `15/18`, pink-right `18/17`, and red-left `18/12`. Paired outcomes are 22
 G-only, 12 language-only, 50 both, and 16 neither (`p=0.121`), so both visual
 executors are healthy on exact source support but G does not significantly
-beat language there. A corrected-NVIDIA D rerun is active in separate
-`*_nvidia_egl` result directories.
+beat language there.
+
+The corrected-NVIDIA rerun completed on the same 100 starts per held-out task:
+
+| Visual executor | Blue left | Red right | Total |
+| --- | ---: | ---: | ---: |
+| oracle G | 14/100 | 18/100 | **32/200** |
+| zero G | 1/100 | 0/100 | 1/200 |
+| sign-flipped G | 1/100 | 0/100 | 1/200 |
+| MiniLM, no G | 4/100 | 2/100 | 6/200 |
+
+Normal-only/control-only paired counts are `32/1` against both zero and
+sign-flipped G (two-sided exact McNemar `p=7.92e-9`) and `31/5` against the
+language-only executor (`p=1.29e-5`). NVIDIA rendering raises the normal-G row
+from `12/200` to `32/200`, so backend shift mattered quantitatively. It does
+not rescue the robust scene gate: source-A health is `72/100`, while held-out
+D remains only `16%`. The primary open problem is therefore visual
+scene/composition transfer, not whether the current oracle G affects control.
 
 Server artifacts:
 
@@ -160,10 +173,9 @@ Server artifacts:
 
 ## Next Gate
 
-1. Finish the corrected-NVIDIA D gate for normal/zero/sign-flipped G and the
-   matched language-only executor.
-2. Replace global DINOv2 CLS vectors with spatial patch tokens and a temporal
-   policy only if source-scene health is also weak; do not redesign compact G
-   from this result alone.
-3. Repeat the D scene gate after the executor passes source health, then train
-   language+video to G and run the same interventions.
+1. Improve A-to-D visual scene/composition transfer while keeping oracle G,
+   zero G, sign-flipped G, and MiniLM/no-G on matched initial states.
+2. Test spatial patch tokens and temporal visual context before redesigning
+   compact G; source-A execution is already healthy with global CLS features.
+3. Repeat the D scene gate, then train language+video to G only after the
+   visual executor passes a stronger absolute-success threshold.

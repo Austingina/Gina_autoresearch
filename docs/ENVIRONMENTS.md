@@ -21,7 +21,7 @@ cd "$ISAACLAB_ROOT" && ./isaaclab.sh -p -c "import isaaclab; print('ok')"
 
 ## `calvin_h200` (Phase 1 training)
 
-- **Python:** 3.x from CALVIN install
+- **Python:** 3.8.20 in the audited H200 environment
 - **Torch:** **2.3.1+cu121** with **sm_90** (required on H200)
 - **Do not** train on the official `calvin` env (Torch 1.13.1+cu117) on H200
 - **Freeze:** `shared/envs/calvin_h200.pip.freeze.txt`
@@ -32,7 +32,7 @@ cd "$ISAACLAB_ROOT" && ./isaaclab.sh -p -c "import isaaclab; print('ok')"
 
 ```bash
 # After cloning calvin under $CALVIN_G_ROOT/code/calvin
-conda create -p "$CALVIN_G_ROOT/envs/calvin_h200" python=3.10 -y
+conda create -p "$CALVIN_G_ROOT/envs/calvin_h200" python=3.8.20 -y
 conda activate "$CALVIN_G_ROOT/envs/calvin_h200"
 pip install torch==2.3.1+cu121 torchvision==0.18.1+cu121 \
   --index-url https://download.pytorch.org/whl/cu121

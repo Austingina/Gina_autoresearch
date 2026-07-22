@@ -21,10 +21,12 @@ case "${LANGUAGE_MODE}" in
   *) echo "LANGUAGE_MODE must be none, onehot, or minilm" >&2; exit 2 ;;
 esac
 
-ROOT="/mnt/nvme33n1/wuk_code/AutoResearch"
-PYTHON="/mnt/nvme33n1/wuk_code/calvin_g/envs/calvin_h200/bin/python"
-CALVIN_CODE="/mnt/nvme33n1/wuk_code/calvin_g/code/calvin"
-DATA_ROOT="/mnt/nvme33n1/wuk_code/calvin_g/data/task_ABC_D_compact_blocks"
+ROOT="${AUTORESEARCH_ROOT:-/mnt/nvme33n1/wuk_code/AutoResearch}"
+CALVIN_G_ROOT="${CALVIN_G_ROOT:-/mnt/nvme33n1/wuk_code/calvin_g}"
+PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin_h200/bin/python}"
+CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
+CALVIN_DATA="${CALVIN_DATA:-${CALVIN_G_ROOT}/data}"
+DATA_ROOT="${CALVIN_DATA}/task_ABC_D_compact_blocks"
 GEOMETRY_JSON="${ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
 LANGUAGE_TAG=""
 if [[ "${LANGUAGE_MODE}" != "onehot" ]]; then
@@ -41,7 +43,7 @@ SOURCE_TASKS=(
 VISUAL_ARGS=()
 if [[ "${STATE_SCOPE}" == "visual" ]]; then
   VISUAL_ARGS+=(
-    --visual-feature-dir /mnt/nvme33n1/wuk_code/calvin_g/data/task_ABC_D_compact_blocks_dinov2_small
+    --visual-feature-dir "${CALVIN_DATA}/task_ABC_D_compact_blocks_dinov2_small"
     --visual-encoder-name facebook/dinov2-small
   )
 fi

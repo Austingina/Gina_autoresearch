@@ -6,8 +6,9 @@ Unified research flywheel for **whether a compact geometric goal interface G imp
 a_t = π(o_t, M_t, G_t)     # research interface (platform-agnostic)
 ```
 
-**Recovery entry point:** [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md)  
-(If disks expire: clone this GitHub repo → follow BOOTSTRAP → rebuild envs/simulators/data.)
+**Recovery entry point:** [bootstrap.md](bootstrap.md)<br>
+**Dataset ledger:** [dataset.md](dataset.md)<br>
+(If disks expire: clone this GitHub repo, rebuild the public inputs, and rerun the recorded gates.)
 
 ## Active vs legacy tracks
 
@@ -20,7 +21,8 @@ a_t = π(o_t, M_t, G_t)     # research interface (platform-agnostic)
 
 ```text
 AutoResearch/
-  docs/BOOTSTRAP.md          # rebuild from git
+  bootstrap.md               # rebuild from an empty machine
+  dataset.md                 # data URLs, hashes, and derivation recipes
   docs/HOSTS.md              # local + H200 paths
   docs/ENVIRONMENTS.md       # conda / pip recipes
   PROGRESS.md                # index → phase journals
@@ -45,7 +47,7 @@ source simulators/resolve_paths.sh
 ./scripts/init_workspace.sh
 python scripts/check_flywheel.py
 
-# Phase 1 — CALVIN (after linking calvin_g — see docs/BOOTSTRAP.md)
+# Phase 1 — CALVIN (after linking calvin_g — see bootstrap.md)
 framework/scripts/check_calvin_ready.sh
 GPU=0 framework/scripts/run_calvin_dualcam.sh smoke
 ```
@@ -54,7 +56,8 @@ GPU=0 framework/scripts/run_calvin_dualcam.sh smoke
 
 | Doc | Content |
 |-----|---------|
-| [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md) | **Start here after a wipe** |
+| [bootstrap.md](bootstrap.md) | **Start here after a wipe** |
+| [dataset.md](dataset.md) | Data sources, hashes, split semantics, and generated caches |
 | [docs/HOSTS.md](docs/HOSTS.md) | Local / H200 path map |
 | [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) | `env_isaaclab` + `calvin_h200` |
 | [docs/SIMULATORS.md](docs/SIMULATORS.md) | Pluggable backends |

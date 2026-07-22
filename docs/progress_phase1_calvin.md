@@ -663,10 +663,14 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   Paired outcomes are 22 G-only, 12 language-only, 50 both, and 16 neither
   (`p=0.121`). Both executors are healthy on exact source support; the D drop
   is therefore primarily a visual scene/composition transfer problem.
-- Corrected-NVIDIA D reruns are active in separate `_nvidia_egl` directories:
-  queue/evaluator PIDs `2783971/2783975` for normal->zero->flip G on GPU/EGL 5,
-  and `2784356/2784360` for language-only on GPU/EGL 7. This will determine how
-  much of the old `12/200` was llvmpipe train/render shift.
+- Corrected-NVIDIA D reruns completed in separate `_nvidia_egl` directories.
+  Oracle G reaches blue-left/red-right `14/100, 18/100` (`32/200`), versus
+  zero G `1/200`, sign-flipped G `1/200`, and MiniLM/no-G `6/200`. Paired
+  normal-only/control-only counts are `32/1` against both zero and flip
+  (`p=7.92e-9`) and `31/5` against language-only (`p=1.29e-5`). The corrected
+  renderer improves absolute success over llvmpipe but does not change the
+  conclusion: G is causally useful, while A-to-D visual/composition transfer
+  remains weak.
 - Eval logs: `/mnt/nvme33n1/wuk_code/AutoResearch/logs/M1_abc_d_scene_gate_none/`
   and `/mnt/nvme33n1/wuk_code/AutoResearch/logs/M1_abc_d_scene_gate_minilm/`.
 - Full record:

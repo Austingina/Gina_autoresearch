@@ -15,13 +15,14 @@
 | **Phase 1 (active)** | [docs/progress_phase1_calvin.md](docs/progress_phase1_calvin.md) |
 | Phase 0 Isaac | [docs/progress_phase0_isaac.md](docs/progress_phase0_isaac.md) |
 | Isaac findings ratchet | [findings.md](findings.md) |
-| Rebuild from Git | [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md) |
+| Rebuild from Git | [bootstrap.md](bootstrap.md) |
+| Dataset provenance | [dataset.md](dataset.md) |
 
 ## Snapshot (do not replace journals)
 
 ### Phase 1 — latest gates
 
-- **2026-07-21** ABC→D **visual** scene gate: oracle G `12/200` vs zero/flip `0/200` (weak causal pass; fails robust visual gate). Scene-A health G `72/100` vs MiniLM `62/100`.
+- **2026-07-22** Corrected-NVIDIA ABC→D **visual** scene gate: oracle G `32/200` vs zero/flip `1/200, 1/200` and MiniLM/no-G `6/200`. Scene-A health remains G `72/100` vs MiniLM `62/100`. G is causal, but absolute scene/composition transfer is still too weak for scaling learned G.
 - **2026-07-17** E4 inverse-closure: residual MoE variants; not clean target-free ZS for close/slider.
 - **2026-07-16** **E3** factorial checkerboard: red-right `139/300` vs flip/no-G ~0; blue-left `147/300`. Freeze as compact-G causal checkpoint; cross-mechanism still open.
 
