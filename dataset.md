@@ -5,7 +5,7 @@ results cited by `PROGRESS.md`. Large files are deliberately not committed to
 Git. Paths below are examples; scripts should use the environment variables in
 `bootstrap.md` instead of depending on one machine's mount point.
 
-Last audited against the H200 workspace on 2026-07-22.
+Last audited against the BNU V100 migration workspace on 2026-08-13.
 
 ## Recovery scope
 
@@ -103,6 +103,54 @@ hash was not retained. Recover it only from the official URL, apply the
 official scene-info repair, and validate the extracted structure as shown
 below. Do not substitute a converted Hugging Face/LeRobot mirror for formal
 numbers because conversion can alter actions, annotations, or indexing.
+
+### Short-window recovery mirror (diagnostic only)
+
+When the official 518 GB server was too slow for the four-hour BNU allocation,
+the method-validation path used the ModelScope mirror
+`zhihelu/calvin-task-ABC-D`. This is a 57.84 GB LeRobot/RLDS conversion with
+18,957 episodes and approximately 1.136 million frames:
+
+```text
+https://modelscope.cn/datasets/zhihelu/calvin-task-ABC-D
+```
+
+The archive is split into two Git LFS objects. Verify both before extraction:
+
+```text
+91b1a2083024b1d6445db3d2bbc974e3a6d90beeef6855aa3b793ada77e6ea4f  task-ABC-D.tar.gz.part00  (32212254720 bytes)
+b7f29eb2eac3f8f10370a309640b9540b5e3f9deb1ad58bede7b9fe0fc7abf24  task-ABC-D.tar.gz.part01  (25623781844 bytes)
+```
+
+This conversion retains top RGB (200 x 200), wrist RGB (84 x 84), the exact
+15-D `robot_obs` as `observation.state`, and 7-D relative actions. It does not
+retain `scene_obs`. Consequently it can support visual/proprioceptive policy
+training and video-derived G experiments, but it cannot reproduce an oracle
+scene-state G or replace official ABC-to-D benchmark numbers.
+
+For an early migration probe, episodes were filtered to the six block-push
+tasks and converted with:
+
+```bash
+"$CALVIN_PYTHON" \
+  framework/scripts/data/convert_calvin_lerobot_to_compact_npz.py \
+  --lerobot-root "$CALVIN_DATA/modelscope_calvin_abc_extracted" \
+  --meta-root "$CALVIN_DATA/hf_calvin_abc_lerobot/meta" \
+  --camera-config-root "$CALVIN_DATA/calvin_debug_dataset" \
+  --output-dir "$CALVIN_DATA/lerobot_blocks_behavior_g" \
+  --include-tasks \
+    push_red_block_left push_red_block_right \
+    push_blue_block_left push_blue_block_right \
+    push_pink_block_left push_pink_block_right \
+  --flow-mode semantic_axis
+```
+
+The diagnostic G is intentionally coarse. Language determines the signed
+world-x object-flow vector. Target-colored pixels and projected EEF motion
+estimate contact onset; before contact, attraction points from EEF to the
+episode-level contact anchor, and after contact attraction is zero. The script
+writes `minimal_g=[attraction(3), flow(3)]` per frame. This is a behavior-field
+probe derived from video/proprioception, not an oracle contact label.
 
 Apply metadata repairs to extracted datasets when needed:
 

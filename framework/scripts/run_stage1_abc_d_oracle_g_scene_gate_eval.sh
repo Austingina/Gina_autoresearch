@@ -11,12 +11,23 @@ LANGUAGE_MODE="${7:-onehot}"
 EVAL_TAG="${8:-}"
 EGL_RENDER_DEVICE="${EGL_RENDER_DEVICE:-${GPU}}"
 
-ROOT="${AUTORESEARCH_ROOT:-/mnt/nvme33n1/wuk_code/AutoResearch}"
-CALVIN_G_ROOT="${CALVIN_G_ROOT:-/mnt/nvme33n1/wuk_code/calvin_g}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+# Evaluation must remain reproducible when the model hub is unavailable. The
+# bootstrap step populates HF_HOME before this script is used.
+unset TRANSFORMERS_CACHE
+export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
+export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
+ROOT="${AUTORESEARCH_ROOT:-${REPO_ROOT}}"
+CALVIN_G_ROOT="${CALVIN_G_ROOT:-$(cd "${ROOT}/.." && pwd)/calvin_g}"
 PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin_h200/bin/python}"
 CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
 CALVIN_DATA="${CALVIN_DATA:-${CALVIN_G_ROOT}/data}"
-EVAL_DATA_ROOT="${CALVIN_DATA}/task_D_D"
+EVAL_DATA_ROOT="${CALVIN_EVAL_DATA_ROOT:-${CALVIN_DATA}/task_D_D}"
 LANGUAGE_TAG=""
 if [[ "${LANGUAGE_MODE}" != "onehot" ]]; then
   LANGUAGE_TAG="_${LANGUAGE_MODE}"

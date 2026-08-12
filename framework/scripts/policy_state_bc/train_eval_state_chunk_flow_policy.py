@@ -625,6 +625,8 @@ def collect_chunk_records(
     frame_indices: list[int] = []
     reverse_open_flags: list[bool] = []
     reverse_source_flags: list[bool] = []
+    precomputed_minimal_g: list[np.ndarray] = []
+    precomputed_g_presence: bool | None = None
     used_segments: list[dict[str, Any]] = []
     used_segment_ids: list[int] = []
     used_task_segments: Counter[str] = Counter()
@@ -640,7 +642,7 @@ def collect_chunk_records(
         if end - start + 1 < chunk_size:
             continue
 
-        frames: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+        frames: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray | None]] = {}
         segment_ok = True
         for idx in range(start, end + 1):
             f = base.episode_file(split_dir, idx)
@@ -648,14 +650,26 @@ def collect_chunk_records(
                 segment_ok = False
                 break
             try:
-                d = np.load(f, allow_pickle=True)
-                r = np.asarray(d["robot_obs"], dtype=np.float32)
-                s = np.asarray(d["scene_obs"], dtype=np.float32)
-                a = np.asarray(d["rel_actions"], dtype=np.float32)
+                with np.load(f, allow_pickle=True) as data:
+                    r = np.asarray(data["robot_obs"], dtype=np.float32)
+                    s = np.asarray(data["scene_obs"], dtype=np.float32)
+                    a = np.asarray(data["rel_actions"], dtype=np.float32)
+                    frame_g = (
+                        np.asarray(data["minimal_g"], dtype=np.float32)
+                        if "minimal_g" in data.files
+                        else None
+                    )
             except Exception:
                 segment_ok = False
                 break
-            frames[idx] = (r, s, a)
+            has_precomputed_g = frame_g is not None
+            if precomputed_g_presence is None:
+                precomputed_g_presence = has_precomputed_g
+            elif precomputed_g_presence != has_precomputed_g:
+                raise RuntimeError(
+                    "Mixed NPZ records with and without minimal_g are not supported"
+                )
+            frames[idx] = (r, s, a, frame_g)
         if not segment_ok:
             continue
 
@@ -663,7 +677,7 @@ def collect_chunk_records(
         for idx in range(start, end - chunk_size + 2, max(1, stride)):
             if max_windows > 0 and len(action_chunks) >= max_windows:
                 break
-            r, s, _a0 = frames[idx]
+            r, s, _a0, frame_g = frames[idx]
             chunk = np.stack([frames[j][2] for j in range(idx, idx + chunk_size)]).astype(np.float32)
             robot_obs.append(r)
             scene_obs.append(s)
@@ -680,6 +694,8 @@ def collect_chunk_records(
             frame_indices.append(idx)
             reverse_open_flags.append(False)
             reverse_source_flags.append(False)
+            if frame_g is not None:
+                precomputed_minimal_g.append(frame_g)
             any_window = True
         if any_window:
             used_segments.append(seg)
@@ -800,6 +816,19 @@ def collect_chunk_records(
         primitive_geometry=primitive_geometry,
     )
     arrays["articulation_minimal_g"] = make_minimal_articulation_g(arrays["articulation_query_g"])
+    if precomputed_minimal_g:
+        if len(precomputed_minimal_g) != len(action_chunks):
+            raise RuntimeError(
+                "Precomputed minimal_g cannot currently be combined with reverse augmentation"
+            )
+        precomputed_array = np.stack(precomputed_minimal_g).astype(np.float32)
+        if precomputed_array.shape != (len(action_chunks), 6):
+            raise RuntimeError(
+                f"Expected precomputed minimal_g shape {(len(action_chunks), 6)}, "
+                f"got {precomputed_array.shape}"
+            )
+        arrays["articulation_minimal_g"] = precomputed_array
+        arrays["uses_precomputed_minimal_g"] = np.ones(len(action_chunks), dtype=bool)
     return arrays, used_segments
 
 
@@ -3237,6 +3266,7 @@ def evaluate_policy_ckpt(
     eval_mode: str,
     eval_task_filter: set[str] | None,
     eval_scan_sequences: int,
+    eval_sequence_workers: int = 8,
     eval_sequence_offset: int = 0,
     g_scale: float = 1.0,
     query_g_control: str = "normal",
@@ -3351,7 +3381,10 @@ def evaluate_policy_ckpt(
         if eval_mode == "first_task":
             matched = 0
             for sequence_index, (initial_state, seq) in enumerate(
-                get_sequences(max(num_sequences + eval_sequence_offset, eval_scan_sequences))
+                get_sequences(
+                    max(num_sequences + eval_sequence_offset, eval_scan_sequences),
+                    num_workers=eval_sequence_workers,
+                )
             ):
                 first_task = seq[0]
                 if eval_task_filter is None or first_task in eval_task_filter:
@@ -3367,7 +3400,10 @@ def evaluate_policy_ckpt(
             matched_by_task: Counter[str] = Counter()
             required_per_task = num_sequences + eval_sequence_offset
             for sequence_index, (initial_state, seq) in enumerate(
-                get_sequences(max(required_per_task * max(1, len(buckets)) * 10, eval_scan_sequences))
+                get_sequences(
+                    max(required_per_task * max(1, len(buckets)) * 10, eval_scan_sequences),
+                    num_workers=eval_sequence_workers,
+                )
             ):
                 first_task = seq[0]
                 if first_task in buckets:
@@ -3611,6 +3647,12 @@ def main() -> None:
     parser.add_argument("--eval-mode", choices=["long_horizon", "first_task", "balanced_first_task"], default="balanced_first_task")
     parser.add_argument("--eval-task-filter", nargs="+", default=None)
     parser.add_argument("--eval-scan-sequences", type=int, default=5000)
+    parser.add_argument(
+        "--eval-sequence-workers",
+        type=int,
+        default=8,
+        help="Workers used by CALVIN's deterministic standard-sequence generator.",
+    )
     parser.add_argument(
         "--eval-sequence-offset",
         type=int,
@@ -3886,6 +3928,7 @@ def main() -> None:
         "eval_mode": args.eval_mode,
         "eval_task_filter": args.eval_task_filter,
         "eval_scan_sequences": args.eval_scan_sequences,
+        "eval_sequence_workers": args.eval_sequence_workers,
         "eval_sequence_offset": args.eval_sequence_offset,
         "checkpoint_epochs": checkpoint_epochs,
         "eval_checkpoints": args.eval_checkpoints,
@@ -4020,6 +4063,7 @@ def main() -> None:
                 eval_mode=args.eval_mode,
                 eval_task_filter=set(args.eval_task_filter) if args.eval_task_filter else None,
                 eval_scan_sequences=args.eval_scan_sequences,
+                eval_sequence_workers=args.eval_sequence_workers,
                 eval_sequence_offset=args.eval_sequence_offset,
                 action_execution_horizon=args.action_execution_horizon,
                 temporal_ensemble=args.temporal_ensemble,

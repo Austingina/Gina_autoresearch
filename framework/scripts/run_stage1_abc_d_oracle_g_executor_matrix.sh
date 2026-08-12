@@ -2,12 +2,25 @@
 set -euo pipefail
 
 SEED="${1:-0}"
-ROOT="/mnt/nvme33n1/wuk_code/AutoResearch"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+ROOT="${AUTORESEARCH_ROOT:-${REPO_ROOT}}"
 LOG_ROOT="${ROOT}/logs/M1_abc_d_scene_gate_none"
 mkdir -p "${LOG_ROOT}"
+IFS=',' read -r -a GPUS <<< "${CALVIN_GPU_LIST:-0}"
+if [[ "${#GPUS[@]}" -eq 0 ]]; then
+  echo "CALVIN_GPU_LIST must contain at least one CUDA device" >&2
+  exit 2
+fi
 
-for condition in "full 1" "proprio 6"; do
-  read -r state_scope gpu <<< "${condition}"
+index=0
+for state_scope in full proprio; do
+  gpu="${GPUS[$((index % ${#GPUS[@]}))]}"
+  index=$((index + 1))
   train_log="${LOG_ROOT}/train_seed${SEED}_${state_scope}_with_g.log"
   queue_log="${LOG_ROOT}/queue_seed${SEED}_${state_scope}_with_g.log"
 

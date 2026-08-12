@@ -5,7 +5,7 @@ active CALVIN ABC-to-D visual experiment from public sources and records how to
 regenerate the legacy Isaac Lab demonstrations. Read `dataset.md` first for
 data provenance and checksums.
 
-Last validated against the H200 workspace on 2026-07-22.
+Last validated against the BNU V100 migration workspace on 2026-08-13.
 
 ## Recovery contract
 
@@ -25,8 +25,9 @@ Therefore there are two recovery levels:
 
 ## 1. Machine and disk requirements
 
-The active visual gate was validated on Linux with NVIDIA H200 GPUs. The
-training stack is CUDA 12.1 / PyTorch 2.3.1 with `sm_90` support.
+The active visual gate was validated on Linux with NVIDIA H200 and V100 GPUs.
+The training stack is CUDA 12.1 / PyTorch 2.3.1 and must include the target
+architecture (`sm_90` for H200 or `sm_70` for V100).
 
 Recommended capacity:
 
@@ -127,12 +128,18 @@ print("torch", torch.__version__, "cuda", torch.version.cuda)
 print("numpy", numpy.__version__)
 print("transformers", transformers.__version__)
 assert torch.cuda.is_available()
-assert torch.cuda.get_arch_list() and "sm_90" in torch.cuda.get_arch_list()
+capability = torch.cuda.get_device_capability()
+required_arch = f"sm_{capability[0]}{capability[1]}"
+assert required_arch in torch.cuda.get_arch_list(), (required_arch, torch.cuda.get_arch_list())
 PY
 ```
 
 Expected core versions are Python `3.8.20`, PyTorch `2.3.1+cu121`, NumPy
-`1.24.4`, and Transformers `4.46.3`.
+`1.24.4`, Transformers `4.46.3`, and PyArrow `17.0.0`. On restricted networks,
+the curated non-Torch packages can be installed from the Tsinghua PyPI mirror.
+
+For a V100, feature caches use float16. Do not select bfloat16 merely because
+PyTorch exposes the dtype; native BF16 requires Ampere or newer hardware.
 
 Create compatibility links used by older experiment scripts:
 
@@ -177,6 +184,11 @@ unzip calvin_debug_dataset.zip
 The commands remove the D zip after basic extraction checks to keep peak disk
 use below 800 GB. Keep `task_ABC_D.zip`: both compact extraction
 and visual feature generation read directly from it.
+
+For a short diagnostic allocation where the official archive cannot finish,
+use the integrity-checked ModelScope mirror described in `dataset.md`. Keep its
+results in a separately named experiment family and do not report them as
+official ABC-to-D numbers.
 
 ## 6. Regenerate the active derived datasets
 

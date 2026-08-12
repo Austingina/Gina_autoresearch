@@ -2,22 +2,38 @@
 set -euo pipefail
 
 SEED="${1:-0}"
-ROOT="/mnt/nvme33n1/wuk_code/AutoResearch"
-FEATURE_MANIFEST="/mnt/nvme33n1/wuk_code/calvin_g/data/task_ABC_D_compact_blocks_dinov2_small/manifest.json"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+ROOT="${AUTORESEARCH_ROOT:-${REPO_ROOT}}"
+CALVIN_G_ROOT="${CALVIN_G_ROOT:-$(cd "${ROOT}/.." && pwd)/calvin_g}"
+CALVIN_DATA="${CALVIN_DATA:-${CALVIN_G_ROOT}/data}"
+FEATURE_MANIFEST="${CALVIN_DINOV2_FEATURE_ROOT:-${CALVIN_DATA}/task_ABC_D_compact_blocks_dinov2_small}/manifest.json"
 LOG_ROOT="${ROOT}/logs/M2_abc_d_visual_dinov2"
 mkdir -p "${LOG_ROOT}"
+IFS=',' read -r -a GPUS <<< "${CALVIN_GPU_LIST:-0}"
+if [[ "${#GPUS[@]}" -eq 0 ]]; then
+  echo "CALVIN_GPU_LIST must contain at least one CUDA device" >&2
+  exit 2
+fi
 
 until [[ -f "${FEATURE_MANIFEST}" ]]; do
   sleep 30
 done
 
 CONDITIONS=(
-  "with_g none 0"
-  "language_only minilm 2"
+  "with_g none"
+  "language_only minilm"
 )
 
+index=0
 for condition in "${CONDITIONS[@]}"; do
-  read -r variant language_mode gpu <<< "${condition}"
+  read -r variant language_mode <<< "${condition}"
+  gpu="${GPUS[$((index % ${#GPUS[@]}))]}"
+  index=$((index + 1))
   train_log="${LOG_ROOT}/train_seed${SEED}_${variant}_${language_mode}.log"
   queue_log="${LOG_ROOT}/queue_seed${SEED}_${variant}_${language_mode}.log"
 

@@ -8,7 +8,13 @@ VARIANT="${4:?usage: $0 SEED GPU STATE_SCOPE VARIANT [LANGUAGE_MODE] [EVAL_TAG]}
 LANGUAGE_MODE="${5:-onehot}"
 EVAL_TAG="${6:-}"
 
-ROOT="/mnt/nvme33n1/wuk_code/AutoResearch"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+ROOT="${AUTORESEARCH_ROOT:-${REPO_ROOT}}"
 LANGUAGE_TAG=""
 if [[ "${LANGUAGE_MODE}" != "onehot" ]]; then
   LANGUAGE_TAG="_${LANGUAGE_MODE}"

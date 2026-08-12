@@ -1,4 +1,4 @@
-# Curated pins for calvin_h200 (H200 / sm_90)
+# Curated pins for calvin_h200 (legacy name; validated on H200/sm_90 and V100/sm_70)
 
 # Install torch first from the cu121 index, then:
 #   pip install -r shared/envs/calvin_h200.requirements.txt
@@ -27,4 +27,5 @@ moviepy==1.0.3
 termcolor==2.4.0
 scikit-learn==1.3.2
 pandas==2.0.3
+pyarrow==17.0.0
 PyYAML==6.0.3

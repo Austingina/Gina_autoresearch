@@ -23,6 +23,7 @@ def main() -> None:
     parser.add_argument("--num-sequences", type=int, default=100)
     parser.add_argument("--ep-len", type=int, default=160)
     parser.add_argument("--eval-scan-sequences", type=int, default=5000)
+    parser.add_argument("--eval-sequence-workers", type=int, default=8)
     parser.add_argument("--eval-task-filter", nargs="+", default=["close_drawer"])
     parser.add_argument("--eval-sequence-offset", type=int, default=0)
     parser.add_argument("--action-execution-horizon", type=int, required=True)
@@ -72,6 +73,7 @@ def main() -> None:
         eval_mode="balanced_first_task",
         eval_task_filter=set(args.eval_task_filter),
         eval_scan_sequences=args.eval_scan_sequences,
+        eval_sequence_workers=args.eval_sequence_workers,
         eval_sequence_offset=args.eval_sequence_offset,
         g_scale=args.g_scale,
         query_g_control=args.query_g_control,

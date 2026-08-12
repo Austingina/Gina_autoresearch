@@ -8,6 +8,7 @@ AutoResearch runs on at least two machines. Always prefer env vars over hard-cod
 |------|------------|-----------------------------|
 | **Local workstation** | `l-Z790-UD-AX` | `/home/l/code/AutoResearch` |
 | **Remote H200** | `ssh unrealzoo-remote` → `wukui@34.52.175.145` | `/mnt/nvme33n1/wuk_code/AutoResearch` |
+| **BNU V100 (active 2026-08)** | jump through `aic.bnu.edu.cn`, then `173.0.45.2` | `/public/home/zhongfangwei/wuk_code/AutoResearch` |
 
 ```bash
 # ~/.ssh/config (local)
@@ -61,3 +62,22 @@ See also [archive/old_paths.md](../archive/old_paths.md).
 | CALVIN | `https://github.com/mees/calvin.git` @ `fa03f01` | + `calvin_env` @ `1431a46` |
 
 The H200 unified tree historically lived **outside** Git; as of 2026-07-22 the recoverable framework is merged into this GitHub repo. Keep server working copies in sync with `git pull` + selective `rsync` for artifacts.
+
+## BNU V100 migration
+
+The short-lived BNU allocation uses one V100 (`sm_70`) and the following
+layout:
+
+```text
+/public/home/zhongfangwei/wuk_code/AutoResearch
+/public/home/zhongfangwei/wuk_code/calvin_g/code/calvin
+/public/home/zhongfangwei/wuk_code/calvin_g/envs/calvin_v100
+/public/home/zhongfangwei/wuk_code/calvin_g/envs/calvin_h200 -> calvin_v100
+/public/home/zhongfangwei/wuk_code/calvin_g/data
+/public/home/zhongfangwei/wuk_code/calvin_g/logs
+```
+
+PyTorch CUDA inference and DINOv2 run on the V100. Headless CALVIN rendering
+currently reports Mesa llvmpipe, so this host is suitable for matched method
+diagnostics but not renderer-speed or cross-renderer appearance claims. Login
+credentials are deliberately not stored in Git.

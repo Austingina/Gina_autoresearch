@@ -4,22 +4,36 @@ set -euo pipefail
 SEED="${1:-0}"
 LANGUAGE_MODE="${2:-minilm}"
 
-ROOT="/mnt/nvme33n1/wuk_code/AutoResearch"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+ROOT="${AUTORESEARCH_ROOT:-${REPO_ROOT}}"
 LOG_ROOT="${ROOT}/logs/M1_abc_d_scene_gate"
 if [[ "${LANGUAGE_MODE}" != "onehot" ]]; then
   LOG_ROOT="${LOG_ROOT}_${LANGUAGE_MODE}"
 fi
 mkdir -p "${LOG_ROOT}"
+IFS=',' read -r -a GPUS <<< "${CALVIN_GPU_LIST:-0}"
+if [[ "${#GPUS[@]}" -eq 0 ]]; then
+  echo "CALVIN_GPU_LIST must contain at least one CUDA device" >&2
+  exit 2
+fi
 
 CONDITIONS=(
-  "full with_g 0"
-  "full language_only 1"
-  "proprio with_g 2"
-  "proprio language_only 6"
+  "full with_g"
+  "full language_only"
+  "proprio with_g"
+  "proprio language_only"
 )
 
+index=0
 for condition in "${CONDITIONS[@]}"; do
-  read -r state_scope variant gpu <<< "${condition}"
+  read -r state_scope variant <<< "${condition}"
+  gpu="${GPUS[$((index % ${#GPUS[@]}))]}"
+  index=$((index + 1))
   train_log="${LOG_ROOT}/train_seed${SEED}_${state_scope}_${variant}.log"
   queue_log="${LOG_ROOT}/queue_seed${SEED}_${state_scope}_${variant}.log"
 

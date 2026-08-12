@@ -40,9 +40,13 @@ def encode_batch(
     gripper = preprocess(gripper_images, device)
     pixels = torch.cat([static, gripper], dim=0)
     amp_enabled = device.type == "cuda"
+    amp_dtype = torch.float32
+    if amp_enabled:
+        major, _ = torch.cuda.get_device_capability(device)
+        amp_dtype = torch.bfloat16 if major >= 8 else torch.float16
     with torch.inference_mode(), torch.autocast(
         device_type=device.type,
-        dtype=torch.bfloat16 if amp_enabled else torch.float32,
+        dtype=amp_dtype,
         enabled=amp_enabled,
     ):
         features = model(pixel_values=pixels).last_hidden_state[:, 0]
@@ -64,7 +68,13 @@ def shard_matches(path: Path, expected_indices: np.ndarray) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source-zip", type=Path, required=True)
+    source_group = parser.add_mutually_exclusive_group(required=True)
+    source_group.add_argument("--source-zip", type=Path)
+    source_group.add_argument(
+        "--source-dir",
+        type=Path,
+        help="Extracted CALVIN dataset root containing training/episode_*.npz.",
+    )
     parser.add_argument("--compact-data-root", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--model-name", default="facebook/dinov2-small")
@@ -102,15 +112,23 @@ def main() -> None:
 
     started = time.time()
     completed = 0
-    with zipfile.ZipFile(args.source_zip) as archive:
+    archive = zipfile.ZipFile(args.source_zip) if args.source_zip is not None else None
+    try:
         first_name = episode_files[0].name
-        suffix = f"/training/{first_name}"
-        matches = [name for name in archive.namelist() if name.endswith(suffix)]
-        if len(matches) != 1:
-            raise RuntimeError(
-                f"Expected one archive member ending in {suffix!r}, found {len(matches)}"
-            )
-        training_prefix = matches[0][: -len(first_name)]
+        if archive is not None:
+            suffix = f"/training/{first_name}"
+            matches = [name for name in archive.namelist() if name.endswith(suffix)]
+            if len(matches) != 1:
+                raise RuntimeError(
+                    f"Expected one archive member ending in {suffix!r}, found {len(matches)}"
+                )
+            training_prefix = matches[0][: -len(first_name)]
+        else:
+            training_dir = args.source_dir / "training"
+            if not (training_dir / first_name).is_file():
+                raise FileNotFoundError(
+                    f"Source episode not found: {training_dir / first_name}"
+                )
 
         for shard_start in range(0, len(episode_files), args.shard_size):
             shard_stop = min(len(episode_files), shard_start + args.shard_size)
@@ -132,8 +150,11 @@ def main() -> None:
                 static_images: list[np.ndarray] = []
                 gripper_images: list[np.ndarray] = []
                 for episode_file in episode_files[batch_start:batch_stop]:
-                    member = training_prefix + episode_file.name
-                    with np.load(io.BytesIO(archive.read(member)), allow_pickle=False) as data:
+                    if archive is not None:
+                        payload = io.BytesIO(archive.read(training_prefix + episode_file.name))
+                    else:
+                        payload = args.source_dir / "training" / episode_file.name
+                    with np.load(payload, allow_pickle=False) as data:
                         static_images.append(np.asarray(data["rgb_static"], dtype=np.uint8))
                         gripper_images.append(np.asarray(data["rgb_gripper"], dtype=np.uint8))
                 static_features, gripper_features = encode_batch(
@@ -157,9 +178,13 @@ def main() -> None:
                 f"rate={completed / elapsed:.1f} frame/s",
                 flush=True,
             )
+    finally:
+        if archive is not None:
+            archive.close()
 
     manifest = {
-        "source_zip": str(args.source_zip.resolve()),
+        "source_zip": str(args.source_zip.resolve()) if args.source_zip is not None else None,
+        "source_dir": str(args.source_dir.resolve()) if args.source_dir is not None else None,
         "compact_data_root": str(args.compact_data_root.resolve()),
         "model_name": args.model_name,
         "feature_dim": int(model.config.hidden_size),
