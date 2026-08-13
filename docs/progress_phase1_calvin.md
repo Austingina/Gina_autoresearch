@@ -675,3 +675,35 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   and `/mnt/nvme33n1/wuk_code/AutoResearch/logs/M1_abc_d_scene_gate_minilm/`.
 - Full record:
   `knowledge_base/03_experiment_evidence/phase1_calvin_abc_d_scene_gate_visual_transition_2026-07-19.md`
+
+# Matched behavior-G recombination gate -- 2026-08-13
+
+- Downloaded and SHA256-verified the complete ModelScope CALVIN ABC-D LeRobot
+  mirror. The six block-push tasks provide 3,357 episodes and 199,292 frames;
+  all frames have frozen dual-camera DINOv2-small features.
+- Replaced the earlier train/online G mismatch with the same coarse 6-D
+  behavior interface on both sides: `G=[attraction_to_block_center(3),
+  semantic_object_flow(3)]`. The executor receives visual features, proprio,
+  and G, but no direct language or task identifier.
+- Trained on four combinations (`red-left`, `blue-right`, `pink-left`,
+  `pink-right`) and held out `blue-left` and `red-right`. The full seed-0 run
+  contains 50,032 chunk windows (45,016 train / 5,016 validation), chunk size
+  16, stride 2, and 50 epochs.
+- Offline learning did not stop early: the best validation chunk and
+  first-action MSE both occur at epoch 50 (`0.03810` and `0.02426`), with
+  first-action gripper accuracy `0.9649`.
+- On the same 100 held-out starts, normal G succeeds `9/100`; zero G and
+  flow-sign-flipped G both succeed `0/100`. Each paired comparison has nine
+  normal-only and zero control-only successes (two-sided exact McNemar
+  `p=0.00390625`). This passes the seed-0 causal-dependence gate.
+- Absolute recombination is not mature: normal G is `1/50` on blue-left and
+  `8/50` on red-right. Treat this as evidence that the executor parses and
+  uses matched G, not as scaling-ready generalization.
+- On the temporary BNU node (10 vCPU, one V100-32GB), compact window assembly
+  took about 39 minutes, GPU training about 9 minutes, and each 100-rollout
+  llvmpipe evaluation about 46 minutes. Data loading and CPU rendering, not
+  GPU memory, dominate wall time.
+- Before learned-G scaling: add a state/action/G-only reusable training cache,
+  evaluate source-task closed-loop health, and run seeds 1--4 with matched
+  normal/zero/sign-flip controls. Recommended next node is 32 vCPU, four
+  V100-32GB (or four A100-40GB), and at least 128 GiB RAM.
