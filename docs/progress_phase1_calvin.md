@@ -782,6 +782,16 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   and surface G on identical starts. Run full 100-rollout normal/zero/sign-flip
   only if the surface builder both enters the trained post-contact state and
   does not reduce approach/contact rates.
+- Calibration is source-only: fit clearance and tolerance from `red-left`,
+  `blue-right`, and both pink directions. `blue-left` and `red-right` are
+  frozen-parameter audit cells and never participate in fitting or threshold
+  selection. The calibration script rejects fewer than 20 detected contact
+  transitions or fewer than three validation transitions for any source task
+  and reports per-task clearance, orthogonal error, and anchor error.
+- The official 1.2 GiB CALVIN debug archive was downloaded and CRC-verified,
+  but is intentionally rejected for this calibration: its train and validation
+  annotations contain only two `push_pink_block_right` segments and no other
+  block-push combination. It remains useful only as an environment smoke set.
 - The ModelScope source visuals are A/B/C while the current online debug setup
   is D-like. The present score therefore mixes held-out color-direction
   recombination with scene transfer. Subsequent reporting must separate a

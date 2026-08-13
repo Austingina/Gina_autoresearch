@@ -25,6 +25,17 @@ TASKS = {
     for side, sign in (("left", -1.0), ("right", 1.0))
 }
 
+DEFAULT_SOURCE_TASKS = (
+    "push_red_block_left",
+    "push_blue_block_right",
+    "push_pink_block_left",
+    "push_pink_block_right",
+)
+DEFAULT_HELDOUT_TASKS = (
+    "push_blue_block_left",
+    "push_red_block_right",
+)
+
 
 def scalar_summary(values: np.ndarray) -> dict[str, float | int | None]:
     values = np.asarray(values, dtype=np.float64)
@@ -37,6 +48,25 @@ def scalar_summary(values: np.ndarray) -> dict[str, float | int | None]:
         "p10": float(np.quantile(values, 0.10)),
         "p50": float(np.quantile(values, 0.50)),
         "p90": float(np.quantile(values, 0.90)),
+    }
+
+
+def parse_tasks(value: str) -> tuple[str, ...]:
+    tasks = tuple(item.strip() for item in value.split(",") if item.strip())
+    unknown = set(tasks) - set(TASKS)
+    if unknown:
+        raise argparse.ArgumentTypeError(f"Unknown block task(s): {sorted(unknown)}")
+    if not tasks:
+        raise argparse.ArgumentTypeError("At least one block task is required")
+    return tasks
+
+
+def grouped_summary(rows: list[dict[str, object]], key: str) -> dict[str, dict[str, object]]:
+    return {
+        task: scalar_summary(
+            np.asarray([float(row[key]) for row in rows if row["task"] == task])
+        )
+        for task in TASKS
     }
 
 
@@ -157,7 +187,25 @@ def main() -> None:
     parser.add_argument("--motion-threshold", type=float, default=0.002)
     parser.add_argument("--contact-window", type=int, default=3)
     parser.add_argument("--validation-modulus", type=int, default=5)
+    parser.add_argument(
+        "--source-tasks",
+        type=parse_tasks,
+        default=DEFAULT_SOURCE_TASKS,
+        help="Comma-separated tasks allowed to fit calibration parameters.",
+    )
+    parser.add_argument(
+        "--heldout-tasks",
+        type=parse_tasks,
+        default=DEFAULT_HELDOUT_TASKS,
+        help="Comma-separated tasks used only for frozen-parameter auditing.",
+    )
+    parser.add_argument("--min-source-segments-per-task", type=int, default=20)
+    parser.add_argument("--min-source-validation-per-task", type=int, default=3)
     args = parser.parse_args()
+
+    overlap = set(args.source_tasks) & set(args.heldout_tasks)
+    if overlap:
+        raise RuntimeError(f"Source and held-out tasks overlap: {sorted(overlap)}")
 
     split_dir = args.data_root.resolve() / "training"
     calvin_env_root = args.calvin_code.resolve() / "calvin_env"
@@ -179,13 +227,47 @@ def main() -> None:
         )
         is not None
     ]
-    if len(rows) < 10:
-        raise RuntimeError(f"Only {len(rows)} block segments have a motion onset")
+    source_rows = [row for row in rows if row["task"] in args.source_tasks]
+    heldout_rows = [row for row in rows if row["task"] in args.heldout_tasks]
+    source_counts = {
+        task: sum(row["task"] == task for row in source_rows) for task in args.source_tasks
+    }
+    insufficient_source = {
+        task: count
+        for task, count in source_counts.items()
+        if count < args.min_source_segments_per_task
+    }
+    if insufficient_source:
+        raise RuntimeError(
+            "Insufficient source-task contact coverage; refusing calibration: "
+            f"{insufficient_source}"
+        )
 
-    train_rows = [row for row in rows if int(row["start"]) % args.validation_modulus != 0]
-    val_rows = [row for row in rows if int(row["start"]) % args.validation_modulus == 0]
+    train_rows = [
+        row
+        for row in source_rows
+        if int(row["start"]) % args.validation_modulus != 0
+    ]
+    val_rows = [
+        row
+        for row in source_rows
+        if int(row["start"]) % args.validation_modulus == 0
+    ]
     if not train_rows or not val_rows:
         raise RuntimeError("Calibration split produced an empty train or validation set")
+    val_counts = {
+        task: sum(row["task"] == task for row in val_rows) for task in args.source_tasks
+    }
+    insufficient_val = {
+        task: count
+        for task, count in val_counts.items()
+        if count < args.min_source_validation_per_task
+    }
+    if insufficient_val:
+        raise RuntimeError(
+            "Insufficient source-task validation coverage; refusing calibration: "
+            f"{insufficient_val}"
+        )
     train_clearance = np.asarray([row["clearance"] for row in train_rows], dtype=np.float32)
     recommended_clearance = float(np.median(train_clearance))
 
@@ -202,6 +284,9 @@ def main() -> None:
         [row["calibrated_anchor_error"] for row in val_rows], dtype=np.float32
     )
     recommended_tolerance = float(np.quantile(val_errors, 0.90))
+    heldout_errors = np.asarray(
+        [row["calibrated_anchor_error"] for row in heldout_rows], dtype=np.float32
+    )
     report = {
         "data_root": split_dir.parent.as_posix(),
         "calvin_code": args.calvin_code.resolve().as_posix(),
@@ -214,16 +299,36 @@ def main() -> None:
         "block_half_extents": {
             color: value.tolist() for color, value in half_extents.items()
         },
+        "protocol": {
+            "source_tasks": list(args.source_tasks),
+            "heldout_tasks": list(args.heldout_tasks),
+            "heldout_used_for_fitting": False,
+            "min_source_segments_per_task": args.min_source_segments_per_task,
+            "min_source_validation_per_task": args.min_source_validation_per_task,
+        },
         "segments": len(rows),
-        "train_segments": len(train_rows),
-        "validation_segments": len(val_rows),
+        "source_segments": len(source_rows),
+        "heldout_audit_segments": len(heldout_rows),
+        "source_train_segments": len(train_rows),
+        "source_validation_segments": len(val_rows),
+        "source_counts": source_counts,
+        "source_validation_counts": val_counts,
         "clearance_all": scalar_summary(
             np.asarray([row["clearance"] for row in rows], dtype=np.float32)
         ),
+        "clearance_by_task": grouped_summary(rows, "clearance"),
         "orthogonal_error_all": scalar_summary(
             np.asarray([row["orthogonal_error"] for row in rows], dtype=np.float32)
         ),
+        "orthogonal_error_by_task": grouped_summary(rows, "orthogonal_error"),
         "validation_anchor_error": scalar_summary(val_errors),
+        "source_validation_anchor_error_by_task": grouped_summary(
+            val_rows, "calibrated_anchor_error"
+        ),
+        "heldout_anchor_error": scalar_summary(heldout_errors),
+        "heldout_anchor_error_by_task": grouped_summary(
+            heldout_rows, "calibrated_anchor_error"
+        ),
         "recommended_tool_clearance": recommended_clearance,
         "recommended_contact_tolerance": recommended_tolerance,
         "rows": rows,
