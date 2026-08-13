@@ -17,8 +17,12 @@ FEATURE_ROOT="${MODELSCOPE_CALVIN_DINO:-${CALVIN_DATA}/lerobot_blocks_behavior_g
 SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_DATA}/calvin_debug_dataset}"
 SEED="${1:-0}"
 GPU_ID="${2:-${GPU_ID:-0}}"
-RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-13_M3_full_behavior_g_semantic_seed${SEED}"
-LOG_ROOT="${CALVIN_G_ROOT}/logs/M3_full_behavior_g_semantic_seed${SEED}"
+RUN_LABEL="${METHOD_GATE_RUN_LABEL:-M3_full_behavior_g_semantic}"
+TRAIN_LR="${METHOD_GATE_LR:-1e-3}"
+CHECKPOINT_BASENAME="${METHOD_GATE_CHECKPOINT_BASENAME:-policy.pt}"
+EVAL_TAG="${METHOD_GATE_EVAL_TAG:-behavior}"
+RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-13_${RUN_LABEL}_seed${SEED}"
+LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
 mkdir -p "${RUN_ROOT}" "${LOG_ROOT}"
 
@@ -81,7 +85,7 @@ export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
 
-CHECKPOINT="${RUN_ROOT}/chunk_bc_minimal_g_tokens/policy.pt"
+CHECKPOINT="${RUN_ROOT}/chunk_bc_minimal_g_tokens/${CHECKPOINT_BASENAME}"
 if [[ ! -f "${CHECKPOINT}" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
@@ -98,7 +102,7 @@ if [[ ! -f "${CHECKPOINT}" ]]; then
     --batch-size 512 \
     --hidden 512 \
     --layers 4 \
-    --lr 1e-3 \
+    --lr "${TRAIN_LR}" \
     --seed "${SEED}" \
     --init-seed "${SEED}" \
     --loader-seed "${SEED}" \
@@ -125,7 +129,7 @@ if [[ "${METHOD_GATE_TRAIN_ONLY:-0}" == "1" ]]; then
 fi
 
 for control in normal zero sign_flip; do
-  eval_dir="${RUN_ROOT}/chunk_bc_minimal_g_tokens/task_eval_D_behavior_${control}"
+  eval_dir="${RUN_ROOT}/chunk_bc_minimal_g_tokens/task_eval_D_${EVAL_TAG}_${control}"
   if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
     continue
   fi
