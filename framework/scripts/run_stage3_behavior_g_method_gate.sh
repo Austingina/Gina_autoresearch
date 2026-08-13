@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+if [[ -f "${REPO_ROOT}/.env.server" ]]; then
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env.server"
+fi
+
+CALVIN_G_ROOT="${CALVIN_G_ROOT:?Set CALVIN_G_ROOT or provide .env.server}"
+CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
+CALVIN_DATA="${CALVIN_DATA:-${CALVIN_G_ROOT}/data}"
+CALVIN_PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin_h200/bin/python}"
+COMPACT_ROOT="${MODELSCOPE_CALVIN_COMPACT:-${CALVIN_DATA}/lerobot_blocks_behavior_g_semantic}"
+FEATURE_ROOT="${MODELSCOPE_CALVIN_DINO:-${CALVIN_DATA}/lerobot_blocks_behavior_g_semantic_dinov2_small}"
+SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_DATA}/calvin_debug_dataset}"
+SEED="${1:-0}"
+RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-13_M3_full_behavior_g_semantic_seed${SEED}"
+LOG_ROOT="${CALVIN_G_ROOT}/logs/M3_full_behavior_g_semantic_seed${SEED}"
+GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
+mkdir -p "${RUN_ROOT}" "${LOG_ROOT}"
+
+while [[ ! -f "${FEATURE_ROOT}/.pipeline_complete" ]]; do
+  printf '%s waiting for data pipeline\n' "$(date -Is)"
+  sleep 60
+done
+
+"${CALVIN_PYTHON}" - "${COMPACT_ROOT}/conversion_manifest.json" "${FEATURE_ROOT}/manifest.json" <<'PY'
+import json
+import sys
+
+conversion = json.load(open(sys.argv[1], encoding="utf-8"))
+features = json.load(open(sys.argv[2], encoding="utf-8"))
+expected = {
+    "push_red_block_left",
+    "push_red_block_right",
+    "push_blue_block_left",
+    "push_blue_block_right",
+    "push_pink_block_left",
+    "push_pink_block_right",
+}
+counts = conversion["task_counts"]
+assert set(counts) == expected, (set(counts), expected)
+assert min(counts.values()) >= 400, counts
+assert conversion["frames"] >= 100_000, conversion["frames"]
+assert features["num_frames"] == conversion["frames"], (features["num_frames"], conversion["frames"])
+assert features["feature_dim"] == 384
+print("data_gate_ok", conversion["frames"], counts)
+PY
+
+unset TRANSFORMERS_CACHE
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
+
+CHECKPOINT="${RUN_ROOT}/chunk_bc_minimal_g_tokens/policy.pt"
+if [[ ! -f "${CHECKPOINT}" ]]; then
+  "${CALVIN_PYTHON}" \
+    "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
+    --calvin-code "${CALVIN_CODE}" \
+    --data-root "${COMPACT_ROOT}" \
+    --out-dir "${RUN_ROOT}" \
+    --modes chunk_bc_minimal_g_tokens \
+    --include-tasks \
+      push_red_block_left push_blue_block_right \
+      push_pink_block_left push_pink_block_right \
+    --stride 2 \
+    --chunk-size 16 \
+    --epochs 50 \
+    --batch-size 512 \
+    --hidden 512 \
+    --layers 4 \
+    --lr 1e-3 \
+    --seed "${SEED}" \
+    --init-seed "${SEED}" \
+    --loader-seed "${SEED}" \
+    --data-seed "${SEED}" \
+    --split-seed "${SEED}" \
+    --device cuda:0 \
+    --skip-eval 1 \
+    --articulation-geometry-json "${GEOMETRY_JSON}" \
+    --minimal-g-scope translational \
+    --executor-state-scope visual \
+    --executor-language-mode none \
+    --visual-feature-dir "${FEATURE_ROOT}" \
+    --visual-encoder-name facebook/dinov2-small \
+    --mask-executor-language-with-g 0 \
+    --g-scale-aug-values 1.0 \
+    --g-dropout-prob 0.0 \
+    --first-action-loss-weight 16 \
+    2>&1 | tee "${LOG_ROOT}/train.log"
+fi
+
+for control in normal zero sign_flip; do
+  eval_dir="${RUN_ROOT}/chunk_bc_minimal_g_tokens/task_eval_D_behavior_${control}"
+  if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
+    continue
+  fi
+  mkdir -p "${eval_dir}"
+  env -u EGL_VISIBLE_DEVICES xvfb-run -a "${CALVIN_PYTHON}" \
+    "${REPO_ROOT}/framework/scripts/policy_state_bc/eval_state_chunk_policy_ckpt.py" \
+    --calvin-code "${CALVIN_CODE}" \
+    --data-root "${SIM_DATA_ROOT}" \
+    --checkpoint "${CHECKPOINT}" \
+    --run-meta "${RUN_ROOT}/run_meta.json" \
+    --eval-dir "${eval_dir}" \
+    --num-sequences 50 \
+    --ep-len 160 \
+    --eval-scan-sequences 10000 \
+    --eval-sequence-workers 8 \
+    --eval-task-filter push_red_block_right push_blue_block_left \
+    --action-execution-horizon 1 \
+    --query-g-control "${control}" \
+    --online-minimal-g-mode behavior_block_center \
+    --language-control normal \
+    --device cuda:0 \
+    2>&1 | tee "${LOG_ROOT}/eval_${control}.log"
+done
+
+date -Is > "${RUN_ROOT}/.method_gate_complete"
