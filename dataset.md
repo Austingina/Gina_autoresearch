@@ -34,6 +34,9 @@ $CALVIN_G_ROOT/
     task_ABC_D_scene_info_fix.zip           # official metadata repair archive
     task_ABC_D_compact_blocks/              # derived state/action subset
     task_ABC_D_compact_blocks_dinov2_small/ # derived frozen visual features
+    lerobot_blocks_behavior_g_semantic/     # diagnostic six-task behavior G
+      training/state_only_arrays.npz        # packed state/action/G cache
+    lerobot_blocks_behavior_g_semantic_dinov2_small/
 ```
 
 The audited H200 paths were:
@@ -137,7 +140,7 @@ tasks and converted with:
   --lerobot-root "$CALVIN_DATA/modelscope_calvin_abc_extracted" \
   --meta-root "$CALVIN_DATA/hf_calvin_abc_lerobot/meta" \
   --camera-config-root "$CALVIN_DATA/calvin_debug_dataset" \
-  --output-dir "$CALVIN_DATA/lerobot_blocks_behavior_g" \
+  --output-dir "$CALVIN_DATA/lerobot_blocks_behavior_g_semantic" \
   --include-tasks \
     push_red_block_left push_red_block_right \
     push_blue_block_left push_blue_block_right \
@@ -151,6 +154,25 @@ estimate contact onset; before contact, attraction points from EEF to the
 episode-level contact anchor, and after contact attraction is zero. The script
 writes `minimal_g=[attraction(3), flow(3)]` per frame. This is a behavior-field
 probe derived from video/proprioception, not an oracle contact label.
+
+The complete audited conversion has 3,357 episodes and 199,292 frames. Before
+multi-seed training, pack the small numeric arrays into one verified cache:
+
+```bash
+"$CALVIN_PYTHON" \
+  framework/scripts/data/pack_calvin_state_arrays.py \
+  --data-root "$CALVIN_DATA/lerobot_blocks_behavior_g_semantic" \
+  --workers 8
+```
+
+Expected output is
+`training/state_only_arrays.npz` with `frame_index[199292]`,
+`robot_obs[199292,15]`, `scene_obs[199292,24]`,
+`rel_actions[199292,7]`, and `minimal_g[199292,6]`. The audited file is
+43,048,352 bytes (about 42 MiB) and took 128 seconds to build on 20 CPU cores.
+`packed_state_manifest.json` records shapes and completion. Training detects
+this cache automatically; source per-frame files remain the provenance source
+and are still required by the visual-feature alignment checks.
 
 Apply metadata repairs to extracted datasets when needed:
 

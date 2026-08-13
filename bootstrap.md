@@ -190,6 +190,21 @@ use the integrity-checked ModelScope mirror described in `dataset.md`. Keep its
 results in a separately named experiment family and do not report them as
 official ABC-to-D numbers.
 
+The BNU behavior-G method gate uses the complete six-task diagnostic
+conversion and its frozen dual-camera DINOv2 cache. After conversion and
+feature extraction, build the packed numeric cache once:
+
+```bash
+"$CALVIN_PYTHON" \
+  framework/scripts/data/pack_calvin_state_arrays.py \
+  --data-root "$CALVIN_DATA/lerobot_blocks_behavior_g_semantic" \
+  --workers 8
+```
+
+Validate `packed_state_manifest.json`: it must report `199292` frames and
+`complete: true`. This avoids reopening nearly 200,000 NPZ files for every
+training seed.
+
 ## 6. Regenerate the active derived datasets
 
 Build the 2,101-segment state/action/language subset:

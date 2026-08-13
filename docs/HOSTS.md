@@ -8,7 +8,7 @@ AutoResearch runs on at least two machines. Always prefer env vars over hard-cod
 |------|------------|-----------------------------|
 | **Local workstation** | `l-Z790-UD-AX` | `/home/l/code/AutoResearch` |
 | **Remote H200** | `ssh unrealzoo-remote` → `wukui@34.52.175.145` | `/mnt/nvme33n1/wuk_code/AutoResearch` |
-| **BNU V100 (active 2026-08)** | jump through `aic.bnu.edu.cn`, then `173.0.45.2` | `/public/home/zhongfangwei/wuk_code/AutoResearch` |
+| **BNU V100 (active 2026-08)** | jump through `aic.bnu.edu.cn`, then allocation address `173.0.61.3` | `/public/home/zhongfangwei/wuk_code/AutoResearch` |
 
 ```bash
 # ~/.ssh/config (local)
@@ -65,8 +65,9 @@ The H200 unified tree historically lived **outside** Git; as of 2026-07-22 the r
 
 ## BNU V100 migration
 
-The short-lived BNU allocation uses one V100 (`sm_70`) and the following
-layout:
+The current BNU allocation uses two V100-SXM2-32GB GPUs (`sm_70`), 20 CPU
+cores, and a 64 GiB memory limit. Allocation addresses are ephemeral; verify
+the second-hop address after a node restart. The persistent layout is:
 
 ```text
 /public/home/zhongfangwei/wuk_code/AutoResearch
@@ -77,7 +78,8 @@ layout:
 /public/home/zhongfangwei/wuk_code/calvin_g/logs
 ```
 
-PyTorch CUDA inference and DINOv2 run on the V100. Headless CALVIN rendering
-currently reports Mesa llvmpipe, so this host is suitable for matched method
-diagnostics but not renderer-speed or cross-renderer appearance claims. Login
-credentials are deliberately not stored in Git.
+PyTorch CUDA inference and DINOv2 run on the V100s. `xvfb`, OSMesa, and Mesa
+llvmpipe were smoke-tested at OpenGL 4.5. Headless CALVIN rendering still uses
+llvmpipe, so this host is suitable for matched method diagnostics but not
+renderer-speed or cross-renderer appearance claims. Login credentials are
+deliberately not stored in Git.

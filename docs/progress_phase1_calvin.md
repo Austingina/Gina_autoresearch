@@ -707,3 +707,34 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   evaluate source-task closed-loop health, and run seeds 1--4 with matched
   normal/zero/sign-flip controls. Recommended next node is 32 vCPU, four
   V100-32GB (or four A100-40GB), and at least 128 GiB RAM.
+
+# Behavior-G training-stability gate -- 2026-08-13
+
+- Migrated the method gate to a two-V100 BNU allocation and built a verified
+  42 MiB packed cache for all 199,292 state/action/G rows. Per-seed input
+  assembly fell from about 39 minutes to roughly one minute; CPU file opening,
+  not GPU capacity, caused the previous startup bottleneck.
+- A five-seed audit exposed optimizer/checkpoint instability in the original
+  `lr=1e-3` protocol. Best validation first-action MSE across seeds 0--4 is
+  `[0.024261,0.020625,0.024709,0.030968,0.025488]`, with best epochs
+  `[50,45,18,15,19]`. Four of five final checkpoints are worse than their own
+  best checkpoint, by as much as 42.1%. Final-checkpoint seed variance must not
+  be interpreted as G variance.
+- A seed-0 learning-rate diagnostic selected AdamW `lr=3e-4` plus the
+  minimum-validation-first-action checkpoint. `lr=3e-4` reaches `0.012165`
+  best and `0.012732` final first-action MSE; `lr=1e-4` reaches `0.012225` best
+  but regresses to `0.014101` final.
+- The corrected `lr=3e-4` five-seed run is stable: best first-action MSE is
+  `[0.012165,0.013433,0.012133,0.015233,0.013120]` (mean `0.013217`, standard
+  deviation `0.001265`, CV `9.6%`), and best epochs are `[42,41,40,50,48]`.
+  This is about 48% lower than the old five-seed mean and no seed peaks early.
+- The original seed-0 final checkpoint reaches only `74/400 = 18.5%` on its
+  four training tasks: blue-right `8/100`, pink-left `26/100`, pink-right
+  `22/100`, and red-left `18/100`. Thus its `9/100` held-out score combines
+  weak closed-loop execution with a recombination gap; it cannot by itself
+  measure the compositional limit of G.
+- Full matched closed-loop evaluation of the stable seed-0 best-validation
+  checkpoint is running on the same held-out starts with normal, zero, and
+  sign-flipped G, alongside a 400-rollout source-task health audit. Learned-G
+  or larger-data scaling remains gated on task success, causal controls, and
+  cross-seed stability rather than offline MSE.
