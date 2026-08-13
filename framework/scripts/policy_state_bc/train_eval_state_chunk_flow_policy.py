@@ -621,6 +621,46 @@ def make_condition(
     return x, {"condition": "absolute_base_plus_articulation_g_v7_unified_field"}
 
 
+PACKED_STATE_ARRAYS_NAME = "state_only_arrays.npz"
+PACKED_STATE_FIELDS = ("robot_obs", "scene_obs", "rel_actions")
+
+
+def load_packed_state_arrays(
+    split_dir: Path,
+) -> tuple[dict[str, np.ndarray], np.ndarray] | None:
+    """Load the optional contiguous cache used to avoid per-frame NPZ I/O."""
+    packed_path = split_dir / PACKED_STATE_ARRAYS_NAME
+    if not packed_path.exists():
+        return None
+    with np.load(packed_path, allow_pickle=False) as packed:
+        required = ("frame_index", *PACKED_STATE_FIELDS)
+        absent = [field for field in required if field not in packed.files]
+        if absent:
+            raise RuntimeError(f"{packed_path} is missing fields: {absent}")
+        arrays = {field: np.asarray(packed[field]) for field in packed.files}
+
+    frame_indices = np.asarray(arrays["frame_index"], dtype=np.int64)
+    if frame_indices.ndim != 1 or len(frame_indices) == 0:
+        raise RuntimeError(f"Invalid frame_index array in {packed_path}")
+    if len(np.unique(frame_indices)) != len(frame_indices):
+        raise RuntimeError(f"Duplicate frame indices in {packed_path}")
+    for field in PACKED_STATE_FIELDS:
+        if len(arrays[field]) != len(frame_indices):
+            raise RuntimeError(f"Length mismatch for {field} in {packed_path}")
+    if "minimal_g" in arrays and len(arrays["minimal_g"]) != len(frame_indices):
+        raise RuntimeError(f"Length mismatch for minimal_g in {packed_path}")
+
+    lookup = np.full(int(frame_indices.max()) + 1, -1, dtype=np.int64)
+    lookup[frame_indices] = np.arange(len(frame_indices), dtype=np.int64)
+    size_mb = sum(value.nbytes for value in arrays.values()) / (1024**2)
+    print(
+        f"[data] loaded packed state cache {packed_path} "
+        f"frames={len(frame_indices)} arrays={size_mb:.1f} MiB",
+        flush=True,
+    )
+    return arrays, lookup
+
+
 def collect_chunk_records(
     data_root: Path,
     task_to_id: dict[str, int],
@@ -641,6 +681,45 @@ def collect_chunk_records(
 ) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     rng = random.Random(seed)
     split_dir = data_root / "training"
+    packed_state = load_packed_state_arrays(split_dir)
+
+    def read_frame(
+        frame_index: int,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray | None] | None:
+        if packed_state is not None:
+            packed_arrays, packed_lookup = packed_state
+            if frame_index < 0 or frame_index >= len(packed_lookup):
+                return None
+            position = int(packed_lookup[frame_index])
+            if position < 0:
+                return None
+            frame_g = (
+                np.asarray(packed_arrays["minimal_g"][position], dtype=np.float32)
+                if "minimal_g" in packed_arrays
+                else None
+            )
+            return (
+                np.asarray(packed_arrays["robot_obs"][position], dtype=np.float32),
+                np.asarray(packed_arrays["scene_obs"][position], dtype=np.float32),
+                np.asarray(packed_arrays["rel_actions"][position], dtype=np.float32),
+                frame_g,
+            )
+        frame_path = base.episode_file(split_dir, frame_index)
+        if not frame_path.exists():
+            return None
+        try:
+            with np.load(frame_path, allow_pickle=True) as data:
+                return (
+                    np.asarray(data["robot_obs"], dtype=np.float32),
+                    np.asarray(data["scene_obs"], dtype=np.float32),
+                    np.asarray(data["rel_actions"], dtype=np.float32),
+                    np.asarray(data["minimal_g"], dtype=np.float32)
+                    if "minimal_g" in data.files
+                    else None,
+                )
+        except Exception:
+            return None
+
     segments = base.load_lang_segments(split_dir)
     embedding_rows = [
         np.asarray(segment["emb"], dtype=np.float32).reshape(-1)
@@ -694,23 +773,11 @@ def collect_chunk_records(
         frames: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray | None]] = {}
         segment_ok = True
         for idx in range(start, end + 1):
-            f = base.episode_file(split_dir, idx)
-            if not f.exists():
+            frame = read_frame(idx)
+            if frame is None:
                 segment_ok = False
                 break
-            try:
-                with np.load(f, allow_pickle=True) as data:
-                    r = np.asarray(data["robot_obs"], dtype=np.float32)
-                    s = np.asarray(data["scene_obs"], dtype=np.float32)
-                    a = np.asarray(data["rel_actions"], dtype=np.float32)
-                    frame_g = (
-                        np.asarray(data["minimal_g"], dtype=np.float32)
-                        if "minimal_g" in data.files
-                        else None
-                    )
-            except Exception:
-                segment_ok = False
-                break
+            r, s, a, frame_g = frame
             has_precomputed_g = frame_g is not None
             if precomputed_g_presence is None:
                 precomputed_g_presence = has_precomputed_g
@@ -774,23 +841,17 @@ def collect_chunk_records(
             if pair_limit > 0 and augmented_segments >= pair_limit:
                 break
             start, end = int(seg["start"]), int(seg["end"])
-            post_end_file = base.episode_file(split_dir, end + 1)
-            if not post_end_file.exists():
+            if read_frame(end + 1) is None:
                 continue
 
             frames: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
             segment_ok = True
             for idx in range(start, end + 2):
-                try:
-                    with np.load(base.episode_file(split_dir, idx), allow_pickle=True) as data:
-                        frames[idx] = (
-                            np.asarray(data["robot_obs"], dtype=np.float32),
-                            np.asarray(data["scene_obs"], dtype=np.float32),
-                            np.asarray(data["rel_actions"], dtype=np.float32),
-                        )
-                except Exception:
+                frame = read_frame(idx)
+                if frame is None:
                     segment_ok = False
                     break
+                frames[idx] = frame[:3]
             if not segment_ok:
                 continue
 

@@ -16,6 +16,7 @@ COMPACT_ROOT="${MODELSCOPE_CALVIN_COMPACT:-${CALVIN_DATA}/lerobot_blocks_behavio
 FEATURE_ROOT="${MODELSCOPE_CALVIN_DINO:-${CALVIN_DATA}/lerobot_blocks_behavior_g_semantic_dinov2_small}"
 SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_DATA}/calvin_debug_dataset}"
 SEED="${1:-0}"
+GPU_ID="${2:-${GPU_ID:-0}}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-13_M3_full_behavior_g_semantic_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/M3_full_behavior_g_semantic_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -73,6 +74,7 @@ print(
 PY
 
 unset TRANSFORMERS_CACHE
+export HF_HOME="${HF_HOME:-${CALVIN_G_ROOT}/cache/huggingface}"
 export HF_HUB_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
@@ -102,7 +104,7 @@ if [[ ! -f "${CHECKPOINT}" ]]; then
     --loader-seed "${SEED}" \
     --data-seed "${SEED}" \
     --split-seed "${SEED}" \
-    --device cuda:0 \
+    --device "cuda:${GPU_ID}" \
     --skip-eval 1 \
     --articulation-geometry-json "${GEOMETRY_JSON}" \
     --minimal-g-scope translational \
@@ -139,7 +141,7 @@ for control in normal zero sign_flip; do
     --query-g-control "${control}" \
     --online-minimal-g-mode behavior_block_center \
     --language-control normal \
-    --device cuda:0 \
+    --device "cuda:${GPU_ID}" \
     2>&1 | tee "${LOG_ROOT}/eval_${control}.log"
 done
 
