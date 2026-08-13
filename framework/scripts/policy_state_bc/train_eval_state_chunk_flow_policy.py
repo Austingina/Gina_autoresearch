@@ -211,11 +211,13 @@ def make_behavior_block_surface_minimal_g(
     task_names: np.ndarray,
     *,
     block_half_extents: dict[str, np.ndarray],
+    block_scene_slices: dict[str, slice] | None = None,
     tool_clearance: float = 0.01,
     contact_tolerance: float = 0.01,
 ) -> np.ndarray:
     """Build G from a flow-opposed object surface anchor and a tool clearance."""
 
+    scene_slices = block_scene_slices or BLOCK_SCENE_SLICES
     out: list[np.ndarray] = []
     for robot_obs, scene_obs, task_value in zip(robot, scene, task_names):
         task = str(task_value)
@@ -226,8 +228,10 @@ def make_behavior_block_surface_minimal_g(
         if color not in block_half_extents:
             raise KeyError(f"Missing block half extents for {color}")
         eef = np.asarray(robot_obs[:3], dtype=np.float32)
-        center = np.asarray(scene_obs[BLOCK_SCENE_SLICES[color]], dtype=np.float32)
-        euler = np.asarray(scene_obs[BLOCK_SCENE_EULER_SLICES[color]], dtype=np.float32)
+        position_slice = scene_slices[color]
+        orientation_slice = slice(position_slice.start + 3, position_slice.start + 6)
+        center = np.asarray(scene_obs[position_slice], dtype=np.float32)
+        euler = np.asarray(scene_obs[orientation_slice], dtype=np.float32)
         upstream = -base._safe_unit(desired_flow)
         surface_distance = oriented_box_ray_distance(
             upstream, euler, block_half_extents[color]
@@ -262,7 +266,12 @@ def configure_behavior_block_surface_from_env(
         raise RuntimeError("Could not locate CALVIN scene for behavior surface G")
 
     half_extents: dict[str, np.ndarray] = {}
-    for obj in getattr(scene_object, "movable_objects", []):
+    scene_slices: dict[str, slice] = {}
+    scalar_dim = sum(
+        len(getattr(scene_object, name, []))
+        for name in ("doors", "buttons", "switches", "lights")
+    )
+    for object_index, obj in enumerate(getattr(scene_object, "movable_objects", [])):
         name = str(getattr(obj, "name", ""))
         if not name.startswith("block_"):
             continue
@@ -275,10 +284,13 @@ def configure_behavior_block_surface_from_env(
         size = np.asarray([float(value) for value in box.attrib["size"].split()], dtype=np.float32)
         scaling = float(getattr(obj, "global_scaling", 1.0))
         half_extents[color] = size * np.float32(0.5 * scaling)
+        start = scalar_dim + 6 * object_index
+        scene_slices[color] = slice(start, start + 3)
     missing = set(BLOCK_SCENE_SLICES) - set(half_extents)
     if missing:
         raise RuntimeError(f"Missing CALVIN block geometry for: {sorted(missing)}")
     model.behavior_block_half_extents = half_extents
+    model.behavior_block_scene_slices = scene_slices
     return half_extents
 
 
@@ -3009,6 +3021,7 @@ class ChunkFlowPolicy:
         self.behavior_tool_clearance = float(behavior_tool_clearance)
         self.behavior_contact_tolerance = float(behavior_contact_tolerance)
         self.behavior_block_half_extents: dict[str, np.ndarray] = {}
+        self.behavior_block_scene_slices: dict[str, slice] = dict(BLOCK_SCENE_SLICES)
         if min(
             self.behavior_contact_radius,
             self.behavior_tool_clearance,
@@ -3338,6 +3351,7 @@ class ChunkFlowPolicy:
                     arrays["scene_obs"],
                     arrays["task_name"],
                     block_half_extents=self.behavior_block_half_extents,
+                    block_scene_slices=self.behavior_block_scene_slices,
                     tool_clearance=self.behavior_tool_clearance,
                     contact_tolerance=self.behavior_contact_tolerance,
                 )
@@ -3806,15 +3820,19 @@ def evaluate_policy_ckpt(
                     }
                     if current_task in BLOCK_PUSH_TASKS:
                         color, desired_flow = BLOCK_PUSH_TASKS[current_task]
-                        block_center = np.asarray(
-                            current_scene[BLOCK_SCENE_SLICES[color]], dtype=np.float32
+                        position_slice = (
+                            model.behavior_block_scene_slices[color]
+                            if model.online_minimal_g_mode == "behavior_block_surface"
+                            else BLOCK_SCENE_SLICES[color]
                         )
+                        block_center = np.asarray(current_scene[position_slice], dtype=np.float32)
                         if model.online_minimal_g_mode == "behavior_block_surface":
                             online_g = make_behavior_block_surface_minimal_g(
                                 current_robot[None, :],
                                 current_scene[None, :],
                                 np.asarray([current_task], dtype=object),
                                 block_half_extents=model.behavior_block_half_extents,
+                                block_scene_slices=model.behavior_block_scene_slices,
                                 tool_clearance=model.behavior_tool_clearance,
                                 contact_tolerance=model.behavior_contact_tolerance,
                             )[0]

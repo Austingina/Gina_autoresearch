@@ -770,7 +770,10 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
 - Added a stricter `behavior_block_surface` G builder. It reads collision-box
   extents from the exact loaded URDFs, applies global scaling and current object
   orientation, and places the anchor on the flow-opposed support surface plus
-  one shared embodiment/tool clearance. Contact tolerance is a separate
+  one shared embodiment/tool clearance. It also derives color-to-`scene_obs`
+  slices from the loaded movable-object order; A/B/C/D declare the three blocks
+  in different orders, so fixed red/blue/pink slices are not scene portable.
+  Contact tolerance is a separate
   calibration variable. The resulting executor input remains exactly
   `G=[anchor-EEF, object_flow]`; it does not project or modify policy actions.
   Geometry has a dependency-light regression test covering object yaw.
