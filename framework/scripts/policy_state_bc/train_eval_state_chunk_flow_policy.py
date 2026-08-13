@@ -2290,6 +2290,9 @@ def train_mode(
         )
 
     history: list[dict[str, Any]] = []
+    best_val_first_action_mse = float("inf")
+    best_val_epoch = 0
+    best_val_model_state: dict[str, torch.Tensor] | None = None
     out_dir.mkdir(parents=True, exist_ok=True)
 
     cond_mean_t = torch.from_numpy(cond_mean.astype(np.float32)).to(device)
@@ -2678,6 +2681,13 @@ def train_mode(
         if val_field_gain_mean is not None:
             rec["val_field_gain_mean"] = val_field_gain_mean
         history.append(rec)
+        if val_first_action_mse < best_val_first_action_mse:
+            best_val_first_action_mse = val_first_action_mse
+            best_val_epoch = epoch
+            best_val_model_state = {
+                key: value.detach().cpu().clone()
+                for key, value in model.state_dict().items()
+            }
         gate_msg = "" if val_gate_mean is None else f" gate={val_gate_mean:.3f}"
         if isinstance(model, StructuredMinimalGChunkMLP):
             gate_msg += f" gains={rec['approach_gain']:.3f}/{rec['flow_gain']:.3f}"
@@ -2765,9 +2775,50 @@ def train_mode(
         visual_feature_dim=visual_feature_dim,
         mask_executor_language_with_g=mask_executor_language_with_g,
     )
+    if best_val_model_state is None or best_val_epoch <= 0:
+        raise RuntimeError("Training did not produce a best validation checkpoint")
+    model.load_state_dict(best_val_model_state)
+    save_checkpoint(
+        out_dir / "policy_best_val.pt",
+        mode=mode,
+        checkpoint_epoch=best_val_epoch,
+        model=model,
+        chunk_size=int(arrays["action_chunks"].shape[1]),
+        cond_mean=cond_mean,
+        cond_std=cond_std,
+        y_mean=y_mean,
+        y_std=y_std,
+        hidden=hidden,
+        layers=layers,
+        articulation_geometry=articulation_geometry,
+        minimal_g_scope=minimal_g_scope,
+        primitive_geometry=primitive_geometry,
+        zero_task_onehot=zero_task_onehot,
+        fm_steps=fm_steps,
+        sample_seed=seed + 17,
+        base_dim=base_dim,
+        g_dim=g_dim,
+        gate_max=gate_max,
+        g_scale_aug_values=aug_values,
+        g_dropout_prob=g_dropout_prob,
+        query_g_include_token_type=query_g_include_token_type,
+        query_g_token_type_mode=query_g_token_type_mode,
+        field_alignment_weight=field_alignment_weight,
+        structured_field_config=structured_field_config,
+        inverse_pair_loss_weight=inverse_pair_loss_weight,
+        inverse_pair_config=inverse_pair_config,
+        source_distill_weight=source_distill_weight,
+        residual_adapter_config=residual_adapter_config,
+        executor_state_scope=executor_state_scope,
+        executor_language_mode=executor_language_mode,
+        visual_encoder_name=visual_encoder_name,
+        visual_feature_dim=visual_feature_dim,
+        mask_executor_language_with_g=mask_executor_language_with_g,
+    )
     metrics = {
         "history": history,
         "final": history[-1],
+        "best_val_first_action": history[best_val_epoch - 1],
         "num_records": int(len(y)),
         "num_train_records": int(len(train_idx)),
         "num_val_records": int(len(val_idx)),
