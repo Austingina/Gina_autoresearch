@@ -738,3 +738,37 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   sign-flipped G, alongside a 400-rollout source-task health audit. Learned-G
   or larger-data scaling remains gated on task success, causal controls, and
   cross-seed stability rather than offline MSE.
+
+# Behavior-G train/online semantic audit -- 2026-08-14
+
+- The stable seed-0 best-validation checkpoint reaches `7/100` on the same
+  held-out starts (blue-left `2/50`, red-right `5/50`), versus the old final
+  checkpoint's `9/100`. Paired outcomes are 2 both, 7 old-only, 5 new-only,
+  and 86 neither (`p=0.774`, exact two-sided McNemar). Halving offline MSE did
+  not improve closed-loop recombination.
+- This is not explained by a weak or low-amplitude stable action head. On
+  5,016 validation windows its first-action MSE improves in all three G phases:
+  far approach `0.03753 -> 0.01852`, near approach `0.02656 -> 0.01411`, and
+  inferred post-contact `0.01434 -> 0.00700`. In the post-contact phase, mean
+  predicted flow projection is `0.23029` versus expert `0.23022`, and mean xyz
+  action norm is `0.29290` versus expert `0.30039`.
+- The causal dependency remains: the stable zero-G control is `0/100`. The
+  remaining sign-flip and source-health jobs were still running when the BNU
+  jump route became temporarily unavailable.
+- A direct 10-rollout, 1,600-step trace exposed a train/online semantic mismatch.
+  Training attraction points to the demonstration contact EEF pose and becomes
+  zero immediately after inferred object motion. Online attraction points to
+  the block center and becomes zero only within 1 cm. No traced online step
+  ever crossed that threshold; minimum EEF-to-center distance ranged from
+  3.1 cm to 13.8 cm, and even the successful rollout bottomed at 3.77 cm.
+  Therefore the online policy never receives the post-contact G state that is
+  63.3% of converted frames and its best-fitted phase.
+- Parameterized `behavior_contact_radius` and added non-invasive rollout trace
+  output. The next matched diagnostic uses `3/4/5 cm` surface radii on identical
+  starts, followed by a full 100-rollout normal/zero/sign-flip gate at the best
+  non-degenerate radius. This changes the G anchor/switch semantics, not the
+  policy action or a handcrafted push rule.
+- The ModelScope source visuals are A/B/C while the current online debug setup
+  is D-like. The present score therefore mixes held-out color-direction
+  recombination with scene transfer. Subsequent reporting must separate a
+  same-scene compositional gate from an A/B/C-to-D visual scene gate.

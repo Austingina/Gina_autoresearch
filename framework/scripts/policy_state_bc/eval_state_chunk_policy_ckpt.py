@@ -36,6 +36,12 @@ def main() -> None:
         choices=["generated_query", "behavior_block_center"],
         default="generated_query",
     )
+    parser.add_argument(
+        "--behavior-contact-radius",
+        type=float,
+        default=0.01,
+        help="Surface radius used to switch behavior block-center G from attraction to flow.",
+    )
     parser.add_argument("--language-control", default="normal")
     parser.add_argument("--policy-sample-seed", type=int, default=None)
     parser.add_argument(
@@ -55,6 +61,12 @@ def main() -> None:
         "--profile-eval-timing",
         action="store_true",
         help="Report policy-inference and environment-step timing for each rollout.",
+    )
+    parser.add_argument(
+        "--trace-rollouts",
+        type=int,
+        default=0,
+        help="Record behavior-G, EEF, object, and action traces for the first N rollouts.",
     )
     args = parser.parse_args()
 
@@ -83,6 +95,7 @@ def main() -> None:
         g_scale=args.g_scale,
         query_g_control=args.query_g_control,
         online_minimal_g_mode=args.online_minimal_g_mode,
+        behavior_contact_radius=args.behavior_contact_radius,
         language_control=args.language_control,
         action_execution_horizon=args.action_execution_horizon,
         temporal_ensemble=bool(args.temporal_ensemble),
@@ -91,6 +104,7 @@ def main() -> None:
         policy_sample_seed=args.policy_sample_seed,
         fm_reseed_each_episode=bool(args.fm_reseed_each_episode),
         profile_eval_timing=args.profile_eval_timing,
+        trace_rollouts=args.trace_rollouts,
     )
     print(json.dumps(summary, indent=2, default=base.json_default), flush=True)
     # PyBullet/EGL can hang during interpreter teardown on headless servers.

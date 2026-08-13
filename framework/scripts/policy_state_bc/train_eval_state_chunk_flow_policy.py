@@ -2896,6 +2896,7 @@ class ChunkFlowPolicy:
         temporal_ensemble: bool = False,
         temporal_ensemble_decay: float = 0.25,
         online_minimal_g_mode: str = "generated_query",
+        behavior_contact_radius: float = 0.01,
         sample_seed_override: int | None = None,
         reseed_each_episode: bool = True,
     ):
@@ -2918,6 +2919,9 @@ class ChunkFlowPolicy:
         self.temporal_ensemble = bool(temporal_ensemble)
         self.temporal_ensemble_decay = float(temporal_ensemble_decay)
         self.online_minimal_g_mode = str(online_minimal_g_mode)
+        self.behavior_contact_radius = float(behavior_contact_radius)
+        if self.behavior_contact_radius < 0:
+            raise ValueError("behavior_contact_radius must be non-negative")
         if self.online_minimal_g_mode not in {"generated_query", "behavior_block_center"}:
             raise ValueError(f"Unsupported online minimal-G mode: {self.online_minimal_g_mode}")
         if self.temporal_ensemble and self.action_execution_horizon != 1:
@@ -3231,7 +3235,10 @@ class ChunkFlowPolicy:
                 )
             arrays["articulation_minimal_g"] = apply_minimal_g_control(
                 make_behavior_block_center_minimal_g(
-                    arrays["robot_obs"], arrays["scene_obs"], arrays["task_name"]
+                    arrays["robot_obs"],
+                    arrays["scene_obs"],
+                    arrays["task_name"],
+                    contact_radius=self.behavior_contact_radius,
                 ),
                 self.query_g_control,
             )
@@ -3451,6 +3458,7 @@ def evaluate_policy_ckpt(
     g_scale: float = 1.0,
     query_g_control: str = "normal",
     online_minimal_g_mode: str = "generated_query",
+    behavior_contact_radius: float = 0.01,
     language_control: str = "normal",
     action_execution_horizon: int = 1,
     temporal_ensemble: bool = False,
@@ -3459,6 +3467,7 @@ def evaluate_policy_ckpt(
     policy_sample_seed: int | None = None,
     fm_reseed_each_episode: bool = True,
     profile_eval_timing: bool = False,
+    trace_rollouts: int = 0,
 ) -> dict[str, Any]:
     calvin_models = calvin_code / "calvin_models"
     calvin_env = calvin_code / "calvin_env"
@@ -3491,6 +3500,7 @@ def evaluate_policy_ckpt(
         g_scale=g_scale,
         query_g_control=query_g_control,
         online_minimal_g_mode=online_minimal_g_mode,
+        behavior_contact_radius=behavior_contact_radius,
         language_control=language_control,
         action_execution_horizon=action_execution_horizon,
         temporal_ensemble=temporal_ensemble,
@@ -3610,6 +3620,7 @@ def evaluate_policy_ckpt(
             "g_scale": float(g_scale),
             "query_g_control": str(query_g_control),
             "online_minimal_g_mode": str(online_minimal_g_mode),
+            "behavior_contact_radius": float(behavior_contact_radius),
             "language_control": str(language_control),
             "action_execution_horizon": int(action_execution_horizon),
             "temporal_ensemble": bool(temporal_ensemble),
@@ -3617,6 +3628,7 @@ def evaluate_policy_ckpt(
             "state_only_observation": bool(state_only_observation),
             "policy_sample_seed": policy_sample_seed,
             "fm_reseed_each_episode": bool(fm_reseed_each_episode),
+            "trace_rollouts": int(trace_rollouts),
             "selected_tasks": selected_tasks,
             "selected_sequence_indices": selected_sequence_indices,
         }
@@ -3653,12 +3665,74 @@ def evaluate_policy_ckpt(
             task_counts[subtask] += 1
             task_success[subtask] += int(success)
         plans: dict[str, list[Any]] = defaultdict(list)
+        trace_path = eval_dir / "behavior_g_rollout_traces.json"
+        trace_records: list[dict[str, Any]] = []
+        if trace_path.exists():
+            with open(trace_path, encoding="utf-8") as f:
+                trace_records = json.load(f)
         for initial_state, subtask, _sequence_index in selected[len(results) :]:
             timing_before = eval_timing.copy()
             robot_obs, scene_obs = eval_mod.get_env_state_for_initial_condition(initial_state)
             env.reset(robot_obs=robot_obs, scene_obs=scene_obs)
             model.reset()
+            rollout_steps: list[dict[str, Any]] = []
+            model_step = model.step
+            if len(results) < trace_rollouts:
+                def traced_model_step(obs: dict[str, Any], goal: str) -> np.ndarray:
+                    action = model_step(obs, goal)
+                    current_robot = np.asarray(obs["robot_obs"], dtype=np.float32)
+                    current_scene = np.asarray(obs["scene_obs"], dtype=np.float32)
+                    current_task = model._task_from_goal(goal)
+                    record: dict[str, Any] = {
+                        "step": len(rollout_steps),
+                        "eef": current_robot[:3].copy(),
+                        "action": np.asarray(action, dtype=np.float32).copy(),
+                    }
+                    if current_task in BLOCK_PUSH_TASKS:
+                        color, desired_flow = BLOCK_PUSH_TASKS[current_task]
+                        block_center = np.asarray(
+                            current_scene[BLOCK_SCENE_SLICES[color]], dtype=np.float32
+                        )
+                        online_g = make_behavior_block_center_minimal_g(
+                            current_robot[None, :],
+                            current_scene[None, :],
+                            np.asarray([current_task], dtype=object),
+                            contact_radius=model.behavior_contact_radius,
+                        )[0]
+                        record.update(
+                            {
+                                "block_center": block_center,
+                                "eef_to_block_center_distance": float(
+                                    np.linalg.norm(block_center - current_robot[:3])
+                                ),
+                                "attraction": online_g[:3],
+                                "attraction_norm": float(np.linalg.norm(online_g[:3])),
+                                "desired_flow": desired_flow,
+                                "action_flow_projection": float(
+                                    np.dot(np.asarray(action, dtype=np.float32)[:3], desired_flow)
+                                ),
+                            }
+                        )
+                    rollout_steps.append(record)
+                    return action
+
+                model.step = traced_model_step  # type: ignore[method-assign]
             success = bool(eval_mod.rollout(env, model, task_oracle, subtask, val_annotations, plans, debug=False))
+            model.step = model_step  # type: ignore[method-assign]
+            if rollout_steps:
+                trace_records.append(
+                    {
+                        "rollout_index": len(results),
+                        "sequence_index": int(_sequence_index),
+                        "task": subtask,
+                        "success": bool(success),
+                        "steps": rollout_steps,
+                    }
+                )
+                tmp_trace = trace_path.with_suffix(".json.tmp")
+                with open(tmp_trace, "w", encoding="utf-8") as f:
+                    json.dump(trace_records, f, indent=2, default=json_default)
+                os.replace(tmp_trace, trace_path)
             task_counts[subtask] += 1
             task_success[subtask] += int(success)
             results.append(int(success))

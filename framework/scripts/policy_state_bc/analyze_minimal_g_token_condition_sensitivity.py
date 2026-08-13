@@ -41,6 +41,52 @@ def cosine(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return output
 
 
+def phase_report(
+    mask: np.ndarray,
+    target: np.ndarray,
+    normal: np.ndarray,
+    zero: np.ndarray,
+    flip: np.ndarray,
+    flow: np.ndarray,
+) -> dict[str, Any]:
+    target_first = target[mask, 0]
+    normal_first = normal[mask, 0]
+    zero_first = zero[mask, 0]
+    flip_first = flip[mask, 0]
+    flow_selected = flow[mask]
+    flow_direction = flow_selected / np.maximum(
+        np.linalg.norm(flow_selected, axis=1, keepdims=True), 1e-8
+    )
+
+    def projection(actions: np.ndarray) -> np.ndarray:
+        return np.sum(actions[:, :3] * flow_direction, axis=1)
+
+    target_projection = projection(target_first)
+    return {
+        "windows": int(np.sum(mask)),
+        "normal_first_action_mse": float(np.mean((normal_first - target_first) ** 2)),
+        "zero_first_action_mse": float(np.mean((zero_first - target_first) ** 2)),
+        "flow_flip_first_action_mse": float(np.mean((flip_first - target_first) ** 2)),
+        "target_first_xyz_norm": stats(np.linalg.norm(target_first[:, :3], axis=1)),
+        "normal_first_xyz_norm": stats(np.linalg.norm(normal_first[:, :3], axis=1)),
+        "zero_first_xyz_norm": stats(np.linalg.norm(zero_first[:, :3], axis=1)),
+        "flow_flip_first_xyz_norm": stats(np.linalg.norm(flip_first[:, :3], axis=1)),
+        "target_first_xyz_flow_projection": stats(target_projection),
+        "normal_first_xyz_flow_projection": stats(projection(normal_first)),
+        "zero_first_xyz_flow_projection": stats(projection(zero_first)),
+        "flow_flip_first_xyz_flow_projection": stats(projection(flip_first)),
+        "normal_flow_projection_sign_accuracy": float(
+            np.mean(projection(normal_first) * target_projection > 0.0)
+        ),
+        "normal_zero_first_xyz_delta_norm": stats(
+            np.linalg.norm(normal_first[:, :3] - zero_first[:, :3], axis=1)
+        ),
+        "normal_flip_first_xyz_delta_norm": stats(
+            np.linalg.norm(normal_first[:, :3] - flip_first[:, :3], axis=1)
+        ),
+    }
+
+
 class BatchPredictor:
     def __init__(self, checkpoint: Path, device: str, batch_size: int):
         self.checkpoint_path = checkpoint
@@ -120,6 +166,13 @@ def model_report(
     zero = predictor.predict(base_x, zero_g)
     flip = predictor.predict(base_x, flip_g)
 
+    attraction_norm = np.linalg.norm(g_x[:, :3], axis=1)
+    phases = {
+        "approach_far": attraction_norm > 0.05,
+        "approach_near": (attraction_norm > 1e-8) & (attraction_norm <= 0.05),
+        "post_contact_inferred": attraction_norm <= 1e-8,
+    }
+
     per_task: dict[str, Any] = {}
     for task in sorted(set(task_names.astype(str))):
         selected = task_names.astype(str) == task
@@ -189,6 +242,10 @@ def model_report(
                 np.linalg.norm(normal[:, 0, :3] - zero[:, 0, :3], axis=1)
             ),
         },
+        "by_interaction_phase": {
+            phase: phase_report(mask, target, normal, zero, flip, g_x[:, 3:6])
+            for phase, mask in phases.items()
+        },
         "per_task": per_task,
         "inverse_pairs": pair_reports,
     }
@@ -217,6 +274,12 @@ def main() -> None:
         help="Override run_meta include_tasks for an evaluation-only task audit.",
     )
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument(
+        "--visual-feature-dir",
+        type=Path,
+        default=None,
+        help="Frozen feature cache required by visual executor checkpoints.",
+    )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--batch-size", type=int, default=512)
     args = parser.parse_args()
@@ -249,8 +312,24 @@ def main() -> None:
         reverse_task_pairs=policy.parse_reverse_task_pairs(run_meta.get("reverse_task_pairs")),
         reverse_pair_max_segments=int(run_meta.get("reverse_pair_max_segments", 0)),
     )
+    executor_state_scope = str(first_checkpoint.get("executor_state_scope", "full"))
+    executor_language_mode = str(first_checkpoint.get("executor_language_mode", "onehot"))
+    if executor_state_scope == "visual":
+        feature_dir = args.visual_feature_dir or (
+            Path(run_meta["visual_feature_dir"])
+            if run_meta.get("visual_feature_dir")
+            else None
+        )
+        if feature_dir is None:
+            parser.error("visual checkpoint requires --visual-feature-dir")
+        policy.attach_visual_features(arrays, feature_dir.resolve())
     _, val_idx = policy.segment_train_val_indices(arrays["segment_id"], int(run_meta["split_seed"]))
-    base_x, g_x = policy.make_minimal_query_condition_parts(arrays)
+    base_x, g_x = policy.make_minimal_query_condition_parts(
+        arrays,
+        state_scope=executor_state_scope,
+        mask_language_with_g=bool(first_checkpoint.get("mask_executor_language_with_g", True)),
+        language_mode=executor_language_mode,
+    )
     target = arrays["action_chunks"][val_idx].astype(np.float32)
     val_base = base_x[val_idx].astype(np.float32)
     val_g = g_x[val_idx].astype(np.float32)

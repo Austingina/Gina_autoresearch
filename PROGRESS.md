@@ -30,6 +30,12 @@
   first-action MSE `0.01322 +/- 0.00127` (CV `9.6%`) and best epochs at 40--50.
   Closed-loop best-checkpoint evaluation is in progress; offline MSE alone is
   not a learned-G scaling gate.
+- **2026-08-14** Stable seed-0 closes at `7/100` held-out versus old `9/100`
+  on identical starts despite halving offline MSE; zero G remains `0/100`.
+  A 1,600-step trace finds the online 1 cm block-center contact switch fires
+  zero times, whereas training G is post-contact on 63.3% of frames. The next
+  gate aligns G to a generic object-surface radius (`3/4/5 cm`) before any
+  learned-G scaling.
 - **2026-08-13** Matched behavior-G seed-0 recombination gate: visual+G
   `9/100` on held-out blue-left/red-right, versus zero/flow-flip `0/100,
   0/100` on identical starts (`p=0.0039` paired). G is causally used, but the
