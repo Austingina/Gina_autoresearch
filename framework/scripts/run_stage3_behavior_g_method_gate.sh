@@ -119,6 +119,11 @@ if [[ ! -f "${CHECKPOINT}" ]]; then
     2>&1 | tee "${LOG_ROOT}/train.log"
 fi
 
+if [[ "${METHOD_GATE_TRAIN_ONLY:-0}" == "1" ]]; then
+  printf '%s seed=%s training complete; METHOD_GATE_TRAIN_ONLY=1\n' "$(date -Is)" "${SEED}"
+  exit 0
+fi
+
 for control in normal zero sign_flip; do
   eval_dir="${RUN_ROOT}/chunk_bc_minimal_g_tokens/task_eval_D_behavior_${control}"
   if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
