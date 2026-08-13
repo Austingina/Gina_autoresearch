@@ -22,6 +22,9 @@ TRAIN_LR="${METHOD_GATE_LR:-1e-3}"
 CHECKPOINT_BASENAME="${METHOD_GATE_CHECKPOINT_BASENAME:-policy.pt}"
 EVAL_TAG="${METHOD_GATE_EVAL_TAG:-behavior}"
 BEHAVIOR_CONTACT_RADIUS="${METHOD_GATE_CONTACT_RADIUS:-0.01}"
+ONLINE_G_MODE="${METHOD_GATE_ONLINE_G_MODE:-behavior_block_center}"
+BEHAVIOR_TOOL_CLEARANCE="${METHOD_GATE_TOOL_CLEARANCE:-0.01}"
+BEHAVIOR_CONTACT_TOLERANCE="${METHOD_GATE_CONTACT_TOLERANCE:-0.01}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-13_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -149,8 +152,10 @@ for control in normal zero sign_flip; do
     --eval-task-filter push_red_block_right push_blue_block_left \
     --action-execution-horizon 1 \
     --query-g-control "${control}" \
-    --online-minimal-g-mode behavior_block_center \
+    --online-minimal-g-mode "${ONLINE_G_MODE}" \
     --behavior-contact-radius "${BEHAVIOR_CONTACT_RADIUS}" \
+    --behavior-tool-clearance "${BEHAVIOR_TOOL_CLEARANCE}" \
+    --behavior-contact-tolerance "${BEHAVIOR_CONTACT_TOLERANCE}" \
     --language-control normal \
     --device "cuda:${GPU_ID}" \
     2>&1 | tee "${LOG_ROOT}/eval_${control}.log"

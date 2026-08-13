@@ -15,6 +15,7 @@ import random
 import sys
 import time
 from typing import Any
+import xml.etree.ElementTree as ET
 
 import numpy as np
 
@@ -36,6 +37,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, SCRIPT_DIR.as_posix())
 
 import train_eval_state_bc_task_policy as base  # noqa: E402
+from behavior_surface_geometry import oriented_box_ray_distance  # noqa: E402
 
 
 def json_default(value: Any) -> Any:
@@ -110,6 +112,11 @@ BLOCK_SCENE_SLICES = {
     "red": slice(6, 9),
     "blue": slice(12, 15),
     "pink": slice(18, 21),
+}
+BLOCK_SCENE_EULER_SLICES = {
+    "red": slice(9, 12),
+    "blue": slice(15, 18),
+    "pink": slice(21, 24),
 }
 BLOCK_PUSH_TASKS = {
     f"push_{color}_block_{side}": (color, np.asarray([sign, 0.0, 0.0], dtype=np.float32))
@@ -196,6 +203,83 @@ def make_behavior_block_center_minimal_g(
             attraction = delta * np.float32(1.0 - contact_radius / distance)
         out.append(np.concatenate([attraction, desired_flow]).astype(np.float32))
     return np.stack(out).astype(np.float32)
+
+
+def make_behavior_block_surface_minimal_g(
+    robot: np.ndarray,
+    scene: np.ndarray,
+    task_names: np.ndarray,
+    *,
+    block_half_extents: dict[str, np.ndarray],
+    tool_clearance: float = 0.01,
+    contact_tolerance: float = 0.01,
+) -> np.ndarray:
+    """Build G from a flow-opposed object surface anchor and a tool clearance."""
+
+    out: list[np.ndarray] = []
+    for robot_obs, scene_obs, task_value in zip(robot, scene, task_names):
+        task = str(task_value)
+        if task not in BLOCK_PUSH_TASKS:
+            out.append(np.zeros(6, dtype=np.float32))
+            continue
+        color, desired_flow = BLOCK_PUSH_TASKS[task]
+        if color not in block_half_extents:
+            raise KeyError(f"Missing block half extents for {color}")
+        eef = np.asarray(robot_obs[:3], dtype=np.float32)
+        center = np.asarray(scene_obs[BLOCK_SCENE_SLICES[color]], dtype=np.float32)
+        euler = np.asarray(scene_obs[BLOCK_SCENE_EULER_SLICES[color]], dtype=np.float32)
+        upstream = -base._safe_unit(desired_flow)
+        surface_distance = oriented_box_ray_distance(
+            upstream, euler, block_half_extents[color]
+        )
+        anchor = center + upstream * np.float32(surface_distance + tool_clearance)
+        delta = anchor - eef
+        attraction = (
+            np.zeros(3, dtype=np.float32)
+            if float(np.linalg.norm(delta)) <= contact_tolerance
+            else delta.astype(np.float32)
+        )
+        out.append(np.concatenate([attraction, desired_flow]).astype(np.float32))
+    return np.stack(out).astype(np.float32)
+
+
+def configure_behavior_block_surface_from_env(
+    model: "ChunkFlowPolicy", env: Any
+) -> dict[str, np.ndarray]:
+    """Read scaled box half extents from the exact CALVIN assets loaded by the env."""
+
+    candidate = env
+    scene_object = None
+    for _ in range(5):
+        scene_object = getattr(candidate, "scene", None)
+        if scene_object is not None:
+            break
+        next_candidate = getattr(candidate, "env", None)
+        if next_candidate is None or next_candidate is candidate:
+            break
+        candidate = next_candidate
+    if scene_object is None:
+        raise RuntimeError("Could not locate CALVIN scene for behavior surface G")
+
+    half_extents: dict[str, np.ndarray] = {}
+    for obj in getattr(scene_object, "movable_objects", []):
+        name = str(getattr(obj, "name", ""))
+        if not name.startswith("block_"):
+            continue
+        color = name.split("_", 1)[1]
+        urdf_path = Path(getattr(obj, "file"))
+        root = ET.parse(urdf_path).getroot()
+        box = root.find(".//collision/geometry/box")
+        if box is None or not box.attrib.get("size"):
+            raise RuntimeError(f"Missing collision box size in {urdf_path}")
+        size = np.asarray([float(value) for value in box.attrib["size"].split()], dtype=np.float32)
+        scaling = float(getattr(obj, "global_scaling", 1.0))
+        half_extents[color] = size * np.float32(0.5 * scaling)
+    missing = set(BLOCK_SCENE_SLICES) - set(half_extents)
+    if missing:
+        raise RuntimeError(f"Missing CALVIN block geometry for: {sorted(missing)}")
+    model.behavior_block_half_extents = half_extents
+    return half_extents
 
 
 def apply_minimal_g_control(minimal_g: np.ndarray, control: str) -> np.ndarray:
@@ -2897,6 +2981,8 @@ class ChunkFlowPolicy:
         temporal_ensemble_decay: float = 0.25,
         online_minimal_g_mode: str = "generated_query",
         behavior_contact_radius: float = 0.01,
+        behavior_tool_clearance: float = 0.01,
+        behavior_contact_tolerance: float = 0.01,
         sample_seed_override: int | None = None,
         reseed_each_episode: bool = True,
     ):
@@ -2920,9 +3006,20 @@ class ChunkFlowPolicy:
         self.temporal_ensemble_decay = float(temporal_ensemble_decay)
         self.online_minimal_g_mode = str(online_minimal_g_mode)
         self.behavior_contact_radius = float(behavior_contact_radius)
-        if self.behavior_contact_radius < 0:
-            raise ValueError("behavior_contact_radius must be non-negative")
-        if self.online_minimal_g_mode not in {"generated_query", "behavior_block_center"}:
+        self.behavior_tool_clearance = float(behavior_tool_clearance)
+        self.behavior_contact_tolerance = float(behavior_contact_tolerance)
+        self.behavior_block_half_extents: dict[str, np.ndarray] = {}
+        if min(
+            self.behavior_contact_radius,
+            self.behavior_tool_clearance,
+            self.behavior_contact_tolerance,
+        ) < 0:
+            raise ValueError("behavior G geometry distances must be non-negative")
+        if self.online_minimal_g_mode not in {
+            "generated_query",
+            "behavior_block_center",
+            "behavior_block_surface",
+        }:
             raise ValueError(f"Unsupported online minimal-G mode: {self.online_minimal_g_mode}")
         if self.temporal_ensemble and self.action_execution_horizon != 1:
             raise ValueError("temporal ensembling requires action_execution_horizon=1")
@@ -3228,18 +3325,29 @@ class ChunkFlowPolicy:
             primitive_geometry=self.primitive_geometry,
         )
         arrays["articulation_query_g"] = apply_query_g_control(arrays["articulation_query_g"], self.query_g_control)
-        if self.online_minimal_g_mode == "behavior_block_center":
+        if self.online_minimal_g_mode in {"behavior_block_center", "behavior_block_surface"}:
             if self.query_g_control.startswith(("task:", "mask:")):
                 raise ValueError(
                     f"Control {self.query_g_control!r} is unsupported for behavior block-center G"
                 )
-            arrays["articulation_minimal_g"] = apply_minimal_g_control(
-                make_behavior_block_center_minimal_g(
+            if self.online_minimal_g_mode == "behavior_block_surface":
+                if not self.behavior_block_half_extents:
+                    raise RuntimeError("Behavior surface G was not configured from the CALVIN environment")
+                online_g = make_behavior_block_surface_minimal_g(
                     arrays["robot_obs"],
                     arrays["scene_obs"],
                     arrays["task_name"],
+                    block_half_extents=self.behavior_block_half_extents,
+                    tool_clearance=self.behavior_tool_clearance,
+                    contact_tolerance=self.behavior_contact_tolerance,
+                )
+            else:
+                online_g = make_behavior_block_center_minimal_g(
+                    arrays["robot_obs"], arrays["scene_obs"], arrays["task_name"],
                     contact_radius=self.behavior_contact_radius,
-                ),
+                )
+            arrays["articulation_minimal_g"] = apply_minimal_g_control(
+                online_g,
                 self.query_g_control,
             )
         else:
@@ -3459,6 +3567,8 @@ def evaluate_policy_ckpt(
     query_g_control: str = "normal",
     online_minimal_g_mode: str = "generated_query",
     behavior_contact_radius: float = 0.01,
+    behavior_tool_clearance: float = 0.01,
+    behavior_contact_tolerance: float = 0.01,
     language_control: str = "normal",
     action_execution_horizon: int = 1,
     temporal_ensemble: bool = False,
@@ -3501,6 +3611,8 @@ def evaluate_policy_ckpt(
         query_g_control=query_g_control,
         online_minimal_g_mode=online_minimal_g_mode,
         behavior_contact_radius=behavior_contact_radius,
+        behavior_tool_clearance=behavior_tool_clearance,
+        behavior_contact_tolerance=behavior_contact_tolerance,
         language_control=language_control,
         action_execution_horizon=action_execution_horizon,
         temporal_ensemble=temporal_ensemble,
@@ -3523,6 +3635,8 @@ def evaluate_policy_ckpt(
         env = eval_mod.make_env(data_root)
     if state_only_observation:
         env.get_obs = env.get_state_obs
+    if online_minimal_g_mode == "behavior_block_surface":
+        configure_behavior_block_surface_from_env(model, env)
     eval_timing = {
         "policy_seconds": 0.0,
         "policy_calls": 0,
@@ -3621,6 +3735,8 @@ def evaluate_policy_ckpt(
             "query_g_control": str(query_g_control),
             "online_minimal_g_mode": str(online_minimal_g_mode),
             "behavior_contact_radius": float(behavior_contact_radius),
+            "behavior_tool_clearance": float(behavior_tool_clearance),
+            "behavior_contact_tolerance": float(behavior_contact_tolerance),
             "language_control": str(language_control),
             "action_execution_horizon": int(action_execution_horizon),
             "temporal_ensemble": bool(temporal_ensemble),
@@ -3693,12 +3809,22 @@ def evaluate_policy_ckpt(
                         block_center = np.asarray(
                             current_scene[BLOCK_SCENE_SLICES[color]], dtype=np.float32
                         )
-                        online_g = make_behavior_block_center_minimal_g(
-                            current_robot[None, :],
-                            current_scene[None, :],
-                            np.asarray([current_task], dtype=object),
-                            contact_radius=model.behavior_contact_radius,
-                        )[0]
+                        if model.online_minimal_g_mode == "behavior_block_surface":
+                            online_g = make_behavior_block_surface_minimal_g(
+                                current_robot[None, :],
+                                current_scene[None, :],
+                                np.asarray([current_task], dtype=object),
+                                block_half_extents=model.behavior_block_half_extents,
+                                tool_clearance=model.behavior_tool_clearance,
+                                contact_tolerance=model.behavior_contact_tolerance,
+                            )[0]
+                        else:
+                            online_g = make_behavior_block_center_minimal_g(
+                                current_robot[None, :],
+                                current_scene[None, :],
+                                np.asarray([current_task], dtype=object),
+                                contact_radius=model.behavior_contact_radius,
+                            )[0]
                         record.update(
                             {
                                 "block_center": block_center,

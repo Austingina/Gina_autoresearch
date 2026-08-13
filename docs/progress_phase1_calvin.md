@@ -763,11 +763,22 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   3.1 cm to 13.8 cm, and even the successful rollout bottomed at 3.77 cm.
   Therefore the online policy never receives the post-contact G state that is
   63.3% of converted frames and its best-fitted phase.
-- Parameterized `behavior_contact_radius` and added non-invasive rollout trace
-  output. The next matched diagnostic uses `3/4/5 cm` surface radii on identical
-  starts, followed by a full 100-rollout normal/zero/sign-flip gate at the best
-  non-degenerate radius. This changes the G anchor/switch semantics, not the
-  policy action or a handcrafted push rule.
+- Parameterized the old center-distance switch and added non-invasive rollout
+  trace output. Asset inspection then rejected a shared `3/4/5 cm` radius
+  sweep as the final repair: CALVIN small/middle/big blocks are 5/7/10 cm long
+  in local x, scene global scaling is 0.8, and block yaw is randomized.
+- Added a stricter `behavior_block_surface` G builder. It reads collision-box
+  extents from the exact loaded URDFs, applies global scaling and current object
+  orientation, and places the anchor on the flow-opposed support surface plus
+  one shared embodiment/tool clearance. Contact tolerance is a separate
+  calibration variable. The resulting executor input remains exactly
+  `G=[anchor-EEF, object_flow]`; it does not project or modify policy actions.
+  Geometry has a dependency-light regression test covering object yaw.
+- Next matched diagnostic: calibrate the shared tool clearance/contact
+  tolerance from demonstration contact transitions, then compare old center G
+  and surface G on identical starts. Run full 100-rollout normal/zero/sign-flip
+  only if the surface builder both enters the trained post-contact state and
+  does not reduce approach/contact rates.
 - The ModelScope source visuals are A/B/C while the current online debug setup
   is D-like. The present score therefore mixes held-out color-direction
   recombination with scene transfer. Subsequent reporting must separate a

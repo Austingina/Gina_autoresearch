@@ -33,7 +33,7 @@ def main() -> None:
     parser.add_argument("--query-g-control", default="normal")
     parser.add_argument(
         "--online-minimal-g-mode",
-        choices=["generated_query", "behavior_block_center"],
+        choices=["generated_query", "behavior_block_center", "behavior_block_surface"],
         default="generated_query",
     )
     parser.add_argument(
@@ -42,6 +42,8 @@ def main() -> None:
         default=0.01,
         help="Surface radius used to switch behavior block-center G from attraction to flow.",
     )
+    parser.add_argument("--behavior-tool-clearance", type=float, default=0.01)
+    parser.add_argument("--behavior-contact-tolerance", type=float, default=0.01)
     parser.add_argument("--language-control", default="normal")
     parser.add_argument("--policy-sample-seed", type=int, default=None)
     parser.add_argument(
@@ -96,6 +98,8 @@ def main() -> None:
         query_g_control=args.query_g_control,
         online_minimal_g_mode=args.online_minimal_g_mode,
         behavior_contact_radius=args.behavior_contact_radius,
+        behavior_tool_clearance=args.behavior_tool_clearance,
+        behavior_contact_tolerance=args.behavior_contact_tolerance,
         language_control=args.language_control,
         action_execution_horizon=args.action_execution_horizon,
         temporal_ensemble=bool(args.temporal_ensemble),
