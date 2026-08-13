@@ -31,6 +31,11 @@ def main() -> None:
     parser.add_argument("--temporal-ensemble-decay", type=float, default=0.25)
     parser.add_argument("--g-scale", type=float, default=1.0)
     parser.add_argument("--query-g-control", default="normal")
+    parser.add_argument(
+        "--online-minimal-g-mode",
+        choices=["generated_query", "behavior_block_center"],
+        default="generated_query",
+    )
     parser.add_argument("--language-control", default="normal")
     parser.add_argument("--policy-sample-seed", type=int, default=None)
     parser.add_argument(
@@ -77,6 +82,7 @@ def main() -> None:
         eval_sequence_offset=args.eval_sequence_offset,
         g_scale=args.g_scale,
         query_g_control=args.query_g_control,
+        online_minimal_g_mode=args.online_minimal_g_mode,
         language_control=args.language_control,
         action_execution_horizon=args.action_execution_horizon,
         temporal_ensemble=bool(args.temporal_ensemble),

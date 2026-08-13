@@ -170,6 +170,55 @@ def make_minimal_articulation_g(query_g: np.ndarray) -> np.ndarray:
     return np.concatenate([attraction, desired_object_flow], axis=1).astype(np.float32)
 
 
+def make_behavior_block_center_minimal_g(
+    robot: np.ndarray,
+    scene: np.ndarray,
+    task_names: np.ndarray,
+    *,
+    contact_radius: float = 0.01,
+) -> np.ndarray:
+    """Build the online counterpart of the demonstration-derived push field."""
+
+    out: list[np.ndarray] = []
+    for robot_obs, scene_obs, task_value in zip(robot, scene, task_names):
+        task = str(task_value)
+        if task not in BLOCK_PUSH_TASKS:
+            out.append(np.zeros(6, dtype=np.float32))
+            continue
+        color, desired_flow = BLOCK_PUSH_TASKS[task]
+        eef = np.asarray(robot_obs[:3], dtype=np.float32)
+        part = np.asarray(scene_obs[BLOCK_SCENE_SLICES[color]], dtype=np.float32)
+        delta = part - eef
+        distance = float(np.linalg.norm(delta))
+        if distance <= contact_radius:
+            attraction = np.zeros(3, dtype=np.float32)
+        else:
+            attraction = delta * np.float32(1.0 - contact_radius / distance)
+        out.append(np.concatenate([attraction, desired_flow]).astype(np.float32))
+    return np.stack(out).astype(np.float32)
+
+
+def apply_minimal_g_control(minimal_g: np.ndarray, control: str) -> np.ndarray:
+    """Apply the causal controls used by minimal-G policy evaluations."""
+
+    if control == "normal":
+        return minimal_g.astype(np.float32)
+    if control == "zero":
+        return np.zeros_like(minimal_g, dtype=np.float32)
+    controlled = np.asarray(minimal_g, dtype=np.float32).copy()
+    if control == "sign_flip":
+        controlled[:, 3:6] *= -1.0
+    elif control == "zero_attraction":
+        controlled[:, :3] = 0.0
+    elif control == "zero_flow":
+        controlled[:, 3:6] = 0.0
+    elif control == "sign_flip_attraction":
+        controlled[:, :3] *= -1.0
+    else:
+        raise ValueError(f"Unsupported minimal-G control: {control}")
+    return controlled.astype(np.float32)
+
+
 def parse_task_segment_limits(items: list[str] | None) -> dict[str, int]:
     limits: dict[str, int] = {}
     for item in items or []:
@@ -2734,6 +2783,7 @@ class ChunkFlowPolicy:
         action_execution_horizon: int = 1,
         temporal_ensemble: bool = False,
         temporal_ensemble_decay: float = 0.25,
+        online_minimal_g_mode: str = "generated_query",
         sample_seed_override: int | None = None,
         reseed_each_episode: bool = True,
     ):
@@ -2755,6 +2805,9 @@ class ChunkFlowPolicy:
             )
         self.temporal_ensemble = bool(temporal_ensemble)
         self.temporal_ensemble_decay = float(temporal_ensemble_decay)
+        self.online_minimal_g_mode = str(online_minimal_g_mode)
+        if self.online_minimal_g_mode not in {"generated_query", "behavior_block_center"}:
+            raise ValueError(f"Unsupported online minimal-G mode: {self.online_minimal_g_mode}")
         if self.temporal_ensemble and self.action_execution_horizon != 1:
             raise ValueError("temporal ensembling requires action_execution_horizon=1")
         if self.temporal_ensemble_decay < 0:
@@ -3059,8 +3112,23 @@ class ChunkFlowPolicy:
             primitive_geometry=self.primitive_geometry,
         )
         arrays["articulation_query_g"] = apply_query_g_control(arrays["articulation_query_g"], self.query_g_control)
+        if self.online_minimal_g_mode == "behavior_block_center":
+            if self.query_g_control.startswith(("task:", "mask:")):
+                raise ValueError(
+                    f"Control {self.query_g_control!r} is unsupported for behavior block-center G"
+                )
+            arrays["articulation_minimal_g"] = apply_minimal_g_control(
+                make_behavior_block_center_minimal_g(
+                    arrays["robot_obs"], arrays["scene_obs"], arrays["task_name"]
+                ),
+                self.query_g_control,
+            )
+        else:
+            arrays["articulation_minimal_g"] = make_minimal_articulation_g(
+                arrays["articulation_query_g"]
+            )
         arrays["articulation_minimal_g"] = (
-            make_minimal_articulation_g(arrays["articulation_query_g"]) * np.float32(self.g_scale)
+            arrays["articulation_minimal_g"] * np.float32(self.g_scale)
         ).astype(np.float32)
         if self.query_g_token_type_mode == "zero":
             arrays["articulation_query_g"] = zero_query_g_token_type(arrays["articulation_query_g"])
@@ -3270,6 +3338,7 @@ def evaluate_policy_ckpt(
     eval_sequence_offset: int = 0,
     g_scale: float = 1.0,
     query_g_control: str = "normal",
+    online_minimal_g_mode: str = "generated_query",
     language_control: str = "normal",
     action_execution_horizon: int = 1,
     temporal_ensemble: bool = False,
@@ -3309,6 +3378,7 @@ def evaluate_policy_ckpt(
         task_language_embeddings=task_language_embeddings,
         g_scale=g_scale,
         query_g_control=query_g_control,
+        online_minimal_g_mode=online_minimal_g_mode,
         language_control=language_control,
         action_execution_horizon=action_execution_horizon,
         temporal_ensemble=temporal_ensemble,
@@ -3427,6 +3497,7 @@ def evaluate_policy_ckpt(
             "eval_sequence_offset": int(eval_sequence_offset),
             "g_scale": float(g_scale),
             "query_g_control": str(query_g_control),
+            "online_minimal_g_mode": str(online_minimal_g_mode),
             "language_control": str(language_control),
             "action_execution_horizon": int(action_execution_horizon),
             "temporal_ensemble": bool(temporal_ensemble),
@@ -3509,6 +3580,7 @@ def evaluate_policy_ckpt(
             "eval_mode": eval_mode,
             "g_scale": float(g_scale),
             "query_g_control": str(query_g_control),
+            "online_minimal_g_mode": str(online_minimal_g_mode),
             "language_control": str(language_control),
             "action_execution_horizon": int(action_execution_horizon),
             "temporal_ensemble": bool(temporal_ensemble),
