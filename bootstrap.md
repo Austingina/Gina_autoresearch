@@ -5,7 +5,7 @@ active CALVIN ABC-to-D visual experiment from public sources and records how to
 regenerate the legacy Isaac Lab demonstrations. Read `dataset.md` first for
 data provenance and checksums.
 
-Last validated against the BNU V100 migration workspace on 2026-08-13.
+Last validated against the BNU V100 migration workspace on 2026-08-14.
 
 ## Recovery contract
 
@@ -206,6 +206,50 @@ Validate `packed_state_manifest.json`: it must report `199292` frames and
 training seed.
 
 ## 6. Regenerate the active derived datasets
+
+### Fast interaction-volume method gate
+
+Before rebuilding the full visual stack, the current method frontier can be
+restored with about 1.7 GB of official ABC data:
+
+```bash
+"$CALVIN_PYTHON" -m pip install remotezip requests
+
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/extract_calvin_remote_calibration_subset.py" \
+  --output-dir "$CALVIN_DATA/task_ABC_D_volume_g_subset"
+
+export CALVIN_VOLUME_G_SUBSET_ROOT="$CALVIN_DATA/task_ABC_D_volume_g_subset"
+export CALVIN_SIM_DATA_ROOT="$CALVIN_DATA/calvin_debug_dataset"
+bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
+```
+
+The launcher performs source-only calibration and matched G relabeling when
+their outputs are absent. It then trains the proprio-only no-G baseline and the
+proprio+volume-G token policies from scratch, evaluates source combinations in
+D, and evaluates held-out recombinations with normal/zero/sign-flipped G. No
+scene state, direct language, or task one-hot reaches either executor.
+
+On a two-GPU allocation, first finish training and offline audits without
+starting the simulator, then launch the two disjoint online families:
+
+```bash
+VOLUME_GATE_EVAL_FAMILY=none \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
+
+VOLUME_GATE_EVAL_FAMILY=core \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0 &
+VOLUME_GATE_EVAL_FAMILY=factorized \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 1 &
+wait
+```
+
+The `core` shard contains no-G and unrestricted token-G; `factorized` contains
+the translational-G-only executor. Their task counts, initial-state protocol,
+and checkpoints are identical to an unsplit `all` run. Use the full visual
+reconstruction below only after this representation gate passes.
+
+### Full visual ABC-to-D stack
 
 Build the 2,101-segment state/action/language subset:
 

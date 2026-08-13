@@ -37,7 +37,10 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, SCRIPT_DIR.as_posix())
 
 import train_eval_state_bc_task_policy as base  # noqa: E402
-from behavior_surface_geometry import oriented_box_ray_distance  # noqa: E402
+from behavior_surface_geometry import (  # noqa: E402
+    oriented_box_ray_distance,
+    oriented_box_volume_delta,
+)
 
 
 def json_default(value: Any) -> Any:
@@ -53,6 +56,7 @@ SUPPORTED_MODES = {
     "chunk_bc_minimal_g_concat",
     "chunk_bc_minimal_g_film",
     "chunk_bc_minimal_g_tokens",
+    "chunk_bc_minimal_g_factorized_tokens",
     "chunk_fm_minimal_g_tokens",
     "chunk_bc_minimal_g_semantic",
     "chunk_bc_minimal_g_frame",
@@ -73,6 +77,7 @@ MASKED_LANG_MINIMAL_G_LEARNED_MODES = {
     "chunk_bc_minimal_g_concat",
     "chunk_bc_minimal_g_film",
     "chunk_bc_minimal_g_tokens",
+    "chunk_bc_minimal_g_factorized_tokens",
     "chunk_fm_minimal_g_tokens",
     "chunk_bc_minimal_g_semantic",
     "chunk_bc_minimal_g_frame",
@@ -214,12 +219,19 @@ def make_behavior_block_surface_minimal_g(
     block_scene_slices: dict[str, slice] | None = None,
     tool_clearance: float = 0.01,
     contact_tolerance: float = 0.01,
+    post_contact: np.ndarray | None = None,
 ) -> np.ndarray:
     """Build G from a flow-opposed object surface anchor and a tool clearance."""
 
     scene_slices = block_scene_slices or BLOCK_SCENE_SLICES
     out: list[np.ndarray] = []
-    for robot_obs, scene_obs, task_value in zip(robot, scene, task_names):
+    if post_contact is None:
+        post_contact = np.zeros(len(robot), dtype=bool)
+    if len(post_contact) != len(robot):
+        raise ValueError("post_contact must match the behavior G batch length")
+    for robot_obs, scene_obs, task_value, moved in zip(
+        robot, scene, task_names, post_contact
+    ):
         task = str(task_value)
         if task not in BLOCK_PUSH_TASKS:
             out.append(np.zeros(6, dtype=np.float32))
@@ -240,11 +252,75 @@ def make_behavior_block_surface_minimal_g(
         delta = anchor - eef
         attraction = (
             np.zeros(3, dtype=np.float32)
-            if float(np.linalg.norm(delta)) <= contact_tolerance
+            if bool(moved) or float(np.linalg.norm(delta)) <= contact_tolerance
             else delta.astype(np.float32)
         )
         out.append(np.concatenate([attraction, desired_flow]).astype(np.float32))
     return np.stack(out).astype(np.float32)
+
+
+def make_behavior_block_volume_minimal_g(
+    robot: np.ndarray,
+    scene: np.ndarray,
+    task_names: np.ndarray,
+    *,
+    block_half_extents: dict[str, np.ndarray],
+    block_scene_slices: dict[str, slice] | None = None,
+    tool_clearance: float = 0.018,
+    post_contact: np.ndarray | None = None,
+) -> np.ndarray:
+    """Build G from distance to a task-agnostic object interaction volume."""
+
+    scene_slices = block_scene_slices or BLOCK_SCENE_SLICES
+    if post_contact is None:
+        post_contact = np.zeros(len(robot), dtype=bool)
+    if len(post_contact) != len(robot):
+        raise ValueError("post_contact must match the behavior G batch length")
+    out: list[np.ndarray] = []
+    for robot_obs, scene_obs, task_value, moved in zip(
+        robot, scene, task_names, post_contact
+    ):
+        task = str(task_value)
+        if task not in BLOCK_PUSH_TASKS:
+            out.append(np.zeros(6, dtype=np.float32))
+            continue
+        color, desired_flow = BLOCK_PUSH_TASKS[task]
+        position_slice = scene_slices[color]
+        orientation_slice = slice(position_slice.start + 3, position_slice.start + 6)
+        eef = np.asarray(robot_obs[:3], dtype=np.float32)
+        center = np.asarray(scene_obs[position_slice], dtype=np.float32)
+        euler = np.asarray(scene_obs[orientation_slice], dtype=np.float32)
+        attraction = (
+            np.zeros(3, dtype=np.float32)
+            if bool(moved)
+            else oriented_box_volume_delta(
+                eef,
+                center,
+                euler,
+                block_half_extents[color],
+                clearance=tool_clearance,
+            )
+        )
+        out.append(np.concatenate([attraction, desired_flow]).astype(np.float32))
+    return np.stack(out).astype(np.float32)
+
+
+def behavior_object_motion_started(
+    initial_center: np.ndarray,
+    current_center: np.ndarray,
+    desired_flow: np.ndarray,
+    threshold: float,
+) -> bool:
+    """Match the demonstration G phase switch to observed object progress."""
+
+    progress = float(
+        np.dot(
+            np.asarray(current_center, dtype=np.float32)
+            - np.asarray(initial_center, dtype=np.float32),
+            base._safe_unit(np.asarray(desired_flow, dtype=np.float32)),
+        )
+    )
+    return progress >= threshold
 
 
 def configure_behavior_block_surface_from_env(
@@ -1292,6 +1368,75 @@ class MinimalGTokenChunkTransformer(nn.Module):
         return self.action_out(decoded).reshape(base_n.shape[0], -1)
 
 
+class FactorizedMinimalGTokenChunkPolicy(nn.Module):
+    """Let translational G condition xyz without leaking into rotation/gripper."""
+
+    def __init__(
+        self,
+        base_dim: int,
+        g_dim: int,
+        chunk_size: int,
+        hidden: int,
+        layers: int,
+    ):
+        super().__init__()
+        if g_dim != MINIMAL_G_DIM:
+            raise ValueError(
+                f"Factorized minimal-G model expects {MINIMAL_G_DIM} G dims, got {g_dim}"
+            )
+        self.base_dim = int(base_dim)
+        self.g_dim = int(g_dim)
+        self.chunk_size = int(chunk_size)
+        self.base_encoder = nn.Sequential(
+            nn.Linear(base_dim, hidden), nn.SiLU(), nn.Linear(hidden, hidden)
+        )
+        self.anchor_encoder = nn.Sequential(
+            nn.Linear(3, hidden), nn.SiLU(), nn.Linear(hidden, hidden)
+        )
+        self.flow_encoder = nn.Sequential(
+            nn.Linear(3, hidden), nn.SiLU(), nn.Linear(hidden, hidden)
+        )
+        self.translation_queries = nn.Parameter(
+            torch.randn(1, chunk_size, hidden) * 0.02
+        )
+        layer = nn.TransformerDecoderLayer(
+            d_model=hidden,
+            nhead=transformer_head_count(hidden),
+            dim_feedforward=4 * hidden,
+            dropout=0.0,
+            activation="gelu",
+            batch_first=True,
+            norm_first=True,
+        )
+        self.translation_decoder = nn.TransformerDecoder(
+            layer,
+            num_layers=max(1, layers),
+            norm=nn.LayerNorm(hidden),
+        )
+        self.translation_out = nn.Linear(hidden, 3)
+        base_modules: list[nn.Module] = [nn.Linear(base_dim, hidden), nn.SiLU()]
+        for _ in range(max(0, layers - 1)):
+            base_modules.extend([nn.Linear(hidden, hidden), nn.SiLU()])
+        base_modules.append(nn.Linear(hidden, chunk_size * 4))
+        self.rotation_gripper_head = nn.Sequential(*base_modules)
+
+    def forward(self, base_n: torch.Tensor, g_raw: torch.Tensor) -> torch.Tensor:
+        memory = torch.stack(
+            [
+                self.base_encoder(base_n),
+                self.anchor_encoder(g_raw[:, :3]),
+                self.flow_encoder(g_raw[:, 3:6]),
+            ],
+            dim=1,
+        )
+        query = self.translation_queries.expand(base_n.shape[0], -1, -1)
+        xyz = self.translation_out(self.translation_decoder(query, memory))
+        rotation_gripper = self.rotation_gripper_head(base_n).reshape(
+            base_n.shape[0], self.chunk_size, 4
+        )
+        return torch.cat([xyz, rotation_gripper], dim=-1).reshape(base_n.shape[0], -1)
+
+
 class ResidualAdapterMinimalGTokenPolicy(nn.Module):
     """Preserve a frozen token policy while learning a compact G-conditioned correction."""
 
@@ -2214,6 +2359,14 @@ def train_mode(
             hidden=hidden,
             layers=layers,
         ).to(device)
+    elif mode == "chunk_bc_minimal_g_factorized_tokens":
+        model = FactorizedMinimalGTokenChunkPolicy(
+            base_dim,
+            g_dim,
+            chunk_size=chunk_size,
+            hidden=hidden,
+            layers=layers,
+        ).to(device)
     elif mode == "chunk_fm_minimal_g_tokens":
         model = MinimalGTokenFlowTransformer(
             base_dim,
@@ -2402,6 +2555,7 @@ def train_mode(
         "chunk_bc_v7_scale_aug",
         "chunk_bc_v7_gated",
         "chunk_bc_minimal_g_tokens",
+        "chunk_bc_minimal_g_factorized_tokens",
         "chunk_fm_minimal_g_tokens",
     }
     if use_train_g_aug and g_dropout_prob >= 1.0:
@@ -2485,6 +2639,8 @@ def train_mode(
                     val_cond[:, base_dim : base_dim + g_dim],
                 )
             elif mode == "chunk_bc_minimal_g_tokens":
+                pred_n = model(val_cond[:, :base_dim], val_g_raw)
+            elif mode == "chunk_bc_minimal_g_factorized_tokens":
                 pred_n = model(val_cond[:, :base_dim], val_g_raw)
             elif mode == "chunk_fm_minimal_g_tokens":
                 gen = torch.Generator(device=device)
@@ -2665,6 +2821,9 @@ def train_mode(
                     loss = torch.stack(loss_terms).sum()
                 else:
                     loss = action_chunk_mse(pred, y_b)
+            elif mode == "chunk_bc_minimal_g_factorized_tokens":
+                pred = model(cond_b[:, :base_dim], g_raw_b)
+                loss = action_chunk_mse(pred, y_b)
             elif mode == "chunk_fm_minimal_g_tokens":
                 x0 = torch.randn_like(y_b)
                 t = torch.rand((y_b.shape[0],), device=device)
@@ -2995,6 +3154,7 @@ class ChunkFlowPolicy:
         behavior_contact_radius: float = 0.01,
         behavior_tool_clearance: float = 0.01,
         behavior_contact_tolerance: float = 0.01,
+        behavior_motion_threshold: float = 0.002,
         sample_seed_override: int | None = None,
         reseed_each_episode: bool = True,
     ):
@@ -3020,18 +3180,23 @@ class ChunkFlowPolicy:
         self.behavior_contact_radius = float(behavior_contact_radius)
         self.behavior_tool_clearance = float(behavior_tool_clearance)
         self.behavior_contact_tolerance = float(behavior_contact_tolerance)
+        self.behavior_motion_threshold = float(behavior_motion_threshold)
         self.behavior_block_half_extents: dict[str, np.ndarray] = {}
         self.behavior_block_scene_slices: dict[str, slice] = dict(BLOCK_SCENE_SLICES)
+        self.behavior_initial_block_centers: dict[str, np.ndarray] = {}
+        self.behavior_post_contact: set[str] = set()
         if min(
             self.behavior_contact_radius,
             self.behavior_tool_clearance,
             self.behavior_contact_tolerance,
+            self.behavior_motion_threshold,
         ) < 0:
             raise ValueError("behavior G geometry distances must be non-negative")
         if self.online_minimal_g_mode not in {
             "generated_query",
             "behavior_block_center",
             "behavior_block_surface",
+            "behavior_block_volume",
         }:
             raise ValueError(f"Unsupported online minimal-G mode: {self.online_minimal_g_mode}")
         if self.temporal_ensemble and self.action_execution_horizon != 1:
@@ -3136,6 +3301,14 @@ class ChunkFlowPolicy:
                     )
             else:
                 self.model = base_policy
+        elif self.mode == "chunk_bc_minimal_g_factorized_tokens":
+            self.model = FactorizedMinimalGTokenChunkPolicy(
+                int(ckpt.get("base_dim") or 0),
+                int(ckpt.get("g_dim") or 0),
+                chunk_size=self.chunk_size,
+                hidden=ckpt["hidden"],
+                layers=ckpt["layers"],
+            )
         elif self.mode == "chunk_fm_minimal_g_tokens":
             base_dim = int(ckpt.get("base_dim") or 0)
             g_dim = int(ckpt.get("g_dim") or 0)
@@ -3275,6 +3448,8 @@ class ChunkFlowPolicy:
         self.pending_actions = []
         self.action_predictions = []
         self.step_index = 0
+        self.behavior_initial_block_centers = {}
+        self.behavior_post_contact = set()
 
     def _task_from_goal(self, goal: str) -> str:
         if goal in self.text_to_task:
@@ -3338,23 +3513,56 @@ class ChunkFlowPolicy:
             primitive_geometry=self.primitive_geometry,
         )
         arrays["articulation_query_g"] = apply_query_g_control(arrays["articulation_query_g"], self.query_g_control)
-        if self.online_minimal_g_mode in {"behavior_block_center", "behavior_block_surface"}:
+        if self.online_minimal_g_mode in {
+            "behavior_block_center",
+            "behavior_block_surface",
+            "behavior_block_volume",
+        }:
             if self.query_g_control.startswith(("task:", "mask:")):
                 raise ValueError(
                     f"Control {self.query_g_control!r} is unsupported for behavior block-center G"
                 )
-            if self.online_minimal_g_mode == "behavior_block_surface":
+            if self.online_minimal_g_mode in {
+                "behavior_block_surface",
+                "behavior_block_volume",
+            }:
                 if not self.behavior_block_half_extents:
                     raise RuntimeError("Behavior surface G was not configured from the CALVIN environment")
-                online_g = make_behavior_block_surface_minimal_g(
-                    arrays["robot_obs"],
-                    arrays["scene_obs"],
-                    arrays["task_name"],
-                    block_half_extents=self.behavior_block_half_extents,
-                    block_scene_slices=self.behavior_block_scene_slices,
-                    tool_clearance=self.behavior_tool_clearance,
-                    contact_tolerance=self.behavior_contact_tolerance,
-                )
+                color, desired_flow = BLOCK_PUSH_TASKS[task]
+                position_slice = self.behavior_block_scene_slices[color]
+                current_center = np.asarray(scene[position_slice], dtype=np.float32)
+                if color not in self.behavior_initial_block_centers:
+                    self.behavior_initial_block_centers[color] = current_center.copy()
+                if behavior_object_motion_started(
+                    self.behavior_initial_block_centers[color],
+                    current_center,
+                    desired_flow,
+                    self.behavior_motion_threshold,
+                ):
+                    self.behavior_post_contact.add(color)
+                surface_kwargs = {
+                    "block_half_extents": self.behavior_block_half_extents,
+                    "block_scene_slices": self.behavior_block_scene_slices,
+                    "tool_clearance": self.behavior_tool_clearance,
+                    "post_contact": np.asarray(
+                        [color in self.behavior_post_contact], dtype=bool
+                    ),
+                }
+                if self.online_minimal_g_mode == "behavior_block_volume":
+                    online_g = make_behavior_block_volume_minimal_g(
+                        arrays["robot_obs"],
+                        arrays["scene_obs"],
+                        arrays["task_name"],
+                        **surface_kwargs,
+                    )
+                else:
+                    online_g = make_behavior_block_surface_minimal_g(
+                        arrays["robot_obs"],
+                        arrays["scene_obs"],
+                        arrays["task_name"],
+                        contact_tolerance=self.behavior_contact_tolerance,
+                        **surface_kwargs,
+                    )
             else:
                 online_g = make_behavior_block_center_minimal_g(
                     arrays["robot_obs"], arrays["scene_obs"], arrays["task_name"],
@@ -3429,6 +3637,12 @@ class ChunkFlowPolicy:
             elif self.mode == "chunk_bc_minimal_g_tokens":
                 base_dim = int(getattr(self.model, "base_dim"))
                 g_raw_t = torch.from_numpy(arrays["articulation_minimal_g"]).to(self.device)
+                pred_n = self.model(cond_t[:, :base_dim], g_raw_t)
+            elif self.mode == "chunk_bc_minimal_g_factorized_tokens":
+                base_dim = int(getattr(self.model, "base_dim"))
+                g_raw_t = torch.from_numpy(arrays["articulation_minimal_g"]).to(
+                    self.device
+                )
                 pred_n = self.model(cond_t[:, :base_dim], g_raw_t)
             elif self.mode == "chunk_fm_minimal_g_tokens":
                 base_dim = int(getattr(self.model, "base_dim"))
@@ -3583,6 +3797,7 @@ def evaluate_policy_ckpt(
     behavior_contact_radius: float = 0.01,
     behavior_tool_clearance: float = 0.01,
     behavior_contact_tolerance: float = 0.01,
+    behavior_motion_threshold: float = 0.002,
     language_control: str = "normal",
     action_execution_horizon: int = 1,
     temporal_ensemble: bool = False,
@@ -3627,6 +3842,7 @@ def evaluate_policy_ckpt(
         behavior_contact_radius=behavior_contact_radius,
         behavior_tool_clearance=behavior_tool_clearance,
         behavior_contact_tolerance=behavior_contact_tolerance,
+        behavior_motion_threshold=behavior_motion_threshold,
         language_control=language_control,
         action_execution_horizon=action_execution_horizon,
         temporal_ensemble=temporal_ensemble,
@@ -3649,7 +3865,7 @@ def evaluate_policy_ckpt(
         env = eval_mod.make_env(data_root)
     if state_only_observation:
         env.get_obs = env.get_state_obs
-    if online_minimal_g_mode == "behavior_block_surface":
+    if online_minimal_g_mode in {"behavior_block_surface", "behavior_block_volume"}:
         configure_behavior_block_surface_from_env(model, env)
     eval_timing = {
         "policy_seconds": 0.0,
@@ -3751,6 +3967,7 @@ def evaluate_policy_ckpt(
             "behavior_contact_radius": float(behavior_contact_radius),
             "behavior_tool_clearance": float(behavior_tool_clearance),
             "behavior_contact_tolerance": float(behavior_contact_tolerance),
+            "behavior_motion_threshold": float(behavior_motion_threshold),
             "language_control": str(language_control),
             "action_execution_horizon": int(action_execution_horizon),
             "temporal_ensemble": bool(temporal_ensemble),
@@ -3822,19 +4039,37 @@ def evaluate_policy_ckpt(
                         color, desired_flow = BLOCK_PUSH_TASKS[current_task]
                         position_slice = (
                             model.behavior_block_scene_slices[color]
-                            if model.online_minimal_g_mode == "behavior_block_surface"
+                            if model.online_minimal_g_mode
+                            in {"behavior_block_surface", "behavior_block_volume"}
                             else BLOCK_SCENE_SLICES[color]
                         )
                         block_center = np.asarray(current_scene[position_slice], dtype=np.float32)
-                        if model.online_minimal_g_mode == "behavior_block_surface":
-                            online_g = make_behavior_block_surface_minimal_g(
+                        if model.online_minimal_g_mode in {
+                            "behavior_block_surface",
+                            "behavior_block_volume",
+                        }:
+                            g_builder = (
+                                make_behavior_block_volume_minimal_g
+                                if model.online_minimal_g_mode == "behavior_block_volume"
+                                else make_behavior_block_surface_minimal_g
+                            )
+                            builder_kwargs: dict[str, Any] = {
+                                "block_half_extents": model.behavior_block_half_extents,
+                                "block_scene_slices": model.behavior_block_scene_slices,
+                                "tool_clearance": model.behavior_tool_clearance,
+                                "post_contact": np.asarray(
+                                    [color in model.behavior_post_contact], dtype=bool
+                                ),
+                            }
+                            if model.online_minimal_g_mode == "behavior_block_surface":
+                                builder_kwargs["contact_tolerance"] = (
+                                    model.behavior_contact_tolerance
+                                )
+                            online_g = g_builder(
                                 current_robot[None, :],
                                 current_scene[None, :],
                                 np.asarray([current_task], dtype=object),
-                                block_half_extents=model.behavior_block_half_extents,
-                                block_scene_slices=model.behavior_block_scene_slices,
-                                tool_clearance=model.behavior_tool_clearance,
-                                contact_tolerance=model.behavior_contact_tolerance,
+                                **builder_kwargs,
                             )[0]
                         else:
                             online_g = make_behavior_block_center_minimal_g(
@@ -3846,6 +4081,26 @@ def evaluate_policy_ckpt(
                         record.update(
                             {
                                 "block_center": block_center,
+                                "block_progress_along_flow": (
+                                    float(
+                                        np.dot(
+                                            block_center
+                                            - model.behavior_initial_block_centers.get(
+                                                color, block_center
+                                            ),
+                                            desired_flow,
+                                        )
+                                    )
+                                    if model.online_minimal_g_mode
+                                    in {"behavior_block_surface", "behavior_block_volume"}
+                                    else None
+                                ),
+                                "post_contact": (
+                                    color in model.behavior_post_contact
+                                    if model.online_minimal_g_mode
+                                    in {"behavior_block_surface", "behavior_block_volume"}
+                                    else None
+                                ),
                                 "eef_to_block_center_distance": float(
                                     np.linalg.norm(block_center - current_robot[:3])
                                 ),

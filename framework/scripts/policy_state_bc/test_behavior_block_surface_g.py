@@ -11,7 +11,21 @@ import numpy as np
 
 sys.path.insert(0, Path(__file__).resolve().parent.as_posix())
 
-from behavior_surface_geometry import oriented_box_ray_distance  # noqa: E402
+from behavior_surface_geometry import (  # noqa: E402
+    oriented_box_ray_distance,
+    oriented_box_required_clearance,
+    oriented_box_volume_delta,
+)
+
+
+def load_policy_module():
+    try:
+        import train_eval_state_chunk_flow_policy as policy
+    except ModuleNotFoundError as error:
+        if error.name == "torch":
+            return None
+        raise
+    return policy
 
 
 def main() -> None:
@@ -25,6 +39,84 @@ def main() -> None:
     )
     assert np.isclose(distance_yaw0, 0.02), distance_yaw0
     assert np.isclose(distance_yaw90, 0.03), distance_yaw90
+    point = np.asarray([0.05, 0.00, 0.00], dtype=np.float32)
+    center = np.zeros(3, dtype=np.float32)
+    euler = np.zeros(3, dtype=np.float32)
+    delta = oriented_box_volume_delta(point, center, euler, half_extents)
+    assert np.allclose(delta, np.asarray([-0.03, 0.0, 0.0])), delta
+    assert np.isclose(
+        oriented_box_required_clearance(point, center, euler, half_extents), 0.03
+    )
+    expanded_delta = oriented_box_volume_delta(
+        point, center, euler, half_extents, clearance=0.03
+    )
+    assert np.allclose(expanded_delta, 0), expanded_delta
+
+    policy = load_policy_module()
+    if policy is not None:
+        import torch
+
+        torch.manual_seed(0)
+        factorized = policy.FactorizedMinimalGTokenChunkPolicy(
+            base_dim=15,
+            g_dim=6,
+            chunk_size=4,
+            hidden=32,
+            layers=1,
+        ).eval()
+        base_input = torch.randn(3, 15)
+        g_input = torch.randn(3, 6)
+        with torch.inference_mode():
+            factorized_normal = factorized(base_input, g_input).reshape(3, 4, 7)
+            factorized_flip = factorized(base_input, -g_input).reshape(3, 4, 7)
+        assert not torch.allclose(
+            factorized_normal[:, :, :3], factorized_flip[:, :, :3]
+        )
+        assert torch.equal(
+            factorized_normal[:, :, 3:7], factorized_flip[:, :, 3:7]
+        )
+
+        assert not policy.behavior_object_motion_started(
+            np.zeros(3), np.asarray([0.0019, 0.0, 0.0]), np.asarray([1.0, 0.0, 0.0]), 0.002
+        )
+        assert policy.behavior_object_motion_started(
+            np.zeros(3), np.asarray([0.0021, 0.0, 0.0]), np.asarray([1.0, 0.0, 0.0]), 0.002
+        )
+        assert not policy.behavior_object_motion_started(
+            np.zeros(3), np.asarray([0.0030, 0.0, 0.0]), np.asarray([-1.0, 0.0, 0.0]), 0.002
+        )
+
+        robot = np.zeros((1, 15), dtype=np.float32)
+        scene = np.zeros((1, 24), dtype=np.float32)
+        scene[0, 6:9] = np.asarray([0.10, 0.0, 0.0], dtype=np.float32)
+        task = np.asarray(["push_red_block_right"], dtype=object)
+        kwargs = {
+            "block_half_extents": {"red": np.full(3, 0.02, dtype=np.float32)},
+            "block_scene_slices": {"red": slice(6, 9)},
+            "tool_clearance": 0.014,
+            "contact_tolerance": 0.005,
+        }
+        pre = policy.make_behavior_block_surface_minimal_g(
+            robot, scene, task, post_contact=np.asarray([False]), **kwargs
+        )
+        post = policy.make_behavior_block_surface_minimal_g(
+            robot, scene, task, post_contact=np.asarray([True]), **kwargs
+        )
+        assert np.linalg.norm(pre[0, :3]) > 0
+        assert np.allclose(post[0, :3], 0)
+        assert np.allclose(post[0, 3:6], np.asarray([1.0, 0.0, 0.0]))
+
+        volume = policy.make_behavior_block_volume_minimal_g(
+            robot,
+            scene,
+            task,
+            block_half_extents=kwargs["block_half_extents"],
+            block_scene_slices=kwargs["block_scene_slices"],
+            tool_clearance=0.018,
+            post_contact=np.asarray([False]),
+        )
+        assert np.allclose(volume[0, :3], np.asarray([0.062, 0.0, 0.0]))
+        assert np.allclose(volume[0, 3:6], np.asarray([1.0, 0.0, 0.0]))
 
     print("behavior block-surface G: OK")
 

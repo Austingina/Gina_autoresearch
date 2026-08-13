@@ -48,3 +48,41 @@ def oriented_box_ray_distance(
         direction_local[active]
     )
     return float(np.min(distances))
+
+
+def oriented_box_volume_delta(
+    point_world: np.ndarray,
+    center_world: np.ndarray,
+    euler_world: np.ndarray,
+    half_extents_local: np.ndarray,
+    clearance: float = 0.0,
+) -> np.ndarray:
+    """Shortest displacement from a point into an expanded oriented box."""
+
+    rotation = euler_xyz_rotation_matrix(euler_world)
+    point_local = rotation.T @ (
+        np.asarray(point_world, dtype=np.float32)
+        - np.asarray(center_world, dtype=np.float32)
+    )
+    expanded = np.asarray(half_extents_local, dtype=np.float32) + np.float32(
+        clearance
+    )
+    closest_local = np.clip(point_local, -expanded, expanded)
+    return (rotation @ (closest_local - point_local)).astype(np.float32)
+
+
+def oriented_box_required_clearance(
+    point_world: np.ndarray,
+    center_world: np.ndarray,
+    euler_world: np.ndarray,
+    half_extents_local: np.ndarray,
+) -> float:
+    """Isotropic expansion needed for a point to enter an oriented box."""
+
+    rotation = euler_xyz_rotation_matrix(euler_world)
+    point_local = rotation.T @ (
+        np.asarray(point_world, dtype=np.float32)
+        - np.asarray(center_world, dtype=np.float32)
+    )
+    excess = np.abs(point_local) - np.asarray(half_extents_local, dtype=np.float32)
+    return float(max(0.0, np.max(excess)))

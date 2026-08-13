@@ -9,6 +9,38 @@ preliminary evidence; it is not the active experiment queue.
 
 ---
 
+## Interaction-Volume G Gate — 2026-08-14
+
+- Extracted a balanced 114-demonstration subset directly from the official
+  CALVIN `task_ABC_D.zip` by HTTP range: 96 source demonstrations, 18 held-out
+  color-direction recombinations, and 38 demonstrations per A/B/C scene.
+- Corrected the old train/online semantic mismatch and prevented held-out
+  leakage. Source-only calibration replaces a brittle single contact point
+  with `G=[delta_to_expanded_object_volume(3), desired_object_flow(3)]`.
+  The 18.01 mm interaction volume covers 91.7% of source-validation and 94.4%
+  of held-out demonstrated contacts without prescribing a grasp/push point.
+- Three matched seeds trained from scratch on 96 source demonstrations show
+  that the compact field is reusable on held-out pairs. Mean held-out xyz MSE
+  improves 14.4%; post-motion xyz MSE improves 36.7%, with every seed better
+  than its matched no-G checkpoint. Post-motion normal/zero/sign-flip flow
+  projection remains positive/near-zero/negative in every seed.
+- Restricting the translational G interface to the xyz action head removes the
+  unrestricted token model's held-out gripper shortcut: gripper MSE falls from
+  `0.24675` to `0.09618` (no-G `0.09966`). Normal/zero/flip G changes rotation
+  and gripper by exactly zero while retaining strong causal xyz response. No
+  hand-coded G-to-action projection or stage label is used.
+- Before contact, attraction projection improves from no-G `0.04771` to
+  `0.09697` against expert `0.11964`, but orthogonal xyz error rises. This
+  identifies simultaneous attraction/flow token composition, rather than G
+  scale, as the remaining approach-control risk.
+- The three-seed offline representation/integration gate passes. Scaling
+  remains blocked until the same checkpoints pass source and held-out scene-D
+  rollouts with matched normal/zero/sign-flip controls across seeds.
+- Full record:
+  [knowledge_base/03_experiment_evidence/phase1_calvin_interaction_volume_g_2026-08-14.md](knowledge_base/03_experiment_evidence/phase1_calvin_interaction_volume_g_2026-08-14.md)
+
+---
+
 ## E3 Factorial Zero-Shot Composition Gate — 2026-07-16
 
 - Built a leave-one-combination-out checkerboard around the unchanged compact

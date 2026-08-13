@@ -5,7 +5,7 @@ results cited by `PROGRESS.md`. Large files are deliberately not committed to
 Git. Paths below are examples; scripts should use the environment variables in
 `bootstrap.md` instead of depending on one machine's mount point.
 
-Last audited against the BNU V100 migration workspace on 2026-08-13.
+Last audited against the BNU V100 migration workspace on 2026-08-14.
 
 ## Recovery scope
 
@@ -34,6 +34,8 @@ $CALVIN_G_ROOT/
     task_ABC_D_scene_info_fix.zip           # official metadata repair archive
     task_ABC_D_compact_blocks/              # derived state/action subset
     task_ABC_D_compact_blocks_dinov2_small/ # derived frozen visual features
+    task_ABC_D_volume_g_subset/              # 1.7 GB range-extracted method gate
+      training/state_only_arrays.npz         # 1.25 MB matched volume-G cache
     lerobot_blocks_behavior_g_semantic/     # diagnostic six-task behavior G
       training/state_only_arrays.npz        # packed state/action/G cache
     lerobot_blocks_behavior_g_semantic_dinov2_small/
@@ -256,6 +258,57 @@ Expected manifest invariants:
 Training sees every color and direction value but not the held-out
 color-direction combinations `push_red_block_right` and
 `push_blue_block_left`. Those combinations are evaluated in environment D.
+
+### Range-extracted interaction-volume method gate
+
+The current representation gate does not require the full 518 GB ABC archive.
+The official server supports HTTP range requests, so the extractor reads ZIP
+metadata and downloads only a deterministic, balanced 1.7 GB subset:
+
+```bash
+"$CALVIN_PYTHON" -m pip install remotezip requests
+
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/extract_calvin_remote_calibration_subset.py" \
+  --output-dir "$CALVIN_DATA/task_ABC_D_volume_g_subset"
+```
+
+Expected invariants are 114 non-overlapping segments and 6,810 frames: each of
+the four source tasks has 24 segments, each held-out audit task has 9, and each
+A/B/C scene has 38. The rebuilt annotation preserves official language text,
+task labels, and 384-D embeddings. The selection seed is `20260814`; full
+segment indices and provenance are in `calibration_subset_manifest.json`.
+
+Fit geometry using source tasks only, then write matched per-frame G labels:
+
+```bash
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/calibrate_calvin_block_surface_g.py" \
+  --data-root "$CALVIN_DATA/task_ABC_D_volume_g_subset" \
+  --calvin-code "$CALVIN_CODE" \
+  --output "$CALVIN_DATA/task_ABC_D_volume_g_subset/surface_g_calibration.json"
+
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/build_calvin_interaction_volume_cache.py" \
+  --data-root "$CALVIN_DATA/task_ABC_D_volume_g_subset" \
+  --calvin-code "$CALVIN_CODE" \
+  --calibration-report \
+    "$CALVIN_DATA/task_ABC_D_volume_g_subset/surface_g_calibration.json"
+```
+
+The calibration must report `heldout_used_for_fitting: false`. The expected
+source-only cache has 96 segments and 5,769 frames, balanced at 24 per source
+task and 32 per scene. It stores `robot_obs[5769,15]`,
+`scene_obs[5769,24]`, `rel_actions[5769,7]`, and `minimal_g[5769,6]`; the
+audited compressed size is 1,247,384 bytes. Held-out task frames remain in the
+raw subset only for frozen representation audit and are never written into the
+training cache.
+
+The cache label is
+`G=[delta_to_expanded_oriented_object_volume(3), desired_object_flow(3)]`.
+Attraction becomes sticky zero after 2 mm directed object progress while flow
+remains active. This is a matched relabel-and-retrain gate; it must not be
+inserted into a checkpoint trained with contact-anchor G.
 
 ### Frozen DINOv2 dual-camera features
 
