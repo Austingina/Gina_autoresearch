@@ -30,6 +30,8 @@ done
 import json
 import sys
 
+import numpy as np
+
 conversion = json.load(open(sys.argv[1], encoding="utf-8"))
 features = json.load(open(sys.argv[2], encoding="utf-8"))
 expected = {
@@ -46,7 +48,28 @@ assert min(counts.values()) >= 400, counts
 assert conversion["frames"] >= 100_000, conversion["frames"]
 assert features["num_frames"] == conversion["frames"], (features["num_frames"], conversion["frames"])
 assert features["feature_dim"] == 384
-print("data_gate_ok", conversion["frames"], counts)
+records = conversion["episode_records"]
+assert len(records) == sum(counts.values()), (len(records), sum(counts.values()))
+pixel_distances = [
+    row["target_eef_pixel_distance_median"]
+    for row in records
+    if row["target_eef_pixel_distance_median"] is not None
+]
+assert len(pixel_distances) >= 0.98 * len(records), (len(pixel_distances), len(records))
+pixel_p90 = float(np.quantile(pixel_distances, 0.90))
+late_contact_fraction = float(
+    np.mean([row["contact_index"] >= row["frames"] - 3 for row in records])
+)
+min_flow_cosine = min(row["flow_semantic_cosine"] for row in records)
+assert pixel_p90 <= 25.0, pixel_p90
+assert late_contact_fraction <= 0.15, late_contact_fraction
+assert min_flow_cosine >= 0.99, min_flow_cosine
+print(
+    "data_gate_ok",
+    conversion["frames"],
+    counts,
+    {"pixel_p90": pixel_p90, "late_contact_fraction": late_contact_fraction},
+)
 PY
 
 unset TRANSFORMERS_CACHE
