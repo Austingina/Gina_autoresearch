@@ -19,6 +19,7 @@ GPU_ID="${2:-${GPU_ID:-0}}"
 RUN_LABEL="${VOLUME_GATE_RUN_LABEL:-M3_interaction_volume_matched}"
 EVAL_FAMILY="${VOLUME_GATE_EVAL_FAMILY:-all}"
 CHUNK_SIZE="${VOLUME_GATE_CHUNK_SIZE:-16}"
+EPOCHS="${VOLUME_GATE_EPOCHS:-100}"
 FIRST_ACTION_LOSS_WEIGHT="${VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT:-1}"
 ACTION_EXECUTION_HORIZON="${VOLUME_GATE_ACTION_EXECUTION_HORIZON:-1}"
 INCLUDE_FACTORIZED="${VOLUME_GATE_INCLUDE_FACTORIZED:-1}"
@@ -48,6 +49,10 @@ if [[ ! "${EVAL_DIR_SUFFIX}" =~ ^[A-Za-z0-9_.-]*$ ]]; then
 fi
 if (( CHUNK_SIZE < 1 )); then
   echo "VOLUME_GATE_CHUNK_SIZE must be positive" >&2
+  exit 2
+fi
+if (( EPOCHS < 1 )); then
+  echo "VOLUME_GATE_EPOCHS must be positive" >&2
   exit 2
 fi
 if (( ACTION_EXECUTION_HORIZON < 1 || ACTION_EXECUTION_HORIZON > CHUNK_SIZE )); then
@@ -172,6 +177,10 @@ export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
 
 TRAIN_MODES=(chunk_bc_state chunk_bc_minimal_g_tokens)
+CHECKPOINT_EPOCHS=("${EPOCHS}")
+if (( EPOCHS > 50 )); then
+  CHECKPOINT_EPOCHS=(50 "${EPOCHS}")
+fi
 if [[ "${INCLUDE_FACTORIZED}" == "1" ]]; then
   TRAIN_MODES+=(chunk_bc_minimal_g_factorized_tokens)
 fi
@@ -194,8 +203,8 @@ if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
     --include-tasks "${SOURCE_TASKS[@]}" \
     --stride 2 \
     --chunk-size "${CHUNK_SIZE}" \
-    --epochs 100 \
-    --checkpoint-epochs 50 100 \
+    --epochs "${EPOCHS}" \
+    --checkpoint-epochs "${CHECKPOINT_EPOCHS[@]}" \
     --batch-size 128 \
     --hidden 256 \
     --layers 3 \
