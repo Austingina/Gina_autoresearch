@@ -3742,9 +3742,13 @@ class ChunkFlowPolicy:
         std = torch.tensor(DINO_IMAGE_STD, device=self.device).view(1, 3, 1, 1)
         pixels = (pixels - mean) / std
         amp_enabled = self.device.type == "cuda"
+        amp_dtype = torch.float32
+        if amp_enabled:
+            major, _ = torch.cuda.get_device_capability(self.device)
+            amp_dtype = torch.bfloat16 if major >= 8 else torch.float16
         with torch.inference_mode(), torch.autocast(
             device_type=self.device.type,
-            dtype=torch.bfloat16 if amp_enabled else torch.float32,
+            dtype=amp_dtype,
             enabled=amp_enabled,
         ):
             features = self.visual_encoder(pixel_values=pixels).last_hidden_state[:, 0]
