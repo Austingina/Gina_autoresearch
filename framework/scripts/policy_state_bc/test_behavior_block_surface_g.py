@@ -190,6 +190,21 @@ def main() -> None:
         assert set(pairs) == {"target_a__target_b"}
         assert pairs["target_a__target_b"].shape == (2, 2)
 
+        action_difference = torch.zeros((2, 14), dtype=torch.float32)
+        action_difference[:, 3:7] = 1.0
+        action_difference[:, 7:10] = 2.0
+        assert torch.count_nonzero(
+            policy.select_pair_action_scope(
+                action_difference, chunk_size=2, scope="first_xyz"
+            )
+        ) == 0
+        assert torch.equal(
+            policy.select_pair_action_scope(
+                action_difference, chunk_size=2, scope="all"
+            ),
+            action_difference,
+        )
+
     print("behavior block-surface G: OK")
 
 

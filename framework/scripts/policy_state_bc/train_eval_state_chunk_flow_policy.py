@@ -2261,6 +2261,20 @@ def sample_flow(model: FlowMLP, cond: torch.Tensor, steps: int, generator: torch
     return x
 
 
+def select_pair_action_scope(
+    action_difference: torch.Tensor,
+    *,
+    chunk_size: int,
+    scope: str,
+) -> torch.Tensor:
+    """Select action coordinates justified by the pair-mining criterion."""
+    if scope == "all":
+        return action_difference
+    if scope == "first_xyz":
+        return action_difference.reshape(-1, chunk_size, 7)[:, 0, :3]
+    raise ValueError(f"Unsupported pair action scope: {scope!r}")
+
+
 def sample_minimal_g_token_flow(
     model: MinimalGTokenFlowTransformer,
     base_n: torch.Tensor,
@@ -2312,6 +2326,7 @@ def train_mode(
     inverse_pair_max_eef_distance_m: float,
     inverse_pair_max_mechanism_fraction: float,
     target_pair_loss_weight: float,
+    target_pair_action_scope: str,
     target_pairs_per_batch: int,
     target_pair_max_relative_frame: int,
     target_pair_min_attraction_norm: float,
@@ -2760,6 +2775,7 @@ def train_mode(
         },
         "balanced_pool_pairs": int(len(target_pair_pool)),
         "pairs_per_batch": int(target_pairs_per_batch),
+        "action_scope": str(target_pair_action_scope),
         "max_relative_frame": int(target_pair_max_relative_frame),
         "min_attraction_norm": float(target_pair_min_attraction_norm),
         "min_attraction_difference": float(target_pair_min_attraction_difference),
@@ -2787,7 +2803,11 @@ def train_mode(
         cond_b = torch.cat([base_b, g_b], dim=-1)
         return (cond_b - cond_mean_t) / cond_std_t, g_b
 
-    def inverse_pair_difference_loss(pair_positions: torch.Tensor) -> torch.Tensor:
+    def inverse_pair_difference_loss(
+        pair_positions: torch.Tensor,
+        *,
+        action_scope: str = "all",
+    ) -> torch.Tensor:
         pair_count = int(pair_positions.shape[0])
         flat_positions = pair_positions.reshape(-1)
         pair_base = train_base[flat_positions]
@@ -2813,10 +2833,21 @@ def train_mode(
             ).reshape(pair_count, 2, out_dim)
         else:
             raise RuntimeError(f"Unsupported inverse-pair mode: {mode}")
-        return action_chunk_mse(
-            pair_prediction[:, 0] - pair_prediction[:, 1],
-            pair_target[:, 0] - pair_target[:, 1],
+        prediction_difference = pair_prediction[:, 0] - pair_prediction[:, 1]
+        target_difference = pair_target[:, 0] - pair_target[:, 1]
+        if action_scope == "all":
+            return action_chunk_mse(prediction_difference, target_difference)
+        scoped_prediction = select_pair_action_scope(
+            prediction_difference,
+            chunk_size=chunk_size,
+            scope=action_scope,
         )
+        scoped_target = select_pair_action_scope(
+            target_difference,
+            chunk_size=chunk_size,
+            scope=action_scope,
+        )
+        return torch.mean((scoped_prediction - scoped_target).square())
 
     def eval_metrics() -> tuple[float, float, float, float | None, float | None]:
         model.eval()
@@ -3117,7 +3148,10 @@ def train_mode(
                 except StopIteration:
                     target_pair_iterator = iter(target_pair_loader)
                     pair_positions_b = next(target_pair_iterator)[0]
-                pair_loss = inverse_pair_difference_loss(pair_positions_b)
+                pair_loss = inverse_pair_difference_loss(
+                    pair_positions_b,
+                    action_scope=target_pair_action_scope,
+                )
                 loss = loss + float(target_pair_loss_weight) * pair_loss
                 target_pair_losses.append(float(pair_loss.detach().cpu()))
             opt.zero_grad(set_to_none=True)
@@ -4629,6 +4663,12 @@ def main() -> None:
         default=0.0,
         help="Weight on same-flow, different-target expert action-difference supervision.",
     )
+    parser.add_argument(
+        "--target-pair-action-scope",
+        choices=("all", "first_xyz"),
+        default="all",
+        help="Action coordinates supervised by the same-flow target-pair loss.",
+    )
     parser.add_argument("--target-pairs-per-batch", type=int, default=128)
     parser.add_argument("--target-pair-max-relative-frame", type=int, default=32)
     parser.add_argument("--target-pair-min-attraction-norm", type=float, default=0.015)
@@ -4870,6 +4910,7 @@ def main() -> None:
         "inverse_pair_max_eef_distance_m": args.inverse_pair_max_eef_distance_m,
         "inverse_pair_max_mechanism_fraction": args.inverse_pair_max_mechanism_fraction,
         "target_pair_loss_weight": args.target_pair_loss_weight,
+        "target_pair_action_scope": args.target_pair_action_scope,
         "target_pairs_per_batch": args.target_pairs_per_batch,
         "target_pair_max_relative_frame": args.target_pair_max_relative_frame,
         "target_pair_min_attraction_norm": args.target_pair_min_attraction_norm,
@@ -4926,6 +4967,7 @@ def main() -> None:
                 inverse_pair_max_eef_distance_m=args.inverse_pair_max_eef_distance_m,
                 inverse_pair_max_mechanism_fraction=args.inverse_pair_max_mechanism_fraction,
                 target_pair_loss_weight=args.target_pair_loss_weight,
+                target_pair_action_scope=args.target_pair_action_scope,
                 target_pairs_per_batch=args.target_pairs_per_batch,
                 target_pair_max_relative_frame=args.target_pair_max_relative_frame,
                 target_pair_min_attraction_norm=args.target_pair_min_attraction_norm,
