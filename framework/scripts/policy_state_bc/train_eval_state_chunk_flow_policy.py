@@ -2420,9 +2420,15 @@ def train_mode(
     train_idx, val_idx = segment_train_val_indices(arrays["segment_id"], split_seed)
     inverse_pair_families: dict[str, np.ndarray] = {}
     inverse_pair_pool = np.empty((0, 2), dtype=np.int64)
+    pair_bc_modes = {
+        "chunk_bc_minimal_g_tokens",
+        "chunk_bc_minimal_g_frame",
+    }
     if inverse_pair_loss_weight > 0:
-        if mode not in {"chunk_bc_minimal_g_tokens", "chunk_fm_minimal_g_tokens"}:
-            raise ValueError("inverse-pair loss is currently defined only for minimal-G token BC/FM")
+        if mode not in pair_bc_modes | {"chunk_fm_minimal_g_tokens"}:
+            raise ValueError(
+                "inverse-pair loss is currently defined only for minimal-G token/frame BC or token FM"
+            )
         if inverse_pairs_per_batch <= 0:
             raise ValueError("inverse_pairs_per_batch must be positive when inverse-pair loss is enabled")
         inverse_pair_families = build_inverse_goal_train_pairs(
@@ -2443,15 +2449,14 @@ def train_mode(
         pair_rng.shuffle(inverse_pair_pool)
     target_pair_families: dict[str, np.ndarray] = {}
     target_pair_pool = np.empty((0, 2), dtype=np.int64)
-    use_target_pair_loss = (
-        target_pair_loss_weight > 0 and mode == "chunk_bc_minimal_g_tokens"
-    )
+    use_target_pair_loss = target_pair_loss_weight > 0 and mode in pair_bc_modes
     if target_pair_loss_weight > 0 and mode not in {
         "chunk_bc_state",
         "chunk_bc_minimal_g_tokens",
+        "chunk_bc_minimal_g_frame",
     }:
         raise ValueError(
-            "same-flow target-pair loss is currently defined only for minimal-G token BC"
+            "same-flow target-pair loss is currently defined only for minimal-G token/frame BC"
         )
     if use_target_pair_loss:
         target_pair_families = build_same_flow_target_train_pairs(
@@ -2819,6 +2824,11 @@ def train_mode(
         pair_cond_n, pair_g_raw = make_cond_n_t(pair_base, pair_g, train_aug=False)
         if mode == "chunk_bc_minimal_g_tokens":
             pair_prediction = model(pair_cond_n[:, :base_dim], pair_g_raw).reshape(pair_count, 2, out_dim)
+            pair_target = pair_y
+        elif mode == "chunk_bc_minimal_g_frame":
+            pair_prediction = model(pair_cond_n[:, :base_dim], pair_g_raw).reshape(
+                pair_count, 2, out_dim
+            )
             pair_target = pair_y
         elif mode == "chunk_fm_minimal_g_tokens":
             shared_x0 = torch.randn((pair_count, out_dim), device=device)
