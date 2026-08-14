@@ -22,6 +22,7 @@ CHUNK_SIZE="${VOLUME_GATE_CHUNK_SIZE:-16}"
 FIRST_ACTION_LOSS_WEIGHT="${VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT:-1}"
 ACTION_EXECUTION_HORIZON="${VOLUME_GATE_ACTION_EXECUTION_HORIZON:-1}"
 INCLUDE_FACTORIZED="${VOLUME_GATE_INCLUDE_FACTORIZED:-1}"
+INCLUDE_FRAME="${VOLUME_GATE_INCLUDE_FRAME:-0}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-14_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -30,9 +31,9 @@ MOTION_THRESHOLD="${VOLUME_GATE_MOTION_THRESHOLD:-0.002}"
 mkdir -p "${RUN_ROOT}" "${LOG_ROOT}"
 
 case "${EVAL_FAMILY}" in
-  all|core|token|factorized|none) ;;
+  all|core|token|factorized|frame|none) ;;
   *)
-    echo "VOLUME_GATE_EVAL_FAMILY must be all, core, token, factorized, or none" >&2
+    echo "VOLUME_GATE_EVAL_FAMILY must be all, core, token, factorized, frame, or none" >&2
     exit 2
     ;;
 esac
@@ -51,6 +52,17 @@ case "${INCLUDE_FACTORIZED}" in
     exit 2
     ;;
 esac
+case "${INCLUDE_FRAME}" in
+  0|1) ;;
+  *)
+    echo "VOLUME_GATE_INCLUDE_FRAME must be 0 or 1" >&2
+    exit 2
+    ;;
+esac
+if [[ "${EVAL_FAMILY}" == "frame" && "${INCLUDE_FRAME}" != "1" ]]; then
+  echo "VOLUME_GATE_EVAL_FAMILY=frame requires VOLUME_GATE_INCLUDE_FRAME=1" >&2
+  exit 2
+fi
 
 SOURCE_TASKS=(
   push_red_block_left
@@ -139,19 +151,22 @@ TRAIN_MODES=(chunk_bc_state chunk_bc_minimal_g_tokens)
 if [[ "${INCLUDE_FACTORIZED}" == "1" ]]; then
   TRAIN_MODES+=(chunk_bc_minimal_g_factorized_tokens)
 fi
-NEED_TRAIN=0
+if [[ "${INCLUDE_FRAME}" == "1" ]]; then
+  TRAIN_MODES+=(chunk_bc_minimal_g_frame)
+fi
+MISSING_TRAIN_MODES=()
 for mode in "${TRAIN_MODES[@]}"; do
   if [[ ! -f "${RUN_ROOT}/${mode}/policy_best_val.pt" ]]; then
-    NEED_TRAIN=1
+    MISSING_TRAIN_MODES+=("${mode}")
   fi
 done
-if [[ "${NEED_TRAIN}" == "1" ]]; then
+if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
     --calvin-code "${CALVIN_CODE}" \
     --data-root "${ABC_SUBSET_ROOT}" \
     --out-dir "${RUN_ROOT}" \
-    --modes "${TRAIN_MODES[@]}" \
+    --modes "${MISSING_TRAIN_MODES[@]}" \
     --include-tasks "${SOURCE_TASKS[@]}" \
     --stride 2 \
     --chunk-size "${CHUNK_SIZE}" \
@@ -209,6 +224,22 @@ if [[ "${INCLUDE_FACTORIZED}" == "1" && \
     --stride 2 \
     --device "cuda:${GPU_ID}" \
     2>&1 | tee "${LOG_ROOT}/offline_factorized_audit.log"
+fi
+
+if [[ "${INCLUDE_FRAME}" == "1" && \
+      ! -f "${RUN_ROOT}/interaction_volume_frame_offline_audit.json" ]]; then
+  "${CALVIN_PYTHON}" \
+    "${REPO_ROOT}/framework/scripts/data/audit_interaction_volume_policy_offline.py" \
+    --data-root "${ABC_SUBSET_ROOT}" \
+    --calvin-code "${CALVIN_CODE}" \
+    --calibration-report "${CALIBRATION_REPORT}" \
+    --no-g-checkpoint "${RUN_ROOT}/chunk_bc_state/policy_best_val.pt" \
+    --g-checkpoint "${RUN_ROOT}/chunk_bc_minimal_g_frame/policy_best_val.pt" \
+    --output "${RUN_ROOT}/interaction_volume_frame_offline_audit.json" \
+    --motion-threshold "${MOTION_THRESHOLD}" \
+    --stride 2 \
+    --device "cuda:${GPU_ID}" \
+    2>&1 | tee "${LOG_ROOT}/offline_frame_audit.log"
 fi
 
 evaluate() {
@@ -273,6 +304,15 @@ if [[ "${EVAL_FAMILY}" == "all" || "${EVAL_FAMILY}" == "factorized" ]]; then
   evaluate chunk_bc_minimal_g_factorized_tokens source normal 25 "${SOURCE_TASKS[@]}"
   for control in normal zero sign_flip; do
     evaluate chunk_bc_minimal_g_factorized_tokens heldout "${control}" 50 \
+      "${HELDOUT_TASKS[@]}"
+  done
+fi
+
+if [[ "${EVAL_FAMILY}" == "frame" || \
+      ( "${EVAL_FAMILY}" == "all" && "${INCLUDE_FRAME}" == "1" ) ]]; then
+  evaluate chunk_bc_minimal_g_frame source normal 25 "${SOURCE_TASKS[@]}"
+  for control in normal zero sign_flip; do
+    evaluate chunk_bc_minimal_g_frame heldout "${control}" 50 \
       "${HELDOUT_TASKS[@]}"
   done
 fi

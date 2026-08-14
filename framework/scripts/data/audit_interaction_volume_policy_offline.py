@@ -68,6 +68,17 @@ def load_model(checkpoint: Path, device: torch.device) -> tuple[dict[str, object
             int(ckpt["hidden"]),
             int(ckpt["layers"]),
         )
+    elif mode == "chunk_bc_minimal_g_frame":
+        model = policy.FrameMinimalGChunkMLP(
+            int(ckpt["base_dim"]),
+            int(ckpt["g_dim"]),
+            int(ckpt["action_dim"]),
+            int(ckpt["chunk_size"]),
+            int(ckpt["hidden"]),
+            int(ckpt["layers"]),
+            np.asarray(ckpt["y_mean"], dtype=np.float32),
+            np.asarray(ckpt["y_std"], dtype=np.float32),
+        )
     else:
         raise RuntimeError(f"Unsupported checkpoint mode for this audit: {mode}")
     model.load_state_dict(ckpt["model_state"])

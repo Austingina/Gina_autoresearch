@@ -273,6 +273,20 @@ Both variants replan after one action by default. Set
 `VOLUME_GATE_ACTION_EXECUTION_HORIZON` only for a separate execution-horizon
 ablation; it must not exceed the trained chunk size.
 
+The optional interaction-frame decoder keeps full-rank learned actions but
+expresses xyz in a coordinate basis aligned with the flow token. It can be
+trained and evaluated as a separate shard; existing checkpoints in the same
+run are detected and are not retrained:
+
+```bash
+VOLUME_GATE_RUN_LABEL=M3_objective_h1 \
+VOLUME_GATE_EVAL_FAMILY=frame \
+VOLUME_GATE_INCLUDE_FACTORIZED=0 \
+VOLUME_GATE_INCLUDE_FRAME=1 \
+VOLUME_GATE_CHUNK_SIZE=1 \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
+```
+
 ### Full visual ABC-to-D stack
 
 Build the 2,101-segment state/action/language subset:
