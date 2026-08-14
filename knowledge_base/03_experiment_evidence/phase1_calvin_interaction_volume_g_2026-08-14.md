@@ -199,6 +199,48 @@ If both remain one-sided, replace raw token composition with a learned
 approach/interaction gate; do not add a stage token to G or a hard action
 projection.
 
+## Objective and target-position identifiability follow-up
+
+Objective alignment changes the source behavior but does not solve
+recombination. The `H1/replan1` token policy reaches `23/100` source successes:
+pink-left `12/25`, pink-right `4/25`, red-left `7/25`, and blue-right `0/25`.
+The `H16/first-action-weight16/replan1` policy reaches `14/100`: pink-left
+`4/25`, pink-right `9/25`, red-left `1/25`, and blue-right `0/25`. Both are
+`0/100` on normal-G held-out recombinations. H1 removes the original strictly
+rightward success collapse, so the first-action objective matters, but it is
+not the missing reusable-control mechanism. Increasing only the first-action
+weight is worse than training the action actually executed.
+
+A full-rank interaction-frame decoder aligned with object flow also fails the
+source scene-D gate at `0/100`. Its held-out offline post-motion xyz MSE is
+better than the token decoder, but before-volume xyz MSE is worse, and
+zero-attraction remains indistinguishable from normal attraction. Expressing
+actions in a flow-aligned frame is therefore insufficient when the training
+objective does not require the network to localize the target.
+
+Two state-scope diagnostics isolate that failure. Removing only the first
+three absolute TCP-position values is a weak intervention because the retained
+arm joints still determine TCP position. On held-out windows, its normal and
+zero-attraction xyz MSE is nevertheless already indistinguishable
+(`0.027089/0.027095`), while zero-flow rises to `0.040896`. The stricter
+`eef_orientation_gripper` scope removes both absolute TCP position and all arm
+joints; it retains only TCP orientation, gripper state, and G. Even when
+attraction is the only target-position input, normal and zero-attraction remain
+nearly identical on held-out windows (`0.029301/0.029351`). Zero-flow rises to
+`0.038090`, and no-G is `0.040444`.
+
+The current policy can parse desired flow, but the per-step BC objective does
+not identify attraction. Demonstration actions are sufficiently stereotyped
+given flow and local phase cues that low offline error does not require knowing
+which target position generated the action. This is conditional collapse, not
+evidence that attraction should be removed from G. Do not spend online rollout
+budget on either state-scope diagnostic: neither causally uses attraction.
+First test whether broader A/B/C position and trajectory coverage makes
+attraction necessary. If it does not, the next integration must create an
+explicitly target-relative learning problem while keeping the six-dimensional
+interface coarse; another global G scale, action-chunk weight, or flow-only
+coordinate frame is not justified.
+
 ## Reproduction
 
 - Range extractor:
