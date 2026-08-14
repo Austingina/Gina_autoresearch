@@ -287,6 +287,11 @@ VOLUME_GATE_CHUNK_SIZE=1 \
   bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
 ```
 
+Use `VOLUME_GATE_EXECUTOR_STATE_SCOPE=proprio_no_eef_xyz` only for the
+shortcut-identifiability diagnostic. It removes absolute EEF position from the
+base state while retaining orientation, joints, gripper state, and the complete
+relative A/F field. This is a separate run label, not the default executor.
+
 ### Full visual ABC-to-D stack
 
 Build the 2,101-segment state/action/language subset:

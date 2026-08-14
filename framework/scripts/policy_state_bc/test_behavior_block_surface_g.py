@@ -118,6 +118,22 @@ def main() -> None:
         assert np.allclose(volume[0, :3], np.asarray([0.062, 0.0, 0.0]))
         assert np.allclose(volume[0, 3:6], np.asarray([1.0, 0.0, 0.0]))
 
+        state, language = policy.make_state_lang_parts(
+            {
+                "robot_obs": np.arange(30, dtype=np.float32).reshape(2, 15),
+                "scene_obs": np.zeros((2, 24), dtype=np.float32),
+                "task_oh": np.zeros((2, 3), dtype=np.float32),
+            },
+            state_scope="proprio_no_eef_xyz",
+            language_mode="none",
+        )
+        assert state.shape == (2, 12)
+        assert np.array_equal(
+            state,
+            np.arange(30, dtype=np.float32).reshape(2, 15)[:, 3:],
+        )
+        assert language.shape == (2, 0)
+
     print("behavior block-surface G: OK")
 
 

@@ -111,7 +111,7 @@ QUERY_G_TOKEN_DIM = 19
 QUERY_G_TOKEN_DIM_NO_TYPE = 15
 MINIMAL_G_DIM = 6
 MINIMAL_G_SCOPES = {"articulation", "translational"}
-EXECUTOR_STATE_SCOPES = {"full", "proprio", "visual"}
+EXECUTOR_STATE_SCOPES = {"full", "proprio", "proprio_no_eef_xyz", "visual"}
 EXECUTOR_LANGUAGE_MODES = {"none", "onehot", "minilm"}
 BLOCK_SCENE_SLICES = {
     "red": slice(6, 9),
@@ -511,7 +511,12 @@ def make_state_lang_parts(
 ) -> tuple[np.ndarray, np.ndarray]:
     if state_scope not in EXECUTOR_STATE_SCOPES:
         raise ValueError(f"Unsupported executor state scope: {state_scope}")
-    state_pieces = [arrays["robot_obs"]]
+    robot_state = (
+        arrays["robot_obs"][:, 3:]
+        if state_scope == "proprio_no_eef_xyz"
+        else arrays["robot_obs"]
+    )
+    state_pieces = [robot_state]
     if state_scope == "full":
         state_pieces.append(arrays["scene_obs"])
     elif state_scope == "visual":

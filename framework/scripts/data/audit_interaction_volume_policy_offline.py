@@ -96,10 +96,19 @@ def predict_first_actions(
 ) -> np.ndarray:
     mode = str(ckpt["mode"])
     g = policy.apply_minimal_g_control(minimal_g, control)
+    state_scope = str(ckpt.get("executor_state_scope", "full"))
+    if state_scope == "proprio_no_eef_xyz":
+        base = robot_obs[:, 3:].astype(np.float32)
+    elif state_scope == "proprio":
+        base = robot_obs.astype(np.float32)
+    else:
+        raise RuntimeError(
+            f"Interaction-volume offline audit does not support state scope {state_scope!r}"
+        )
     cond = (
-        robot_obs.astype(np.float32)
+        base
         if mode == "chunk_bc_state"
-        else np.concatenate([robot_obs, g], axis=1).astype(np.float32)
+        else np.concatenate([base, g], axis=1).astype(np.float32)
     )
     cond_n = (cond - np.asarray(ckpt["cond_mean"])) / np.asarray(ckpt["cond_std"])
     outputs: list[np.ndarray] = []

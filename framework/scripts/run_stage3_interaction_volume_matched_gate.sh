@@ -23,6 +23,7 @@ FIRST_ACTION_LOSS_WEIGHT="${VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT:-1}"
 ACTION_EXECUTION_HORIZON="${VOLUME_GATE_ACTION_EXECUTION_HORIZON:-1}"
 INCLUDE_FACTORIZED="${VOLUME_GATE_INCLUDE_FACTORIZED:-1}"
 INCLUDE_FRAME="${VOLUME_GATE_INCLUDE_FRAME:-0}"
+EXECUTOR_STATE_SCOPE="${VOLUME_GATE_EXECUTOR_STATE_SCOPE:-proprio}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-14_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -185,7 +186,7 @@ if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
     --skip-eval 1 \
     --articulation-geometry-json "${GEOMETRY_JSON}" \
     --minimal-g-scope translational \
-    --executor-state-scope proprio \
+    --executor-state-scope "${EXECUTOR_STATE_SCOPE}" \
     --executor-language-mode none \
     --mask-executor-language-with-g 0 \
     --g-scale-aug-values 1.0 \
