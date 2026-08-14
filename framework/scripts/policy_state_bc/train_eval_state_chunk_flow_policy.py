@@ -2429,6 +2429,10 @@ def train_mode(
             raise ValueError(
                 "inverse-pair loss is currently defined only for minimal-G token/frame BC or token FM"
             )
+        if inverse_pair_action_scope == "first_local_xyz" and mode != "chunk_bc_minimal_g_frame":
+            raise ValueError(
+                "first_local_xyz inverse-pair supervision requires chunk_bc_minimal_g_frame"
+            )
         if inverse_pairs_per_batch <= 0:
             raise ValueError("inverse_pairs_per_batch must be positive when inverse-pair loss is enabled")
         inverse_pair_families = build_inverse_goal_train_pairs(
@@ -2826,9 +2830,27 @@ def train_mode(
             pair_prediction = model(pair_cond_n[:, :base_dim], pair_g_raw).reshape(pair_count, 2, out_dim)
             pair_target = pair_y
         elif mode == "chunk_bc_minimal_g_frame":
-            pair_prediction = model(pair_cond_n[:, :base_dim], pair_g_raw).reshape(
-                pair_count, 2, out_dim
+            pair_prediction_flat, pair_aux = model(
+                pair_cond_n[:, :base_dim], pair_g_raw, return_aux=True
             )
+            if action_scope == "first_local_xyz":
+                prediction_local = pair_aux["local_action"][:, 0, :3]
+                target_raw = (pair_y * y_std_t[None, :] + y_mean_t[None, :]).reshape(
+                    pair_count * 2, chunk_size, 7
+                )
+                target_local = torch.einsum(
+                    "bij,bti->btj", pair_aux["frame"], target_raw[:, :, :3]
+                )[:, 0]
+                xyz_scale = y_std_t.reshape(chunk_size, 7)[0, :3].mean().clamp_min(1e-6)
+                prediction_local = (prediction_local / xyz_scale).reshape(pair_count, 2, 3)
+                target_local = (target_local / xyz_scale).reshape(pair_count, 2, 3)
+                return torch.mean(
+                    (
+                        (prediction_local[:, 0] - prediction_local[:, 1])
+                        - (target_local[:, 0] - target_local[:, 1])
+                    ).square()
+                )
+            pair_prediction = pair_prediction_flat.reshape(pair_count, 2, out_dim)
             pair_target = pair_y
         elif mode == "chunk_fm_minimal_g_tokens":
             shared_x0 = torch.randn((pair_count, out_dim), device=device)
@@ -4723,9 +4745,12 @@ def main() -> None:
     )
     parser.add_argument(
         "--inverse-pair-action-scope",
-        choices=("all", "first_xyz"),
+        choices=("all", "first_xyz", "first_local_xyz"),
         default="all",
-        help="Action coordinates supervised by the opposite-flow pair loss.",
+        help=(
+            "Action coordinates supervised by the opposite-flow pair loss; "
+            "first_local_xyz is available for the interaction-frame executor."
+        ),
     )
     parser.add_argument(
         "--inverse-pairs-per-batch",

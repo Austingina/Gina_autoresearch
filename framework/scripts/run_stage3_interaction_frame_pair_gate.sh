@@ -18,6 +18,8 @@ SEED="${1:-0}"
 GPU_ID="${2:-${GPU_ID:-0}}"
 STATE_SCOPE="${3:-proprio}"
 TARGET_PAIR_WEIGHT="${FRAME_PAIR_TARGET_LOSS_WEIGHT:-0.2}"
+INVERSE_PAIR_WEIGHT="${FRAME_PAIR_INVERSE_LOSS_WEIGHT:-0}"
+INVERSE_PAIR_SCOPE="${FRAME_PAIR_INVERSE_ACTION_SCOPE:-first_local_xyz}"
 EPOCHS="${FRAME_PAIR_EPOCHS:-50}"
 DATE_LABEL="${FRAME_PAIR_DATE_LABEL:-2026-08-14}"
 case "${STATE_SCOPE}" in
@@ -87,6 +89,8 @@ if [[ ! -f "${CHECKPOINT}" ]]; then
     --g-scale-aug-values 1.0 \
     --g-dropout-prob 0.0 \
     --first-action-loss-weight 1 \
+    --inverse-pair-loss-weight "${INVERSE_PAIR_WEIGHT}" \
+    --inverse-pair-action-scope "${INVERSE_PAIR_SCOPE}" \
     --target-pair-loss-weight "${TARGET_PAIR_WEIGHT}" \
     --target-pair-action-scope first_xyz \
     2>&1 | tee "${LOG_ROOT}/train.log"
