@@ -887,3 +887,25 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   dimensions. The G interface and inference path are unchanged. Scaling
   learned visual G remains blocked until this objective correction restores
   balanced source/held-out control and passes at least three seeds.
+
+# Privileged parser closure and pretrained-vision transition -- 2026-08-14
+
+- First-step-xyz target-pair supervision reaches a promising seed-0 held-out
+  `18/100` (`10` blue-left, `8` red-right), but fresh seeds collapse left:
+  seed 1/2 are `20/100` and `3/100`, with zero red-right successes.
+- Inverse-pair weights and a G-aligned interaction-frame executor switch which
+  direction survives instead of composing both directions. A 20,097-frame
+  local-coordinate audit shows left/right expert control is already similar,
+  so the remaining issue is learned conditional parsing rather than absent
+  reusable behavior in the demonstrations.
+- Replaced sticky post-motion attraction with closed-loop distance to the
+  moving oriented interaction volume. This changes 1,360 frames and makes A
+  recover after lost contact without adding a stage token or action rule.
+- Closed-loop A remains seed-unstable: seed 0 source/held-out is `29/100,
+  12/100`, all left; seed 1 is `8/100, 0/100`, also left-only. Stop tuning the
+  privileged-proprio parser.
+- Entered the pretrained visual stage. A dedicated frozen
+  `facebook/dinov2-small` dual-camera cache is being built for the expanded
+  A/B/C subset. The matched next gate is visual no-G versus visual+closed-loop
+  G on source and held-out scene-D rollouts, followed by zero/flip controls
+  only when normal G is nonzero.

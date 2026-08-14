@@ -329,6 +329,52 @@ the complete action. Inference and `G=[A,F]` remain unchanged. Fine-tuning from
 e50 with pair weight 0.02 does not recover validation fit and should not be
 continued.
 
+## Multi-seed parser and closed-loop-field diagnosis
+
+Restricting target-pair supervision to first-step xyz improves the seed-0
+trade-off but does not make the executor stable. At pair weight 0.2, seed 0
+reaches source `19/100` and held-out `18/100` (`10/50` blue-left, `8/50`
+red-right); zero-A, zero-F, zero, and sign-flip give `6/100`, `2/100`,
+`0/100`, and `0/100`. Fresh seeds 1 and 2 instead collapse to leftward
+control, reaching held-out blue-left/red-right `20/50, 0/50` and `3/50,
+0/50`. The auxiliary loss therefore makes both G components available to one
+seed without reliably learning their composition.
+
+Two follow-ups reject simple loss-weight and coordinate-system explanations.
+Adding inverse-direction pairs at weight 0.05 produces an all-left policy;
+weight 0.1 recovers all four source cells but gives only `6/100` held-out,
+entirely red-right. A flow-aligned full-rank interaction-frame executor gives
+`21/100` source and `15/100` held-out with proprioception, but all successes
+are rightward; the strict orientation-and-gripper state version is `0/100`.
+Changing frame-condition scale from 0.1 to 1.0 switches the surviving mode to
+left rather than combining directions.
+
+This is not because the demonstrations lack a reusable local control law. An
+audit over all 20,097 source frames expresses expert actions in a G-aligned
+frame. In the flow phase, mean local flow action is 0.196 for left and 0.208
+for right, with positive projection on 84.5% and 88.0% of frames. Every
+standardized left/right mean gap is below 0.17 standard deviations. Direct
+local-equivariance pair loss nevertheless drives both tested weights to zero
+online success, showing that mined pairs are not exact symmetries and should
+not be imposed as hard equality constraints.
+
+The original sticky field also had a real semantic defect: attraction A was
+permanently zero after 2 mm object motion. The corrected closed-loop cache
+recomputes distance to the moving oriented interaction volume every frame, so
+A automatically reappears if the EEF loses contact. It changes 1,360 frames
+(6.8%) and increases nonzero-A coverage from 8,192 to 9,552 without adding a
+stage variable. Online rollout uses the same definition by disabling the old
+sticky motion switch.
+
+Closed-loop A does not repair parser stability. With the first-xyz pair
+objective, seed 0 reaches source `29/100` and held-out `12/100`, all on left
+tasks; seed 1 reaches source `8/100`, also only left, and held-out `0/100`.
+This closes the privileged-proprio branch: the field is now physically
+closed-loop, but the low-dimensional executor still maps continuous G to an
+unstable direction mode. The next matched gate replaces privileged scene
+state with frozen dual-camera DINOv2 features while preserving the same
+six-dimensional closed-loop G and no direct executor language.
+
 ## Reproduction
 
 - Range extractor:

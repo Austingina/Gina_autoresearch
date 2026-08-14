@@ -22,6 +22,14 @@
 
 ### Phase 1 — latest gates
 
+- **2026-08-14** Privileged parser closure: first-xyz pair supervision is
+  bidirectional for seed 0 (`18/100` held-out) but collapses left for fresh
+  seeds. Inverse-pair and interaction-frame variants only switch the surviving
+  direction. A corrected closed-loop interaction volume lets attraction
+  reappear after lost contact, yet seed0/1 remain left-only (`12/100, 0/100`
+  held-out). The bottleneck is conditional parsing, not the sticky field. The
+  active gate has therefore entered frozen dual-camera DINOv2 with the same
+  coarse `G=[A,F]` and no direct executor language.
 - **2026-08-14** Interaction-volume target-pair gate on expanded A/B/C source
   data: ordinary scaled token BC still ignores attraction A, but a
   same-flow/different-target action-difference objective makes A causally
