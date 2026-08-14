@@ -227,8 +227,33 @@ bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched
 The launcher performs source-only calibration and matched G relabeling when
 their outputs are absent. It then trains the proprio-only no-G baseline and the
 proprio+volume-G token policies from scratch, evaluates source combinations in
-D, and evaluates held-out recombinations with normal/zero/sign-flipped G. No
-scene state, direct language, or task one-hot reaches either executor.
+D, and evaluates held-out recombinations with normal, zero-attraction,
+zero-flow, all-zero, and sign-flipped G. No scene state, direct language, or
+task one-hot reaches either executor.
+
+The active target-position-identifiability gate uses the larger deterministic
+subset and H1 replanning:
+
+```bash
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/extract_calvin_remote_calibration_subset.py" \
+  --output-dir "$CALVIN_DATA/task_ABC_D_volume_g_scale_subset" \
+  --source-per-task-scene 28 \
+  --heldout-per-task-scene 3
+
+CALVIN_VOLUME_G_SUBSET_ROOT="$CALVIN_DATA/task_ABC_D_volume_g_scale_subset" \
+VOLUME_GATE_RUN_LABEL=M3_scaled_h1_target_pair_w0p1 \
+VOLUME_GATE_EVAL_FAMILY=none \
+VOLUME_GATE_INCLUDE_FACTORIZED=0 \
+VOLUME_GATE_CHUNK_SIZE=1 \
+VOLUME_GATE_TARGET_PAIR_LOSS_WEIGHT=0.1 \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
+```
+
+Expected cache invariants are 336 source segments, 84 per source task, 112 per
+A/B/C scene, and 20,097 frames. The 18 held-out segments remain outside the
+training cache. `analyze_interaction_volume_target_pairs.py` audits the real
+same-flow/different-target support before enabling the auxiliary loss.
 
 On a two-GPU allocation, first finish training and offline audits without
 starting the simulator, then launch the two disjoint online families:

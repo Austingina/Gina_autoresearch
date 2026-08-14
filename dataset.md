@@ -310,6 +310,26 @@ Attraction becomes sticky zero after 2 mm directed object progress while flow
 remains active. This is a matched relabel-and-retrain gate; it must not be
 inserted into a checkpoint trained with contact-anchor G.
 
+For the target-position-identifiability experiment, extract the larger
+deterministic variant with the same source URL and seed:
+
+```bash
+"$CALVIN_PYTHON" \
+  "$AUTORESEARCH_ROOT/framework/scripts/data/extract_calvin_remote_calibration_subset.py" \
+  --output-dir "$CALVIN_DATA/task_ABC_D_volume_g_scale_subset" \
+  --source-per-task-scene 28 \
+  --heldout-per-task-scene 3
+```
+
+Its raw subset contains 354 segments: 336 source segments (84 per source task)
+and 18 held-out segments (9 per held-out task), balanced at 118 total segments
+per A/B/C scene. The source-only interaction-volume cache contains 112 segments
+per scene and 20,097 frames; the audited compressed numeric cache is about
+4.1 MB and the extracted episode files occupy about 6 GB. Verify these values
+from `calibration_subset_manifest.json` and
+`training/interaction_volume_cache_manifest.json` instead of assuming a fixed
+array shape in launch code.
+
 ### Frozen DINOv2 dual-camera features
 
 Model source:
