@@ -2323,6 +2323,7 @@ def train_mode(
     orthogonal_ratio_max: float,
     first_action_loss_weight: float,
     inverse_pair_loss_weight: float,
+    inverse_pair_action_scope: str,
     inverse_pairs_per_batch: int,
     inverse_pair_max_eef_distance_m: float,
     inverse_pair_max_mechanism_fraction: float,
@@ -2767,6 +2768,7 @@ def train_mode(
         "families": {name: int(len(pairs)) for name, pairs in inverse_pair_families.items()},
         "balanced_pool_pairs": int(len(inverse_pair_pool)),
         "pairs_per_batch": int(inverse_pairs_per_batch),
+        "action_scope": str(inverse_pair_action_scope),
         "max_eef_distance_m": float(inverse_pair_max_eef_distance_m),
         "max_mechanism_fraction": float(inverse_pair_max_mechanism_fraction),
     }
@@ -3140,7 +3142,10 @@ def train_mode(
                 except StopIteration:
                     inverse_pair_iterator = iter(inverse_pair_loader)
                     pair_positions_b = next(inverse_pair_iterator)[0]
-                pair_loss = inverse_pair_difference_loss(pair_positions_b)
+                pair_loss = inverse_pair_difference_loss(
+                    pair_positions_b,
+                    action_scope=inverse_pair_action_scope,
+                )
                 loss = loss + float(inverse_pair_loss_weight) * pair_loss
                 inverse_pair_losses.append(float(pair_loss.detach().cpu()))
             if target_pair_iterator is not None:
@@ -4707,6 +4712,12 @@ def main() -> None:
         help="Weight on matched inverse-goal predicted-action difference loss for token BC/FM.",
     )
     parser.add_argument(
+        "--inverse-pair-action-scope",
+        choices=("all", "first_xyz"),
+        default="all",
+        help="Action coordinates supervised by the opposite-flow pair loss.",
+    )
+    parser.add_argument(
         "--inverse-pairs-per-batch",
         type=int,
         default=128,
@@ -4963,6 +4974,7 @@ def main() -> None:
         "orthogonal_ratio_max": args.orthogonal_ratio_max,
         "first_action_loss_weight": args.first_action_loss_weight,
         "inverse_pair_loss_weight": args.inverse_pair_loss_weight,
+        "inverse_pair_action_scope": args.inverse_pair_action_scope,
         "inverse_pairs_per_batch": args.inverse_pairs_per_batch,
         "inverse_pair_max_eef_distance_m": args.inverse_pair_max_eef_distance_m,
         "inverse_pair_max_mechanism_fraction": args.inverse_pair_max_mechanism_fraction,
@@ -5020,6 +5032,7 @@ def main() -> None:
                 orthogonal_ratio_max=args.orthogonal_ratio_max,
                 first_action_loss_weight=args.first_action_loss_weight,
                 inverse_pair_loss_weight=args.inverse_pair_loss_weight,
+                inverse_pair_action_scope=args.inverse_pair_action_scope,
                 inverse_pairs_per_batch=args.inverse_pairs_per_batch,
                 inverse_pair_max_eef_distance_m=args.inverse_pair_max_eef_distance_m,
                 inverse_pair_max_mechanism_fraction=args.inverse_pair_max_mechanism_fraction,
