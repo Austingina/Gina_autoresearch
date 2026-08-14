@@ -147,6 +147,58 @@ matched scene-D online rollouts for source and held-out tasks under
 normal/zero/sign-flipped G. Scaling and visual pretraining remain blocked until
 that closed-loop gate passes across seeds.
 
+## Seed-0 scene-D closed-loop gate
+
+The first closed-loop seed does not pass M3A. The matched no-G policy is
+`0/100` on the four source combinations and `0/100` on the two held-out
+combinations. The unrestricted token-G policy is `30/100` on source tasks and
+`30/100` on held-out tasks, but every success is in the positive-x direction:
+
+| Split/task | Normal G | Zero G | Sign-flipped G |
+| --- | ---: | ---: | ---: |
+| source blue-right | 14/25 | - | - |
+| source pink-right | 16/25 | - | - |
+| source pink-left | 0/25 | - | - |
+| source red-left | 0/25 | - | - |
+| held-out red-right | 30/50 | 0/50 | 0/50 |
+| held-out blue-left | 0/50 | 0/50 | 0/50 |
+
+Thus red-right provides real paired causal evidence, but the result cannot be
+reported as a bidirectional reusable field. It is carried by one direction and
+fails the predeclared requirement that every held-out cell be nonzero.
+
+The factorized token policy fails more strongly. Normal G is `0/100` on source
+and `0/100` on held-out tasks. Its zero-G control happens to reach `4/50` on
+blue-left and zero elsewhere; sign flip is zero everywhere. Although
+factorization improved demonstration MSE and removed G-to-gripper leakage, it
+removes useful direction-dependent coordination between translation, wrist
+orientation, and gripper state. A compact translational G does not imply that
+G should be prevented from conditioning non-xyz action heads. Do not continue
+the factorized executor.
+
+Rollout traces localize the unrestricted model's failure to approach/flow
+composition. In successful blue-right traces, mean action projection on object
+flow is approximately `0.002` before object motion and `0.344--0.348` after the
+2 mm motion switch. Failed blue-right traces instead project about `0.123`
+along flow before contact, pass within roughly 4 cm of the block center, never
+move the object, and then drift away. Failed blue-left traces similarly project
+`0.084--0.093` along the requested flow while attraction is still nonzero;
+they only reach 6.1--6.4 cm from the block center and then leave. The field is
+not globally too weak: the policy executes substantial desired-axis motion at
+the wrong time.
+
+The next gate keeps the same six-dimensional G and unrestricted full-action
+decoder, but tests objective alignment before adding a new architecture. The
+current H16 model replans after one action while all 16 target actions receive
+equal loss. Windows near interaction onset can therefore make future flow
+motion dominate the action chunk even though only the first output is executed.
+Run matched `H1/replan1` and `H16/first-action-weight16/replan1` token policies
+with normal/zero/sign-flip controls. If either restores both directions, the
+representation remains viable and the failure is an action-objective mismatch.
+If both remain one-sided, replace raw token composition with a learned
+approach/interaction gate; do not add a stage token to G or a hard action
+projection.
+
 ## Reproduction
 
 - Range extractor:

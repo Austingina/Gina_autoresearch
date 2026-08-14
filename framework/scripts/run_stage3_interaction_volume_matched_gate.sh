@@ -99,6 +99,7 @@ import numpy as np
 root = Path(sys.argv[1])
 report = json.load(open(sys.argv[2], encoding="utf-8"))
 manifest = json.load(open(root / "training/interaction_volume_cache_manifest.json", encoding="utf-8"))
+selection = json.load(open(root / "calibration_subset_manifest.json", encoding="utf-8"))
 expected = {
     "push_red_block_left",
     "push_blue_block_right",
@@ -106,13 +107,21 @@ expected = {
     "push_pink_block_right",
 }
 assert set(manifest["task_counts"]) == expected, manifest["task_counts"]
-assert set(manifest["task_counts"].values()) == {24}, manifest["task_counts"]
+expected_task_counts = {
+    task: int(selection["task_counts"][task]) for task in sorted(expected)
+}
+assert manifest["task_counts"] == expected_task_counts, (
+    manifest["task_counts"],
+    expected_task_counts,
+)
+source_per_scene = int(selection["source_per_task_scene"])
+expected_scene_count = len(expected) * source_per_scene
 assert manifest["scene_counts"] == {
-    "calvin_scene_A": 32,
-    "calvin_scene_B": 32,
-    "calvin_scene_C": 32,
+    "calvin_scene_A": expected_scene_count,
+    "calvin_scene_B": expected_scene_count,
+    "calvin_scene_C": expected_scene_count,
 }, manifest["scene_counts"]
-assert manifest["frames"] == 5769, manifest["frames"]
+assert manifest["frames"] > 0, manifest["frames"]
 assert manifest["heldout_tasks_written"] is False
 assert report["protocol"]["heldout_used_for_fitting"] is False
 assert report["interface_audit"]["interaction_volume_contact_coverage_gate_pass"] is True

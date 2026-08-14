@@ -36,6 +36,18 @@ preliminary evidence; it is not the active experiment queue.
 - The three-seed offline representation/integration gate passes. Scaling
   remains blocked until the same checkpoints pass source and held-out scene-D
   rollouts with matched normal/zero/sign-flip controls across seeds.
+- Seed-0 scene-D rollouts fail the bidirectional gate. Unrestricted token-G is
+  `30/100` on source and `30/100` on held-out combinations, but all 60 successes
+  are rightward; held-out red-right is `30/50` normal versus `0/50` zero and
+  `0/50` sign-flip, while blue-left is `0/50` in every condition. No-G is zero.
+  Factorized G is zero under normal G on every source and held-out task, so the
+  xyz-only conditioning prior is rejected despite its better offline MSE.
+- Traces show premature object-flow execution rather than weak G. Successful
+  blue-right keeps pre-motion flow projection near zero and raises it above
+  `0.34` after object motion; failed blue-right and blue-left apply substantial
+  flow while attraction is still active, miss contact, and drift away. The next
+  gate compares H1/replan1 with H16/first-action-weight16/replan1 using the same
+  compact G and unrestricted decoder before introducing a learned phase gate.
 - Full record:
   [knowledge_base/03_experiment_evidence/phase1_calvin_interaction_volume_g_2026-08-14.md](knowledge_base/03_experiment_evidence/phase1_calvin_interaction_volume_g_2026-08-14.md)
 
