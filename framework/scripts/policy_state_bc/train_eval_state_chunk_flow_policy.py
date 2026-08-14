@@ -2056,6 +2056,116 @@ def build_inverse_goal_train_pairs(
     return output
 
 
+def build_same_flow_target_train_pairs(
+    arrays: dict[str, np.ndarray],
+    train_idx: np.ndarray,
+    *,
+    max_relative_frame: int,
+    min_attraction_norm: float,
+    min_attraction_difference: float,
+    min_action_difference: float,
+    max_eef_distance_m: float,
+    max_orientation_distance: float,
+    own_alignment_threshold: float,
+) -> dict[str, np.ndarray]:
+    """Mine high-confidence same-flow pairs whose target attractions differ."""
+    names = arrays["task_name"][train_idx].astype(str)
+    robot = arrays["robot_obs"][train_idx].astype(np.float64)
+    g = arrays["articulation_minimal_g"][train_idx].astype(np.float64)
+    action = arrays["action_chunks"][train_idx, 0, :3].astype(np.float64)
+    segment = arrays["segment_id"][train_idx]
+    frame = arrays["frame_index"][train_idx]
+    segment_start = {
+        value: int(frame[segment == value].min()) for value in np.unique(segment)
+    }
+    relative_frame = np.asarray(
+        [
+            int(frame_index) - segment_start[segment_id]
+            for frame_index, segment_id in zip(frame, segment)
+        ],
+        dtype=np.int64,
+    )
+
+    task_flows: dict[str, np.ndarray] = {}
+    for task in sorted(set(names)):
+        flow = np.median(g[names == task, 3:6], axis=0)
+        norm = float(np.linalg.norm(flow))
+        if norm > 1e-6:
+            task_flows[task] = flow / norm
+
+    output: dict[str, np.ndarray] = {}
+    tasks = sorted(task_flows)
+    for task_index, task0 in enumerate(tasks):
+        for task1 in tasks[task_index + 1 :]:
+            if float(np.dot(task_flows[task0], task_flows[task1])) < 0.99:
+                continue
+            attraction_norm = np.linalg.norm(g[:, :3], axis=1)
+            position0 = np.flatnonzero(
+                (names == task0)
+                & (attraction_norm > min_attraction_norm)
+                & (relative_frame <= max_relative_frame)
+            )
+            position1 = np.flatnonzero(
+                (names == task1)
+                & (attraction_norm > min_attraction_norm)
+                & (relative_frame <= max_relative_frame)
+            )
+            if not len(position0) or not len(position1):
+                continue
+
+            state0 = robot[position0, :14]
+            state1 = robot[position1, :14]
+            joined = np.concatenate([state0, state1], axis=0)
+            mean = joined.mean(axis=0)
+            std = joined.std(axis=0)
+            std[std < 1e-5] = 1.0
+            state0 = (state0 - mean) / std
+            state1 = (state1 - mean) / std
+            nearest01 = nearest_indices_batched(state0, state1)
+            nearest10 = nearest_indices_batched(state1, state0)
+            pairs = np.unique(
+                np.concatenate(
+                    [
+                        np.stack([position0, position1[nearest01]], axis=1),
+                        np.stack([position0[nearest10], position1], axis=1),
+                    ],
+                    axis=0,
+                ),
+                axis=0,
+            )
+
+            index0, index1 = pairs[:, 0], pairs[:, 1]
+            eef_distance = np.linalg.norm(robot[index0, :3] - robot[index1, :3], axis=1)
+            orientation_distance = np.linalg.norm(
+                robot[index0, 3:6] - robot[index1, 3:6], axis=1
+            )
+            attraction_difference = g[index0, :3] - g[index1, :3]
+            action_difference = action[index0] - action[index1]
+            attraction_difference_norm = np.linalg.norm(attraction_difference, axis=1)
+            action_difference_norm = np.linalg.norm(action_difference, axis=1)
+            own0 = np.sum(g[index0, :3] * action[index0], axis=1) / (
+                np.linalg.norm(g[index0, :3], axis=1)
+                * np.linalg.norm(action[index0], axis=1)
+                + 1e-8
+            )
+            own1 = np.sum(g[index1, :3] * action[index1], axis=1) / (
+                np.linalg.norm(g[index1, :3], axis=1)
+                * np.linalg.norm(action[index1], axis=1)
+                + 1e-8
+            )
+            keep = (
+                (eef_distance < max_eef_distance_m)
+                & (orientation_distance < max_orientation_distance)
+                & (attraction_difference_norm > min_attraction_difference)
+                & (action_difference_norm > min_action_difference)
+                & (own0 > own_alignment_threshold)
+                & (own1 > own_alignment_threshold)
+            )
+            if np.any(keep):
+                output[f"{task0}__{task1}"] = pairs[keep].astype(np.int64)
+    return output
+
+
 def save_checkpoint(
     path: Path,
     *,
@@ -2086,6 +2196,8 @@ def save_checkpoint(
     structured_field_config: dict[str, float] | None = None,
     inverse_pair_loss_weight: float = 0.0,
     inverse_pair_config: dict[str, Any] | None = None,
+    target_pair_loss_weight: float = 0.0,
+    target_pair_config: dict[str, Any] | None = None,
     source_distill_weight: float = 0.0,
     residual_adapter_config: dict[str, Any] | None = None,
     executor_state_scope: str = "full",
@@ -2125,6 +2237,8 @@ def save_checkpoint(
         "structured_field_config": {} if structured_field_config is None else dict(structured_field_config),
         "inverse_pair_loss_weight": float(inverse_pair_loss_weight),
         "inverse_pair_config": {} if inverse_pair_config is None else dict(inverse_pair_config),
+        "target_pair_loss_weight": float(target_pair_loss_weight),
+        "target_pair_config": {} if target_pair_config is None else dict(target_pair_config),
         "source_distill_weight": float(source_distill_weight),
         "residual_adapter_config": (
             {} if residual_adapter_config is None else dict(residual_adapter_config)
@@ -2197,6 +2311,15 @@ def train_mode(
     inverse_pairs_per_batch: int,
     inverse_pair_max_eef_distance_m: float,
     inverse_pair_max_mechanism_fraction: float,
+    target_pair_loss_weight: float,
+    target_pairs_per_batch: int,
+    target_pair_max_relative_frame: int,
+    target_pair_min_attraction_norm: float,
+    target_pair_min_attraction_difference: float,
+    target_pair_min_action_difference: float,
+    target_pair_max_eef_distance_m: float,
+    target_pair_max_orientation_distance: float,
+    target_pair_own_alignment_threshold: float,
     init_checkpoint: Path | None = None,
     source_distill_weight: float = 0.0,
     residual_adapter: bool = False,
@@ -2301,6 +2424,44 @@ def train_mode(
             balanced_families.append(pairs[selected])
         inverse_pair_pool = np.concatenate(balanced_families, axis=0).astype(np.int64)
         pair_rng.shuffle(inverse_pair_pool)
+    target_pair_families: dict[str, np.ndarray] = {}
+    target_pair_pool = np.empty((0, 2), dtype=np.int64)
+    use_target_pair_loss = (
+        target_pair_loss_weight > 0 and mode == "chunk_bc_minimal_g_tokens"
+    )
+    if target_pair_loss_weight > 0 and mode not in {
+        "chunk_bc_state",
+        "chunk_bc_minimal_g_tokens",
+    }:
+        raise ValueError(
+            "same-flow target-pair loss is currently defined only for minimal-G token BC"
+        )
+    if use_target_pair_loss:
+        target_pair_families = build_same_flow_target_train_pairs(
+            arrays,
+            train_idx,
+            max_relative_frame=target_pair_max_relative_frame,
+            min_attraction_norm=target_pair_min_attraction_norm,
+            min_attraction_difference=target_pair_min_attraction_difference,
+            min_action_difference=target_pair_min_action_difference,
+            max_eef_distance_m=target_pair_max_eef_distance_m,
+            max_orientation_distance=target_pair_max_orientation_distance,
+            own_alignment_threshold=target_pair_own_alignment_threshold,
+        )
+        if not target_pair_families:
+            raise RuntimeError(
+                "same-flow target-pair loss was enabled but no qualifying train pairs were found"
+            )
+        target_rng = np.random.default_rng(loader_seed + 53_535)
+        family_target = max(len(pairs) for pairs in target_pair_families.values())
+        balanced_families = []
+        for pairs in target_pair_families.values():
+            selected = target_rng.choice(
+                len(pairs), size=family_target, replace=len(pairs) < family_target
+            )
+            balanced_families.append(pairs[selected])
+        target_pair_pool = np.concatenate(balanced_families, axis=0).astype(np.int64)
+        target_rng.shuffle(target_pair_pool)
     train_cond = torch.from_numpy(cond[train_idx])
     train_base = torch.from_numpy(base_x[train_idx])
     train_g = torch.from_numpy(g_x[train_idx])
@@ -2552,6 +2713,17 @@ def train_mode(
             drop_last=False,
             generator=pair_loader_gen,
         )
+    target_pair_loader: DataLoader | None = None
+    if len(target_pair_pool):
+        target_loader_gen = torch.Generator()
+        target_loader_gen.manual_seed(loader_seed + 53_535)
+        target_pair_loader = DataLoader(
+            TensorDataset(torch.from_numpy(target_pair_pool)),
+            batch_size=target_pairs_per_batch,
+            shuffle=True,
+            drop_last=False,
+            generator=target_loader_gen,
+        )
 
     history: list[dict[str, Any]] = []
     best_val_first_action_mse = float("inf")
@@ -2581,6 +2753,20 @@ def train_mode(
         "pairs_per_batch": int(inverse_pairs_per_batch),
         "max_eef_distance_m": float(inverse_pair_max_eef_distance_m),
         "max_mechanism_fraction": float(inverse_pair_max_mechanism_fraction),
+    }
+    target_pair_config = {
+        "families": {
+            name: int(len(pairs)) for name, pairs in target_pair_families.items()
+        },
+        "balanced_pool_pairs": int(len(target_pair_pool)),
+        "pairs_per_batch": int(target_pairs_per_batch),
+        "max_relative_frame": int(target_pair_max_relative_frame),
+        "min_attraction_norm": float(target_pair_min_attraction_norm),
+        "min_attraction_difference": float(target_pair_min_attraction_difference),
+        "min_action_difference": float(target_pair_min_action_difference),
+        "max_eef_distance_m": float(target_pair_max_eef_distance_m),
+        "max_orientation_distance": float(target_pair_max_orientation_distance),
+        "own_alignment_threshold": float(target_pair_own_alignment_threshold),
     }
 
     def make_cond_n_t(
@@ -2722,9 +2908,11 @@ def train_mode(
         losses = []
         field_losses = []
         inverse_pair_losses = []
+        target_pair_losses = []
         source_distill_losses = []
         router_losses = []
         inverse_pair_iterator = iter(inverse_pair_loader) if inverse_pair_loader is not None else None
+        target_pair_iterator = iter(target_pair_loader) if target_pair_loader is not None else None
         for cond_raw_b, base_b, g_b, y_b, reverse_b, task_weight_b, expert_index_b in loader:
             if use_train_g_aug:
                 cond_b, g_raw_b = make_cond_n_t(base_b, g_b, train_aug=True)
@@ -2923,6 +3111,15 @@ def train_mode(
                 pair_loss = inverse_pair_difference_loss(pair_positions_b)
                 loss = loss + float(inverse_pair_loss_weight) * pair_loss
                 inverse_pair_losses.append(float(pair_loss.detach().cpu()))
+            if target_pair_iterator is not None:
+                try:
+                    pair_positions_b = next(target_pair_iterator)[0]
+                except StopIteration:
+                    target_pair_iterator = iter(target_pair_loader)
+                    pair_positions_b = next(target_pair_iterator)[0]
+                pair_loss = inverse_pair_difference_loss(pair_positions_b)
+                loss = loss + float(target_pair_loss_weight) * pair_loss
+                target_pair_losses.append(float(pair_loss.detach().cpu()))
             opt.zero_grad(set_to_none=True)
             loss.backward()
             opt.step()
@@ -2939,6 +3136,8 @@ def train_mode(
             rec["train_field_alignment_loss"] = float(np.mean(field_losses))
         if inverse_pair_losses:
             rec["train_inverse_pair_difference_loss"] = float(np.mean(inverse_pair_losses))
+        if target_pair_losses:
+            rec["train_target_pair_difference_loss"] = float(np.mean(target_pair_losses))
         if source_distill_losses:
             rec["train_source_distill_loss"] = float(np.mean(source_distill_losses))
         if router_losses:
@@ -2999,6 +3198,8 @@ def train_mode(
                 structured_field_config=structured_field_config,
                 inverse_pair_loss_weight=inverse_pair_loss_weight,
                 inverse_pair_config=inverse_pair_config,
+                target_pair_loss_weight=(target_pair_loss_weight if use_target_pair_loss else 0.0),
+                target_pair_config=target_pair_config,
                 source_distill_weight=source_distill_weight,
                 residual_adapter_config=residual_adapter_config,
                 executor_state_scope=executor_state_scope,
@@ -3037,6 +3238,8 @@ def train_mode(
         structured_field_config=structured_field_config,
         inverse_pair_loss_weight=inverse_pair_loss_weight,
         inverse_pair_config=inverse_pair_config,
+        target_pair_loss_weight=(target_pair_loss_weight if use_target_pair_loss else 0.0),
+        target_pair_config=target_pair_config,
         source_distill_weight=source_distill_weight,
         residual_adapter_config=residual_adapter_config,
         executor_state_scope=executor_state_scope,
@@ -3077,6 +3280,8 @@ def train_mode(
         structured_field_config=structured_field_config,
         inverse_pair_loss_weight=inverse_pair_loss_weight,
         inverse_pair_config=inverse_pair_config,
+        target_pair_loss_weight=(target_pair_loss_weight if use_target_pair_loss else 0.0),
+        target_pair_config=target_pair_config,
         source_distill_weight=source_distill_weight,
         residual_adapter_config=residual_adapter_config,
         executor_state_scope=executor_state_scope,
@@ -3105,6 +3310,10 @@ def train_mode(
         "first_action_loss_weight": float(first_action_loss_weight),
         "inverse_pair_loss_weight": float(inverse_pair_loss_weight),
         "inverse_pair_config": inverse_pair_config,
+        "target_pair_loss_weight": float(
+            target_pair_loss_weight if use_target_pair_loss else 0.0
+        ),
+        "target_pair_config": target_pair_config,
         "source_distill_weight": float(source_distill_weight),
         "residual_adapter_config": residual_adapter_config,
         "executor_state_scope": str(executor_state_scope),
@@ -4415,6 +4624,20 @@ def main() -> None:
     parser.add_argument("--inverse-pair-max-eef-distance-m", type=float, default=0.05)
     parser.add_argument("--inverse-pair-max-mechanism-fraction", type=float, default=0.10)
     parser.add_argument(
+        "--target-pair-loss-weight",
+        type=float,
+        default=0.0,
+        help="Weight on same-flow, different-target expert action-difference supervision.",
+    )
+    parser.add_argument("--target-pairs-per-batch", type=int, default=128)
+    parser.add_argument("--target-pair-max-relative-frame", type=int, default=32)
+    parser.add_argument("--target-pair-min-attraction-norm", type=float, default=0.015)
+    parser.add_argument("--target-pair-min-attraction-difference", type=float, default=0.02)
+    parser.add_argument("--target-pair-min-action-difference", type=float, default=0.03)
+    parser.add_argument("--target-pair-max-eef-distance-m", type=float, default=0.05)
+    parser.add_argument("--target-pair-max-orientation-distance", type=float, default=0.6)
+    parser.add_argument("--target-pair-own-alignment-threshold", type=float, default=0.2)
+    parser.add_argument(
         "--action-execution-horizon",
         type=int,
         default=1,
@@ -4467,6 +4690,8 @@ def main() -> None:
         parser.error("--temporal-ensemble-decay must be non-negative")
     if args.inverse_pair_loss_weight < 0:
         parser.error("--inverse-pair-loss-weight must be non-negative")
+    if args.target_pair_loss_weight < 0:
+        parser.error("--target-pair-loss-weight must be non-negative")
     if args.source_distill_weight < 0:
         parser.error("--source-distill-weight must be non-negative")
     if args.residual_adapter_hidden <= 0:
@@ -4485,6 +4710,22 @@ def main() -> None:
         parser.error("--inverse-pair-max-eef-distance-m must be positive")
     if not 0 < args.inverse_pair_max_mechanism_fraction <= 1:
         parser.error("--inverse-pair-max-mechanism-fraction must be in (0, 1]")
+    if args.target_pairs_per_batch <= 0:
+        parser.error("--target-pairs-per-batch must be positive")
+    if args.target_pair_max_relative_frame < 0:
+        parser.error("--target-pair-max-relative-frame must be non-negative")
+    if args.target_pair_min_attraction_norm < 0:
+        parser.error("--target-pair-min-attraction-norm must be non-negative")
+    if args.target_pair_min_attraction_difference <= 0:
+        parser.error("--target-pair-min-attraction-difference must be positive")
+    if args.target_pair_min_action_difference <= 0:
+        parser.error("--target-pair-min-action-difference must be positive")
+    if args.target_pair_max_eef_distance_m <= 0:
+        parser.error("--target-pair-max-eef-distance-m must be positive")
+    if args.target_pair_max_orientation_distance <= 0:
+        parser.error("--target-pair-max-orientation-distance must be positive")
+    if not -1 <= args.target_pair_own_alignment_threshold <= 1:
+        parser.error("--target-pair-own-alignment-threshold must be in [-1, 1]")
     valid_suffix_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-"
     if args.eval_dir_suffix and any(char not in valid_suffix_chars for char in args.eval_dir_suffix):
         parser.error("--eval-dir-suffix may contain only letters, digits, '_', '-', and '.'")
@@ -4628,6 +4869,15 @@ def main() -> None:
         "inverse_pairs_per_batch": args.inverse_pairs_per_batch,
         "inverse_pair_max_eef_distance_m": args.inverse_pair_max_eef_distance_m,
         "inverse_pair_max_mechanism_fraction": args.inverse_pair_max_mechanism_fraction,
+        "target_pair_loss_weight": args.target_pair_loss_weight,
+        "target_pairs_per_batch": args.target_pairs_per_batch,
+        "target_pair_max_relative_frame": args.target_pair_max_relative_frame,
+        "target_pair_min_attraction_norm": args.target_pair_min_attraction_norm,
+        "target_pair_min_attraction_difference": args.target_pair_min_attraction_difference,
+        "target_pair_min_action_difference": args.target_pair_min_action_difference,
+        "target_pair_max_eef_distance_m": args.target_pair_max_eef_distance_m,
+        "target_pair_max_orientation_distance": args.target_pair_max_orientation_distance,
+        "target_pair_own_alignment_threshold": args.target_pair_own_alignment_threshold,
         "action_execution_horizon": args.action_execution_horizon,
         "eval_dir_suffix": args.eval_dir_suffix,
         "temporal_ensemble": args.temporal_ensemble,
@@ -4675,6 +4925,15 @@ def main() -> None:
                 inverse_pairs_per_batch=args.inverse_pairs_per_batch,
                 inverse_pair_max_eef_distance_m=args.inverse_pair_max_eef_distance_m,
                 inverse_pair_max_mechanism_fraction=args.inverse_pair_max_mechanism_fraction,
+                target_pair_loss_weight=args.target_pair_loss_weight,
+                target_pairs_per_batch=args.target_pairs_per_batch,
+                target_pair_max_relative_frame=args.target_pair_max_relative_frame,
+                target_pair_min_attraction_norm=args.target_pair_min_attraction_norm,
+                target_pair_min_attraction_difference=args.target_pair_min_attraction_difference,
+                target_pair_min_action_difference=args.target_pair_min_action_difference,
+                target_pair_max_eef_distance_m=args.target_pair_max_eef_distance_m,
+                target_pair_max_orientation_distance=args.target_pair_max_orientation_distance,
+                target_pair_own_alignment_threshold=args.target_pair_own_alignment_threshold,
                 init_checkpoint=args.init_checkpoint,
                 source_distill_weight=args.source_distill_weight,
                 residual_adapter=args.residual_adapter,

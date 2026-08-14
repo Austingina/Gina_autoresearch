@@ -154,6 +154,42 @@ def main() -> None:
         assert np.array_equal(relative_state, expected)
         assert language.shape == (2, 0)
 
+        pair_robot = np.zeros((4, 15), dtype=np.float32)
+        pair_robot[1, 0] = 0.005
+        pair_robot[3, 0] = 0.005
+        pair_g = np.asarray(
+            [
+                [0.10, 0.00, 0.00, 1.0, 0.0, 0.0],
+                [0.08, 0.00, 0.00, 1.0, 0.0, 0.0],
+                [0.00, 0.10, 0.00, 1.0, 0.0, 0.0],
+                [0.00, 0.08, 0.00, 1.0, 0.0, 0.0],
+            ],
+            dtype=np.float32,
+        )
+        pair_actions = np.zeros((4, 1, 7), dtype=np.float32)
+        pair_actions[:2, 0, 0] = 0.5
+        pair_actions[2:, 0, 1] = 0.5
+        pairs = policy.build_same_flow_target_train_pairs(
+            {
+                "task_name": np.asarray(["target_a", "target_a", "target_b", "target_b"]),
+                "robot_obs": pair_robot,
+                "articulation_minimal_g": pair_g,
+                "action_chunks": pair_actions,
+                "segment_id": np.asarray([0, 0, 1, 1]),
+                "frame_index": np.asarray([0, 1, 0, 1]),
+            },
+            np.arange(4),
+            max_relative_frame=32,
+            min_attraction_norm=0.015,
+            min_attraction_difference=0.02,
+            min_action_difference=0.03,
+            max_eef_distance_m=0.05,
+            max_orientation_distance=0.6,
+            own_alignment_threshold=0.2,
+        )
+        assert set(pairs) == {"target_a__target_b"}
+        assert pairs["target_a__target_b"].shape == (2, 2)
+
     print("behavior block-surface G: OK")
 
 
