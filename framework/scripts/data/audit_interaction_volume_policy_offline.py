@@ -99,6 +99,10 @@ def predict_first_actions(
     state_scope = str(ckpt.get("executor_state_scope", "full"))
     if state_scope == "proprio_no_eef_xyz":
         base = robot_obs[:, 3:].astype(np.float32)
+    elif state_scope == "eef_orientation_gripper":
+        base = np.concatenate(
+            [robot_obs[:, 3:7], robot_obs[:, 14:15]], axis=1
+        ).astype(np.float32)
     elif state_scope == "proprio":
         base = robot_obs.astype(np.float32)
     else:

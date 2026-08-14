@@ -290,7 +290,15 @@ VOLUME_GATE_CHUNK_SIZE=1 \
 Use `VOLUME_GATE_EXECUTOR_STATE_SCOPE=proprio_no_eef_xyz` only for the
 shortcut-identifiability diagnostic. It removes absolute EEF position from the
 base state while retaining orientation, joints, gripper state, and the complete
-relative A/F field. This is a separate run label, not the default executor.
+relative A/F field. Because arm joints still determine EEF position, this is a
+weak shortcut test rather than a position-free intervention.
+
+Use `VOLUME_GATE_EXECUTOR_STATE_SCOPE=eef_orientation_gripper` for the strict
+target-position identifiability diagnostic. It retains TCP orientation,
+gripper opening, and gripper action, but removes both absolute TCP position and
+arm joints. The executor must therefore obtain target-relative position from
+the attraction part of G. This is also a diagnostic run label, not the default
+executor or a proposed final observation restriction.
 
 ### Full visual ABC-to-D stack
 

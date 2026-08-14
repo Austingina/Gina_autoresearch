@@ -134,6 +134,26 @@ def main() -> None:
         )
         assert language.shape == (2, 0)
 
+        relative_state, language = policy.make_state_lang_parts(
+            {
+                "robot_obs": np.arange(30, dtype=np.float32).reshape(2, 15),
+                "scene_obs": np.zeros((2, 24), dtype=np.float32),
+                "task_oh": np.zeros((2, 3), dtype=np.float32),
+            },
+            state_scope="eef_orientation_gripper",
+            language_mode="none",
+        )
+        expected = np.concatenate(
+            [
+                np.arange(30, dtype=np.float32).reshape(2, 15)[:, 3:7],
+                np.arange(30, dtype=np.float32).reshape(2, 15)[:, 14:15],
+            ],
+            axis=1,
+        )
+        assert relative_state.shape == (2, 5)
+        assert np.array_equal(relative_state, expected)
+        assert language.shape == (2, 0)
+
     print("behavior block-surface G: OK")
 
 
