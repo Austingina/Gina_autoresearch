@@ -68,7 +68,10 @@ def summarize_family(
     names = arrays["task_name"][train_idx].astype(str)
     robot = arrays["robot_obs"][train_idx].astype(np.float64)
     g = arrays["articulation_minimal_g"][train_idx].astype(np.float64)
-    action = arrays["action_chunks"][train_idx, 0, :3].astype(np.float64)
+    action_full = arrays["action_chunks"][train_idx, 0].astype(np.float64)
+    action = action_full[:, :3]
+    action_scale = action_full.std(axis=0)
+    action_scale[action_scale < 1e-6] = 1.0
     segment = arrays["segment_id"][train_idx]
     frame = arrays["frame_index"][train_idx]
     segment_start = {value: int(frame[segment == value].min()) for value in np.unique(segment)}
@@ -137,6 +140,20 @@ def summarize_family(
         np.linalg.norm(g[index1, :3], axis=1) * np.linalg.norm(action[index1], axis=1) + 1e-8
     )
     high_confidence = (own0 > own_alignment_threshold) & (own1 > own_alignment_threshold)
+    normalized_action_difference = (
+        action_full[index0] - action_full[index1]
+    ) / action_scale
+
+    def component_mse(mask: np.ndarray) -> dict[str, float | None]:
+        if not np.any(mask):
+            return {"xyz": None, "rotation": None, "gripper": None}
+        values = normalized_action_difference[mask]
+        return {
+            "xyz": float(np.mean(values[:, :3] ** 2)),
+            "rotation": float(np.mean(values[:, 3:6] ** 2)),
+            "gripper": float(np.mean(values[:, 6] ** 2)),
+        }
+
     return {
         "family": family,
         "tasks": [task0, task1],
@@ -152,6 +169,12 @@ def summarize_family(
         "high_confidence_difference_cosine": percentiles(cosine[high_confidence]),
         "high_confidence_positive_fraction": (
             float(np.mean(cosine[high_confidence] > 0)) if np.any(high_confidence) else None
+        ),
+        "normalized_action_difference_mse": component_mse(
+            np.ones(len(normalized_action_difference), dtype=bool)
+        ),
+        "high_confidence_normalized_action_difference_mse": component_mse(
+            high_confidence
         ),
     }
 
