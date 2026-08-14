@@ -27,6 +27,7 @@ EXECUTOR_STATE_SCOPE="${VOLUME_GATE_EXECUTOR_STATE_SCOPE:-proprio}"
 TARGET_PAIR_LOSS_WEIGHT="${VOLUME_GATE_TARGET_PAIR_LOSS_WEIGHT:-0}"
 TARGET_PAIR_ACTION_SCOPE="${VOLUME_GATE_TARGET_PAIR_ACTION_SCOPE:-all}"
 TOKEN_CHECKPOINT_OVERRIDE="${VOLUME_GATE_TOKEN_CHECKPOINT:-}"
+EVAL_DIR_SUFFIX="${VOLUME_GATE_EVAL_SUFFIX:-}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-14_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -41,6 +42,10 @@ case "${EVAL_FAMILY}" in
     exit 2
     ;;
 esac
+if [[ ! "${EVAL_DIR_SUFFIX}" =~ ^[A-Za-z0-9_.-]*$ ]]; then
+  echo "VOLUME_GATE_EVAL_SUFFIX may contain only letters, numbers, dot, underscore, or dash" >&2
+  exit 2
+fi
 if (( CHUNK_SIZE < 1 )); then
   echo "VOLUME_GATE_CHUNK_SIZE must be positive" >&2
   exit 2
@@ -279,7 +284,7 @@ evaluate() {
     echo "Evaluation checkpoint does not exist: ${checkpoint}" >&2
     exit 2
   fi
-  local eval_dir="${RUN_ROOT}/${mode}/eval_D_${split}_${control}"
+  local eval_dir="${RUN_ROOT}/${mode}/eval_D_${split}_${control}${EVAL_DIR_SUFFIX}"
   local sequence_cache="${CALVIN_G_ROOT}/cache/calvin_standard_sequences/D_${split}_${per_task}_offset0.pkl"
   if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
     return
@@ -309,7 +314,7 @@ evaluate() {
     --state-only-observation \
     --trace-rollouts 5 \
     --device "cuda:${GPU_ID}" \
-    2>&1 | tee "${LOG_ROOT}/eval_${mode}_${split}_${control}.log"
+    2>&1 | tee "${LOG_ROOT}/eval_${mode}_${split}_${control}${EVAL_DIR_SUFFIX}.log"
 }
 
 if [[ "${EVAL_FAMILY}" == "all" || "${EVAL_FAMILY}" == "core" ]]; then
