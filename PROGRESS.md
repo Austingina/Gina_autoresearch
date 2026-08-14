@@ -31,9 +31,12 @@
   This is the first bidirectional reusable-interface result, but absolute
   normal success is only `13/100` and the source total is `15/100`. Scaling is
   still blocked on control recovery plus seed replication. A weak-pair
-  continuation from the better-control epoch-12 model is the active Pareto
-  test; its offline final point improves held-out xyz MSE to `0.02119` while
-  retaining a 6.73 cm pre-contact A response.
+  continuation from epoch 12 reaches `17/100` held-out; zero-A, zero-F, and
+  all-zero are each `0/100`, while sign flip is `6/100` on disjoint starts
+  (`p=0.0347`). It is a better but still one-sided Pareto point. The active
+  correction restricts target-pair supervision to first-step xyz because the
+  pair criterion does not justify the previous rotation/gripper difference
+  penalty; the full action remains supervised by ordinary BC.
 - **2026-08-13** Training-stability audit on the matched behavior-G gate:
   packing all `199,292` state/action/G rows reduced per-run input assembly from
   about 39 minutes to about one minute. With the original AdamW `lr=1e-3`,

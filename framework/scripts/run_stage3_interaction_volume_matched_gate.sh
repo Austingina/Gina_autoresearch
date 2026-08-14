@@ -26,6 +26,7 @@ INCLUDE_FRAME="${VOLUME_GATE_INCLUDE_FRAME:-0}"
 EXECUTOR_STATE_SCOPE="${VOLUME_GATE_EXECUTOR_STATE_SCOPE:-proprio}"
 TARGET_PAIR_LOSS_WEIGHT="${VOLUME_GATE_TARGET_PAIR_LOSS_WEIGHT:-0}"
 TARGET_PAIR_ACTION_SCOPE="${VOLUME_GATE_TARGET_PAIR_ACTION_SCOPE:-all}"
+TOKEN_CHECKPOINT_OVERRIDE="${VOLUME_GATE_TOKEN_CHECKPOINT:-}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-14_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -74,7 +75,21 @@ SOURCE_TASKS=(
   push_pink_block_right
 )
 HELDOUT_TASKS=(push_blue_block_left push_red_block_right)
-HELDOUT_CONTROLS=(normal zero_attraction zero_flow zero sign_flip)
+read -r -a HELDOUT_CONTROLS <<< \
+  "${VOLUME_GATE_HELDOUT_CONTROLS:-normal zero_attraction zero_flow zero sign_flip}"
+if (( ${#HELDOUT_CONTROLS[@]} == 0 )); then
+  echo "VOLUME_GATE_HELDOUT_CONTROLS must contain at least one control" >&2
+  exit 2
+fi
+for control in "${HELDOUT_CONTROLS[@]}"; do
+  case "${control}" in
+    normal|zero_attraction|zero_flow|zero|sign_flip) ;;
+    *)
+      echo "Unsupported held-out control: ${control}" >&2
+      exit 2
+      ;;
+  esac
+done
 
 if [[ ! -f "${CALIBRATION_REPORT}" ]]; then
   "${CALVIN_PYTHON}" \
@@ -256,11 +271,20 @@ evaluate() {
   shift 4
   local -a tasks=("$@")
   local checkpoint="${RUN_ROOT}/${mode}/policy_best_val.pt"
+  if [[ "${mode}" == "chunk_bc_minimal_g_tokens" && \
+        -n "${TOKEN_CHECKPOINT_OVERRIDE}" ]]; then
+    checkpoint="${TOKEN_CHECKPOINT_OVERRIDE}"
+  fi
+  if [[ ! -f "${checkpoint}" ]]; then
+    echo "Evaluation checkpoint does not exist: ${checkpoint}" >&2
+    exit 2
+  fi
   local eval_dir="${RUN_ROOT}/${mode}/eval_D_${split}_${control}"
   if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
     return
   fi
   mkdir -p "${eval_dir}"
+  printf '%s\n' "${checkpoint}" > "${eval_dir}/checkpoint_path.txt"
   env -u EGL_VISIBLE_DEVICES xvfb-run -a "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/policy_state_bc/eval_state_chunk_policy_ckpt.py" \
     --calvin-code "${CALVIN_CODE}" \

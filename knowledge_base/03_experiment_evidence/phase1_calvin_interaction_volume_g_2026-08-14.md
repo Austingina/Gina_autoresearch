@@ -306,13 +306,28 @@ four validation pairs. Use ordinary source validation for the present seed-0
 method diagnostic, then introduce a stratified segment split before the
 multi-seed confirmation.
 
-A two-stage weak-pair continuation from e12 is the active control-recovery
-test. Its final checkpoint has held-out xyz MSE `0.021191`; in the held-out
+A two-stage weak-pair continuation from e12 is a second causal Pareto point.
+Its final checkpoint has held-out xyz MSE `0.021191`; in the held-out
 pre-outside-volume phase, normal/zero-A are `0.023905/0.031665` with a 0.0673
-direct A response. This is a better offline Pareto point than e50. Closed-loop
-normal and component ablations remain mandatory before it can replace the e50
-causal probe. Fine-tuning from e50 with pair weight 0.02 does not recover
-validation fit and should not be continued.
+direct A response. Online it reaches source `14/100` and held-out `17/100`
+(`16/50` blue-left, `1/50` red-right). Zero-A, zero-F, and all-zero are each
+`0/100`; sign flip is `6/100`, all on red-right and disjoint from the normal-G
+successes. Normal versus sign flip remains different under the paired exact
+McNemar test (`p=0.0347`). This recovers some control without losing
+component-level dependence, but remains directionally imbalanced.
+
+The original target-pair auxiliary loss supervised the full normalized
+seven-dimensional action difference even though pair mining only establishes
+a physical relation between target displacement and the first-step Cartesian
+translation. A component audit shows why this is unsafe: high-confidence
+left/right pairs have normalized action-difference MSE
+`xyz=2.493/1.915`, `rotation=2.112/1.760`, and `gripper=0.331/0.597`.
+Nearly half of the auxiliary energy is therefore rotation or gripper variation
+not justified by the pair criterion. The next controlled run restricts this
+auxiliary term to first-step xyz while the base BC loss continues to supervise
+the complete action. Inference and `G=[A,F]` remain unchanged. Fine-tuning from
+e50 with pair weight 0.02 does not recover validation fit and should not be
+continued.
 
 ## Reproduction
 

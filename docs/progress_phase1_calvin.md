@@ -875,9 +875,15 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   it cannot support a stable pair-aware checkpoint metric. Do not select on
   held-out outcomes. Before multi-seed confirmation, replace the random
   segment split with a stratified pair-support split.
-- Active follow-up: weak pair continuation from epoch 12. Its final offline
-  checkpoint has held-out xyz MSE `0.021191`, pre-contact normal/zero-A
-  `0.023905/0.031665`, and 6.73 cm direct A response. Closed-loop normal and
-  component controls decide whether it improves the e50 Pareto point. Scaling
-  learned visual G remains blocked until this control-recovery gate and at
-  least three seeds pass.
+- The weak-pair continuation from epoch 12 reaches source `14/100` and held-out
+  `17/100` (`16/50` blue-left, `1/50` red-right). Zero-A, zero-F, and all-zero
+  are each `0/100`; sign flip reaches `6/100` on red-right, with no overlap
+  with normal-G successes (`p=0.0347`, paired exact McNemar). This is a better
+  causal Pareto point than e50 but remains directionally imbalanced.
+- A component audit found that the original full-action target-pair loss spends
+  nearly half its signal on rotation and gripper differences not established
+  by the pair-mining criterion. The active matched runs restrict that auxiliary
+  loss to first-step xyz while ordinary BC still supervises all seven action
+  dimensions. The G interface and inference path are unchanged. Scaling
+  learned visual G remains blocked until this objective correction restores
+  balanced source/held-out control and passes at least three seeds.
