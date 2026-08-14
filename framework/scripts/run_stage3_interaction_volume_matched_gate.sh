@@ -73,6 +73,7 @@ SOURCE_TASKS=(
   push_pink_block_right
 )
 HELDOUT_TASKS=(push_blue_block_left push_red_block_right)
+HELDOUT_CONTROLS=(normal zero_attraction zero_flow zero sign_flip)
 
 if [[ ! -f "${CALIBRATION_REPORT}" ]]; then
   "${CALVIN_PYTHON}" \
@@ -291,21 +292,21 @@ if [[ "${EVAL_FAMILY}" == "all" || "${EVAL_FAMILY}" == "core" ]]; then
   # Held-out color-direction recombination is the method gate. Each condition
   # uses 50 standard initial states per task.
   evaluate chunk_bc_state heldout normal 50 "${HELDOUT_TASKS[@]}"
-  for control in normal zero sign_flip; do
+  for control in "${HELDOUT_CONTROLS[@]}"; do
     evaluate chunk_bc_minimal_g_tokens heldout "${control}" 50 "${HELDOUT_TASKS[@]}"
   done
 fi
 
 if [[ "${EVAL_FAMILY}" == "token" ]]; then
   evaluate chunk_bc_minimal_g_tokens source normal 25 "${SOURCE_TASKS[@]}"
-  for control in normal zero sign_flip; do
+  for control in "${HELDOUT_CONTROLS[@]}"; do
     evaluate chunk_bc_minimal_g_tokens heldout "${control}" 50 "${HELDOUT_TASKS[@]}"
   done
 fi
 
 if [[ "${EVAL_FAMILY}" == "all" || "${EVAL_FAMILY}" == "factorized" ]]; then
   evaluate chunk_bc_minimal_g_factorized_tokens source normal 25 "${SOURCE_TASKS[@]}"
-  for control in normal zero sign_flip; do
+  for control in "${HELDOUT_CONTROLS[@]}"; do
     evaluate chunk_bc_minimal_g_factorized_tokens heldout "${control}" 50 \
       "${HELDOUT_TASKS[@]}"
   done
@@ -314,7 +315,7 @@ fi
 if [[ "${EVAL_FAMILY}" == "frame" || \
       ( "${EVAL_FAMILY}" == "all" && "${INCLUDE_FRAME}" == "1" ) ]]; then
   evaluate chunk_bc_minimal_g_frame source normal 25 "${SOURCE_TASKS[@]}"
-  for control in normal zero sign_flip; do
+  for control in "${HELDOUT_CONTROLS[@]}"; do
     evaluate chunk_bc_minimal_g_frame heldout "${control}" 50 \
       "${HELDOUT_TASKS[@]}"
   done
