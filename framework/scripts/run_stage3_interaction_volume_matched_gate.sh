@@ -139,7 +139,7 @@ assert manifest["heldout_tasks_written"] is False
 assert report["protocol"]["heldout_used_for_fitting"] is False
 assert report["interface_audit"]["interaction_volume_contact_coverage_gate_pass"] is True
 with np.load(root / "training/state_only_arrays.npz", allow_pickle=False) as cache:
-    assert cache["minimal_g"].shape == (5769, 6)
+    assert cache["minimal_g"].shape == (int(manifest["frames"]), 6)
     assert np.isfinite(cache["minimal_g"]).all()
 print("matched_volume_data_gate_ok", manifest["task_counts"], manifest["scene_counts"])
 PY
