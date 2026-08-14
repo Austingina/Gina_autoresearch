@@ -25,6 +25,7 @@ FIRST_ACTION_LOSS_WEIGHT="${VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT:-1}"
 ACTION_EXECUTION_HORIZON="${VOLUME_GATE_ACTION_EXECUTION_HORIZON:-1}"
 INCLUDE_FACTORIZED="${VOLUME_GATE_INCLUDE_FACTORIZED:-1}"
 INCLUDE_FRAME="${VOLUME_GATE_INCLUDE_FRAME:-0}"
+SKIP_OFFLINE_AUDIT="${VOLUME_GATE_SKIP_OFFLINE_AUDIT:-0}"
 EXECUTOR_STATE_SCOPE="${VOLUME_GATE_EXECUTOR_STATE_SCOPE:-proprio}"
 TARGET_PAIR_LOSS_WEIGHT="${VOLUME_GATE_TARGET_PAIR_LOSS_WEIGHT:-0}"
 TARGET_PAIR_ACTION_SCOPE="${VOLUME_GATE_TARGET_PAIR_ACTION_SCOPE:-all}"
@@ -73,6 +74,13 @@ case "${INCLUDE_FRAME}" in
   0|1) ;;
   *)
     echo "VOLUME_GATE_INCLUDE_FRAME must be 0 or 1" >&2
+    exit 2
+    ;;
+esac
+case "${SKIP_OFFLINE_AUDIT}" in
+  0|1) ;;
+  *)
+    echo "VOLUME_GATE_SKIP_OFFLINE_AUDIT must be 0 or 1" >&2
     exit 2
     ;;
 esac
@@ -245,7 +253,8 @@ if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
     2>&1 | tee "${LOG_ROOT}/train.log"
 fi
 
-if [[ ! -f "${RUN_ROOT}/interaction_volume_offline_audit.json" ]]; then
+if [[ "${SKIP_OFFLINE_AUDIT}" != "1" && \
+      ! -f "${RUN_ROOT}/interaction_volume_offline_audit.json" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/data/audit_interaction_volume_policy_offline.py" \
     --data-root "${ABC_SUBSET_ROOT}" \
@@ -260,7 +269,8 @@ if [[ ! -f "${RUN_ROOT}/interaction_volume_offline_audit.json" ]]; then
     2>&1 | tee "${LOG_ROOT}/offline_audit.log"
 fi
 
-if [[ "${INCLUDE_FACTORIZED}" == "1" && \
+if [[ "${SKIP_OFFLINE_AUDIT}" != "1" && \
+      "${INCLUDE_FACTORIZED}" == "1" && \
       ! -f "${RUN_ROOT}/interaction_volume_factorized_offline_audit.json" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/data/audit_interaction_volume_policy_offline.py" \
@@ -277,7 +287,8 @@ if [[ "${INCLUDE_FACTORIZED}" == "1" && \
     2>&1 | tee "${LOG_ROOT}/offline_factorized_audit.log"
 fi
 
-if [[ "${INCLUDE_FRAME}" == "1" && \
+if [[ "${SKIP_OFFLINE_AUDIT}" != "1" && \
+      "${INCLUDE_FRAME}" == "1" && \
       ! -f "${RUN_ROOT}/interaction_volume_frame_offline_audit.json" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/data/audit_interaction_volume_policy_offline.py" \
