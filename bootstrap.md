@@ -249,6 +249,30 @@ the translational-G-only executor. Their task counts, initial-state protocol,
 and checkpoints are identical to an unsplit `all` run. Use the full visual
 reconstruction below only after this representation gate passes.
 
+The launcher also supports an objective-alignment diagnostic without changing
+the G labels. `token` skips repeated no-G/factorized rollouts, while the run
+label keeps checkpoints and progress files isolated:
+
+```bash
+VOLUME_GATE_RUN_LABEL=M3_objective_h1 \
+VOLUME_GATE_EVAL_FAMILY=token \
+VOLUME_GATE_INCLUDE_FACTORIZED=0 \
+VOLUME_GATE_CHUNK_SIZE=1 \
+VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT=1 \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 0
+
+VOLUME_GATE_RUN_LABEL=M3_objective_h16_w16 \
+VOLUME_GATE_EVAL_FAMILY=token \
+VOLUME_GATE_INCLUDE_FACTORIZED=0 \
+VOLUME_GATE_CHUNK_SIZE=16 \
+VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT=16 \
+  bash "$AUTORESEARCH_ROOT/framework/scripts/run_stage3_interaction_volume_matched_gate.sh" 0 1
+```
+
+Both variants replan after one action by default. Set
+`VOLUME_GATE_ACTION_EXECUTION_HORIZON` only for a separate execution-horizon
+ablation; it must not exceed the trained chunk size.
+
 ### Full visual ABC-to-D stack
 
 Build the 2,101-segment state/action/language subset:

@@ -18,6 +18,10 @@ SEED="${1:-0}"
 GPU_ID="${2:-${GPU_ID:-0}}"
 RUN_LABEL="${VOLUME_GATE_RUN_LABEL:-M3_interaction_volume_matched}"
 EVAL_FAMILY="${VOLUME_GATE_EVAL_FAMILY:-all}"
+CHUNK_SIZE="${VOLUME_GATE_CHUNK_SIZE:-16}"
+FIRST_ACTION_LOSS_WEIGHT="${VOLUME_GATE_FIRST_ACTION_LOSS_WEIGHT:-1}"
+ACTION_EXECUTION_HORIZON="${VOLUME_GATE_ACTION_EXECUTION_HORIZON:-1}"
+INCLUDE_FACTORIZED="${VOLUME_GATE_INCLUDE_FACTORIZED:-1}"
 RUN_ROOT="${REPO_ROOT}/experiments/phase1_calvin/2026-08-14_${RUN_LABEL}_seed${SEED}"
 LOG_ROOT="${CALVIN_G_ROOT}/logs/${RUN_LABEL}_seed${SEED}"
 GEOMETRY_JSON="${REPO_ROOT}/experiments/phase1_calvin/2026-07-04_oracle_g_v2_articulation_geometry_stability/oracle_g_v2_articulation_geometry_full.json"
@@ -26,9 +30,24 @@ MOTION_THRESHOLD="${VOLUME_GATE_MOTION_THRESHOLD:-0.002}"
 mkdir -p "${RUN_ROOT}" "${LOG_ROOT}"
 
 case "${EVAL_FAMILY}" in
-  all|core|factorized|none) ;;
+  all|core|token|factorized|none) ;;
   *)
-    echo "VOLUME_GATE_EVAL_FAMILY must be all, core, factorized, or none" >&2
+    echo "VOLUME_GATE_EVAL_FAMILY must be all, core, token, factorized, or none" >&2
+    exit 2
+    ;;
+esac
+if (( CHUNK_SIZE < 1 )); then
+  echo "VOLUME_GATE_CHUNK_SIZE must be positive" >&2
+  exit 2
+fi
+if (( ACTION_EXECUTION_HORIZON < 1 || ACTION_EXECUTION_HORIZON > CHUNK_SIZE )); then
+  echo "VOLUME_GATE_ACTION_EXECUTION_HORIZON must be in [1, chunk size]" >&2
+  exit 2
+fi
+case "${INCLUDE_FACTORIZED}" in
+  0|1) ;;
+  *)
+    echo "VOLUME_GATE_INCLUDE_FACTORIZED must be 0 or 1" >&2
     exit 2
     ;;
 esac
@@ -107,21 +126,26 @@ export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
 
-if [[ ! -f "${RUN_ROOT}/chunk_bc_state/policy_best_val.pt" || \
-      ! -f "${RUN_ROOT}/chunk_bc_minimal_g_tokens/policy_best_val.pt" || \
-      ! -f "${RUN_ROOT}/chunk_bc_minimal_g_factorized_tokens/policy_best_val.pt" ]]; then
+TRAIN_MODES=(chunk_bc_state chunk_bc_minimal_g_tokens)
+if [[ "${INCLUDE_FACTORIZED}" == "1" ]]; then
+  TRAIN_MODES+=(chunk_bc_minimal_g_factorized_tokens)
+fi
+NEED_TRAIN=0
+for mode in "${TRAIN_MODES[@]}"; do
+  if [[ ! -f "${RUN_ROOT}/${mode}/policy_best_val.pt" ]]; then
+    NEED_TRAIN=1
+  fi
+done
+if [[ "${NEED_TRAIN}" == "1" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
     --calvin-code "${CALVIN_CODE}" \
     --data-root "${ABC_SUBSET_ROOT}" \
     --out-dir "${RUN_ROOT}" \
-    --modes \
-      chunk_bc_state \
-      chunk_bc_minimal_g_tokens \
-      chunk_bc_minimal_g_factorized_tokens \
+    --modes "${TRAIN_MODES[@]}" \
     --include-tasks "${SOURCE_TASKS[@]}" \
     --stride 2 \
-    --chunk-size 16 \
+    --chunk-size "${CHUNK_SIZE}" \
     --epochs 100 \
     --checkpoint-epochs 50 100 \
     --batch-size 128 \
@@ -142,7 +166,7 @@ if [[ ! -f "${RUN_ROOT}/chunk_bc_state/policy_best_val.pt" || \
     --mask-executor-language-with-g 0 \
     --g-scale-aug-values 1.0 \
     --g-dropout-prob 0.0 \
-    --first-action-loss-weight 1 \
+    --first-action-loss-weight "${FIRST_ACTION_LOSS_WEIGHT}" \
     2>&1 | tee "${LOG_ROOT}/train.log"
 fi
 
@@ -161,7 +185,8 @@ if [[ ! -f "${RUN_ROOT}/interaction_volume_offline_audit.json" ]]; then
     2>&1 | tee "${LOG_ROOT}/offline_audit.log"
 fi
 
-if [[ ! -f "${RUN_ROOT}/interaction_volume_factorized_offline_audit.json" ]]; then
+if [[ "${INCLUDE_FACTORIZED}" == "1" && \
+      ! -f "${RUN_ROOT}/interaction_volume_factorized_offline_audit.json" ]]; then
   "${CALVIN_PYTHON}" \
     "${REPO_ROOT}/framework/scripts/data/audit_interaction_volume_policy_offline.py" \
     --data-root "${ABC_SUBSET_ROOT}" \
@@ -202,7 +227,7 @@ evaluate() {
     --eval-scan-sequences 10000 \
     --eval-sequence-workers 8 \
     --eval-task-filter "${tasks[@]}" \
-    --action-execution-horizon 1 \
+    --action-execution-horizon "${ACTION_EXECUTION_HORIZON}" \
     --query-g-control "${control}" \
     --online-minimal-g-mode behavior_block_volume \
     --behavior-tool-clearance "${TOOL_CLEARANCE}" \
@@ -223,6 +248,13 @@ if [[ "${EVAL_FAMILY}" == "all" || "${EVAL_FAMILY}" == "core" ]]; then
   # Held-out color-direction recombination is the method gate. Each condition
   # uses 50 standard initial states per task.
   evaluate chunk_bc_state heldout normal 50 "${HELDOUT_TASKS[@]}"
+  for control in normal zero sign_flip; do
+    evaluate chunk_bc_minimal_g_tokens heldout "${control}" 50 "${HELDOUT_TASKS[@]}"
+  done
+fi
+
+if [[ "${EVAL_FAMILY}" == "token" ]]; then
+  evaluate chunk_bc_minimal_g_tokens source normal 25 "${SOURCE_TASKS[@]}"
   for control in normal zero sign_flip; do
     evaluate chunk_bc_minimal_g_tokens heldout "${control}" 50 "${HELDOUT_TASKS[@]}"
   done
