@@ -62,6 +62,7 @@ def relabel_segment(
     scene_geometry: dict[str, object],
     tool_clearance: float,
     motion_threshold: float,
+    attraction_mode: str,
 ) -> tuple[dict[str, np.ndarray], dict[str, object]]:
     color, desired_flow = TASKS[task]
     position_slice = scene_geometry["slices"][color]
@@ -91,7 +92,8 @@ def relabel_segment(
     half_extents = scene_geometry["half_extents"][color]
     minimal_g = np.zeros((len(frame_indices), 6), dtype=np.float32)
     minimal_g[:, 3:6] = desired_flow
-    for local_index in range(onset):
+    attraction_stop = onset if attraction_mode == "sticky_post_motion_zero" else len(frame_indices)
+    for local_index in range(attraction_stop):
         minimal_g[local_index, :3] = oriented_box_volume_delta(
             arrays["robot_obs"][local_index, :3],
             centers[local_index],
@@ -111,6 +113,7 @@ def relabel_segment(
         "motion_onset_frame": start + onset,
         "pre_motion_frames": onset,
         "post_motion_frames": len(frame_indices) - onset,
+        "attraction_mode": attraction_mode,
         "max_attraction_norm": float(np.linalg.norm(minimal_g[:, :3], axis=1).max()),
     }
     return arrays, metadata
@@ -124,6 +127,15 @@ def main() -> None:
     parser.add_argument("--output", type=Path)
     parser.add_argument("--tasks", type=parse_tasks, default=DEFAULT_SOURCE_TASKS)
     parser.add_argument("--motion-threshold", type=float, default=0.002)
+    parser.add_argument(
+        "--attraction-mode",
+        choices=("sticky_post_motion_zero", "closed_loop_volume"),
+        default="sticky_post_motion_zero",
+        help=(
+            "Keep legacy sticky zero attraction after object motion, or recompute distance "
+            "to the moving interaction volume on every frame."
+        ),
+    )
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
@@ -164,6 +176,7 @@ def main() -> None:
             geometry_for_segment(scene_geometries, start, end),
             tool_clearance,
             args.motion_threshold,
+            args.attraction_mode,
         )
         for field in packed_rows:
             packed_rows[field].append(arrays[field])
@@ -209,7 +222,12 @@ def main() -> None:
         ],
         "tool_clearance": tool_clearance,
         "motion_threshold": args.motion_threshold,
-        "post_motion_rule": "sticky_zero_attraction_after_first_directed_2mm_object_motion",
+        "post_motion_rule": (
+            "sticky_zero_attraction_after_first_directed_object_motion"
+            if args.attraction_mode == "sticky_post_motion_zero"
+            else "closed_loop_distance_to_moving_interaction_volume"
+        ),
+        "attraction_mode": args.attraction_mode,
         "tasks": list(args.tasks),
         "heldout_tasks_written": False,
         "segments": len(segment_rows),
@@ -221,7 +239,12 @@ def main() -> None:
         "segments_detail": segment_rows,
         "complete": True,
     }
-    manifest_path = output.with_name("interaction_volume_cache_manifest.json")
+    manifest_name = (
+        "interaction_volume_cache_manifest.json"
+        if output.name == "state_only_arrays.npz"
+        else f"{output.stem}_manifest.json"
+    )
+    manifest_path = output.with_name(manifest_name)
     tmp_manifest = manifest_path.with_suffix(manifest_path.suffix + ".tmp")
     tmp_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     os.replace(tmp_manifest, manifest_path)

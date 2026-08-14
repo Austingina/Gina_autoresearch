@@ -815,9 +815,10 @@ PACKED_STATE_FIELDS = ("robot_obs", "scene_obs", "rel_actions")
 
 def load_packed_state_arrays(
     split_dir: Path,
+    packed_name: str = PACKED_STATE_ARRAYS_NAME,
 ) -> tuple[dict[str, np.ndarray], np.ndarray] | None:
     """Load the optional contiguous cache used to avoid per-frame NPZ I/O."""
-    packed_path = split_dir / PACKED_STATE_ARRAYS_NAME
+    packed_path = split_dir / packed_name
     if not packed_path.exists():
         return None
     with np.load(packed_path, allow_pickle=False) as packed:
@@ -866,10 +867,11 @@ def collect_chunk_records(
     reverse_open_max_segments: int = 0,
     reverse_task_pairs: list[tuple[str, str]] | None = None,
     reverse_pair_max_segments: int = 0,
+    packed_state_arrays_name: str = PACKED_STATE_ARRAYS_NAME,
 ) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     rng = random.Random(seed)
     split_dir = data_root / "training"
-    packed_state = load_packed_state_arrays(split_dir)
+    packed_state = load_packed_state_arrays(split_dir, packed_state_arrays_name)
 
     def read_frame(
         frame_index: int,
@@ -4555,6 +4557,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--calvin-code", type=Path, required=True)
     parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument(
+        "--packed-state-arrays-name",
+        default=PACKED_STATE_ARRAYS_NAME,
+        help="Packed training cache filename under DATA_ROOT/training.",
+    )
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--modes", nargs="+", choices=sorted(SUPPORTED_MODES), required=True)
     parser.add_argument(
@@ -4843,6 +4850,8 @@ def main() -> None:
     if args.init_checkpoint is not None:
         args.init_checkpoint = args.init_checkpoint.resolve()
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    if Path(args.packed_state_arrays_name).name != args.packed_state_arrays_name:
+        parser.error("--packed-state-arrays-name must be a filename, not a path")
     args.temporal_ensemble = bool(args.temporal_ensemble)
     if args.action_execution_horizon < 1 or args.action_execution_horizon > args.chunk_size:
         parser.error("--action-execution-horizon must be in [1, --chunk-size]")
@@ -4939,6 +4948,7 @@ def main() -> None:
         reverse_open_max_segments=args.reverse_open_max_segments,
         reverse_task_pairs=reverse_task_pairs,
         reverse_pair_max_segments=args.reverse_pair_max_segments,
+        packed_state_arrays_name=args.packed_state_arrays_name,
     )
     visual_feature_meta: dict[str, Any] = {}
     if args.executor_state_scope == "visual":
@@ -4982,6 +4992,7 @@ def main() -> None:
         "actual_segments": len(used_segments),
         "actual_segments_by_task": dict(Counter(str(seg["task"]) for seg in used_segments)),
         "actual_windows_by_task": dict(Counter(str(task) for task in arrays["task_name"])),
+        "packed_state_arrays_name": args.packed_state_arrays_name,
         "reverse_open_augmentation": args.reverse_open_augmentation,
         "reverse_open_max_segments": args.reverse_open_max_segments,
         "reverse_open_windows": int(np.sum(arrays["is_reverse_open"])),

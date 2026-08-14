@@ -12,6 +12,7 @@ CALVIN_G_ROOT="${CALVIN_G_ROOT:?Set CALVIN_G_ROOT or provide .env.server}"
 CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
 CALVIN_PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin/bin/python}"
 ABC_SUBSET_ROOT="${CALVIN_VOLUME_G_SUBSET_ROOT:-${CALVIN_G_ROOT}/data/task_ABC_D_volume_g_scale_subset}"
+PACKED_STATE_ARRAYS_NAME="${FRAME_PAIR_PACKED_STATE_ARRAYS_NAME:-state_only_arrays.npz}"
 SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_G_ROOT}/data/calvin_debug_dataset}"
 CALIBRATION_REPORT="${CALVIN_VOLUME_G_CALIBRATION_REPORT:-${ABC_SUBSET_ROOT}/surface_g_calibration.json}"
 SEED="${1:-0}"
@@ -64,6 +65,7 @@ if [[ ! -f "${CHECKPOINT}" ]]; then
     "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
     --calvin-code "${CALVIN_CODE}" \
     --data-root "${ABC_SUBSET_ROOT}" \
+    --packed-state-arrays-name "${PACKED_STATE_ARRAYS_NAME}" \
     --out-dir "${RUN_ROOT}" \
     --modes chunk_bc_minimal_g_frame \
     --include-tasks "${SOURCE_TASKS[@]}" \

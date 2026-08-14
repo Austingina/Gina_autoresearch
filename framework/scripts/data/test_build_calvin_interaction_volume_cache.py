@@ -48,12 +48,26 @@ def main() -> None:
             geometry,
             tool_clearance=0.018,
             motion_threshold=0.002,
+            attraction_mode="sticky_post_motion_zero",
         )
         assert metadata["motion_onset_local_index"] == 2
         assert np.allclose(arrays["minimal_g"][0, :3], [-0.062, 0.0, 0.0])
         assert np.linalg.norm(arrays["minimal_g"][1, :3]) > 0
         assert np.allclose(arrays["minimal_g"][2:, :3], 0)
         assert np.allclose(arrays["minimal_g"][:, 3:6], [1.0, 0.0, 0.0])
+        closed_loop, closed_loop_metadata = MODULE.relabel_segment(
+            split,
+            "push_red_block_right",
+            0,
+            3,
+            geometry,
+            tool_clearance=0.018,
+            motion_threshold=0.002,
+            attraction_mode="closed_loop_volume",
+        )
+        assert closed_loop_metadata["attraction_mode"] == "closed_loop_volume"
+        assert np.linalg.norm(closed_loop["minimal_g"][2, :3]) > 0
+        assert np.allclose(closed_loop["minimal_g"][3, :3], 0)
     print("matched interaction-volume G cache: OK")
 
 
