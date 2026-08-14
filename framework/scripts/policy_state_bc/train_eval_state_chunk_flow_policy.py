@@ -1707,6 +1707,7 @@ class FrameMinimalGChunkMLP(nn.Module):
         layers: int,
         action_mean: np.ndarray | torch.Tensor,
         action_std: np.ndarray | torch.Tensor,
+        frame_condition_scale: float = 0.1,
     ):
         super().__init__()
         if g_dim != MINIMAL_G_DIM:
@@ -1714,6 +1715,7 @@ class FrameMinimalGChunkMLP(nn.Module):
         self.base_dim = int(base_dim)
         self.g_dim = int(g_dim)
         self.chunk_size = int(chunk_size)
+        self.frame_condition_scale = float(frame_condition_scale)
         self.base_in = nn.Linear(base_dim, hidden)
         self.frame_mod = nn.Sequential(
             nn.Linear(5, hidden),
@@ -1760,7 +1762,9 @@ class FrameMinimalGChunkMLP(nn.Module):
         flow_norm = torch.linalg.vector_norm(g_raw[:, 3:6], dim=-1, keepdim=True)
         frame_features = torch.cat([attraction_local, attraction_norm, flow_norm], dim=-1)
 
-        h = torch.relu(self.base_in(base_n) + 0.1 * self.frame_mod(frame_features))
+        h = torch.relu(
+            self.base_in(base_n) + self.frame_condition_scale * self.frame_mod(frame_features)
+        )
         for block in self.blocks:
             h = torch.relu(block(h))
         local_action = self.out(h).reshape(-1, self.chunk_size, 7)
@@ -2194,6 +2198,7 @@ def save_checkpoint(
     query_g_include_token_type: bool = True,
     query_g_token_type_mode: str = "normal",
     field_alignment_weight: float = 0.0,
+    frame_condition_scale: float = 0.1,
     structured_field_config: dict[str, float] | None = None,
     inverse_pair_loss_weight: float = 0.0,
     inverse_pair_config: dict[str, Any] | None = None,
@@ -2235,6 +2240,7 @@ def save_checkpoint(
         "query_g_include_token_type": bool(query_g_include_token_type),
         "query_g_token_type_mode": str(query_g_token_type_mode),
         "field_alignment_weight": float(field_alignment_weight),
+        "frame_condition_scale": float(frame_condition_scale),
         "structured_field_config": {} if structured_field_config is None else dict(structured_field_config),
         "inverse_pair_loss_weight": float(inverse_pair_loss_weight),
         "inverse_pair_config": {} if inverse_pair_config is None else dict(inverse_pair_config),
@@ -2320,6 +2326,7 @@ def train_mode(
     query_g_include_token_type: bool,
     query_g_token_type_mode: str,
     field_alignment_weight: float,
+    frame_condition_scale: float,
     orthogonal_ratio_max: float,
     first_action_loss_weight: float,
     inverse_pair_loss_weight: float,
@@ -2597,6 +2604,7 @@ def train_mode(
             layers=layers,
             action_mean=y_mean,
             action_std=y_std,
+            frame_condition_scale=frame_condition_scale,
         ).to(device)
     elif mode == "chunk_bc_lang_minimal_g_structured":
         model = StructuredMinimalGChunkMLP(
@@ -3267,6 +3275,7 @@ def train_mode(
                 query_g_include_token_type=query_g_include_token_type,
                 query_g_token_type_mode=query_g_token_type_mode,
                 field_alignment_weight=field_alignment_weight,
+                frame_condition_scale=frame_condition_scale,
                 structured_field_config=structured_field_config,
                 inverse_pair_loss_weight=inverse_pair_loss_weight,
                 inverse_pair_config=inverse_pair_config,
@@ -3307,6 +3316,7 @@ def train_mode(
         query_g_include_token_type=query_g_include_token_type,
         query_g_token_type_mode=query_g_token_type_mode,
         field_alignment_weight=field_alignment_weight,
+        frame_condition_scale=frame_condition_scale,
         structured_field_config=structured_field_config,
         inverse_pair_loss_weight=inverse_pair_loss_weight,
         inverse_pair_config=inverse_pair_config,
@@ -3349,6 +3359,7 @@ def train_mode(
         query_g_include_token_type=query_g_include_token_type,
         query_g_token_type_mode=query_g_token_type_mode,
         field_alignment_weight=field_alignment_weight,
+        frame_condition_scale=frame_condition_scale,
         structured_field_config=structured_field_config,
         inverse_pair_loss_weight=inverse_pair_loss_weight,
         inverse_pair_config=inverse_pair_config,
@@ -3378,6 +3389,7 @@ def train_mode(
         "query_g_include_token_type": bool(query_g_include_token_type),
         "query_g_token_type_mode": str(query_g_token_type_mode),
         "field_alignment_weight": float(field_alignment_weight),
+        "frame_condition_scale": float(frame_condition_scale),
         "structured_field_config": structured_field_config,
         "first_action_loss_weight": float(first_action_loss_weight),
         "inverse_pair_loss_weight": float(inverse_pair_loss_weight),
@@ -3639,6 +3651,7 @@ class ChunkFlowPolicy:
                 layers=ckpt["layers"],
                 action_mean=ckpt["y_mean"],
                 action_std=ckpt["y_std"],
+                frame_condition_scale=float(ckpt.get("frame_condition_scale", 0.1)),
             )
         elif self.mode == "chunk_bc_lang_minimal_g_structured":
             base_dim = int(ckpt.get("base_dim") or 0)
@@ -4726,6 +4739,12 @@ def main() -> None:
         help="Auxiliary low-frequency field-alignment weight for structured minimal-G BC.",
     )
     parser.add_argument(
+        "--frame-condition-scale",
+        type=float,
+        default=0.1,
+        help="Scale of the learned G-frame feature branch before fusion with the state branch.",
+    )
+    parser.add_argument(
         "--orthogonal-ratio-max",
         type=float,
         default=2.0,
@@ -4835,6 +4854,8 @@ def main() -> None:
         parser.error("--inverse-pair-loss-weight must be non-negative")
     if args.target_pair_loss_weight < 0:
         parser.error("--target-pair-loss-weight must be non-negative")
+    if args.frame_condition_scale < 0:
+        parser.error("--frame-condition-scale must be non-negative")
     if args.source_distill_weight < 0:
         parser.error("--source-distill-weight must be non-negative")
     if args.residual_adapter_hidden <= 0:
@@ -5006,6 +5027,7 @@ def main() -> None:
         "g_dropout_prob": args.g_dropout_prob,
         "gate_max": args.gate_max,
         "field_alignment_weight": args.field_alignment_weight,
+        "frame_condition_scale": args.frame_condition_scale,
         "orthogonal_ratio_max": args.orthogonal_ratio_max,
         "first_action_loss_weight": args.first_action_loss_weight,
         "inverse_pair_loss_weight": args.inverse_pair_loss_weight,
@@ -5064,6 +5086,7 @@ def main() -> None:
                 query_g_include_token_type=query_g_include_token_type,
                 query_g_token_type_mode=query_g_token_type_mode,
                 field_alignment_weight=args.field_alignment_weight,
+                frame_condition_scale=args.frame_condition_scale,
                 orthogonal_ratio_max=args.orthogonal_ratio_max,
                 first_action_loss_weight=args.first_action_loss_weight,
                 inverse_pair_loss_weight=args.inverse_pair_loss_weight,
