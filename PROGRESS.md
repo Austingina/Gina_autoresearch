@@ -1,6 +1,6 @@
 # AutoResearch Progress — Index
 
-**Last reconciled:** 2026-08-13 (local workstation ↔ BNU `/public/home/zhongfangwei/wuk_code/AutoResearch`).
+**Last reconciled:** 2026-08-14 (local workstation ↔ BNU `/public/home/zhongfangwei/wuk_code/AutoResearch_method_gate`).
 
 **Active goal:** Phase 1 — CALVIN reusable interaction G (`G=[A,F]`), causal dependence → conditional flow/diffusion executor.
 
@@ -22,6 +22,18 @@
 
 ### Phase 1 — latest gates
 
+- **2026-08-14** Interaction-volume target-pair gate on expanded A/B/C source
+  data: ordinary scaled token BC still ignores attraction A, but a
+  same-flow/different-target action-difference objective makes A causally
+  necessary. The epoch-50 probe reaches held-out blue-left/red-right
+  `9/50, 4/50`; zero-A, zero-F, all-zero, and sign-flipped controls are each
+  `0/100` on identical starts. Matched no-G is `0/100` on source and held-out.
+  This is the first bidirectional reusable-interface result, but absolute
+  normal success is only `13/100` and the source total is `15/100`. Scaling is
+  still blocked on control recovery plus seed replication. A weak-pair
+  continuation from the better-control epoch-12 model is the active Pareto
+  test; its offline final point improves held-out xyz MSE to `0.02119` while
+  retaining a 6.73 cm pre-contact A response.
 - **2026-08-13** Training-stability audit on the matched behavior-G gate:
   packing all `199,292` state/action/G rows reduced per-run input assembly from
   about 39 minutes to about one minute. With the original AdamW `lr=1e-3`,

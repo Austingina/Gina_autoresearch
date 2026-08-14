@@ -241,6 +241,79 @@ explicitly target-relative learning problem while keeping the six-dimensional
 interface coarse; another global G scale, action-chunk weight, or flow-only
 coordinate frame is not justified.
 
+## Expanded coverage and same-flow target supervision
+
+The expanded source subset contains 336 demonstrations, 84 for each of the
+four source color-direction combinations, plus 18 held-out demonstrations used
+only for diagnostics. Its source cache contains 20,097 frames. Increasing the
+source calibration fit from 84 to 324 segments reduces the maximum
+source-validation interaction-volume clearance gap from 15.815 mm to 3.139 mm,
+so the geometry reuse gate passes without changing the recommended 18.012 mm
+clearance.
+
+More data improves action fit but does not by itself identify target position.
+The scaled ordinary H1 token policy has held-out xyz MSE `0.022344`, versus
+`0.038311` for matched no-G, but normal and zero-attraction remain identical
+(`0.022344/0.022345`). Zero-flow rises to `0.038895`. On the held-out
+pre-outside-volume phase, normal/zero-attraction/zero-flow are
+`0.027912/0.027916/0.038635`. The expanded matched no-G policy is also `0/100`
+on source scene-D rollouts and `0/100` on held-out scene-D rollouts. Coverage
+alone therefore improves F-conditioned regression without solving A
+conditional collapse.
+
+The training-only same-flow target-pair objective uses real source
+demonstrations with nearly identical F but different target attraction A. Pairs
+are matched by robot state and filtered for early nonzero-A windows, target and
+action separation, nearby EEF pose, and expert action alignment with each
+sample's own A. The expanded training split supplies 287 high-confidence left
+pairs and 175 right pairs; their median attraction-difference/action-difference
+cosines are `0.674/0.559`, with `86.1%/82.3%` positive. No stage, contact,
+task-axis, or action-projection rule is added, and inference still consumes the
+same six-dimensional G.
+
+With pair weight 0.1, the ordinary best-validation checkpoint occurs at epoch
+12. A later epoch-50 checkpoint gives a useful dependence-strength probe:
+
+| Checkpoint | Source normal | Held-out normal | Held-out zero-A | Held-out zero-F | Held-out zero/sign-flip |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| matched no-G | 0/100 | 0/100 | - | - | - |
+| pair e12 | 27/100 | 25/100 (`1` blue-left, `24` red-right) | 25/100 (`0/25`) | 0/100 | 0/100 / 0/100 |
+| pair e50 | 15/100 | 13/100 (`9` blue-left, `4` red-right) | 0/100 | 0/100 | 0/100 / 0/100 |
+
+The e12 model responds to A offline, but task success still does not depend on
+it: removing A preserves the total and shifts the remaining success to the
+right-direction target. The e50 model is the first component-level causal
+result: both held-out combinations are nonzero under normal G, and removing
+either A or F eliminates all 13 successes on the same initial states. Against
+zero-A, the paired exact McNemar two-sided p-value is `0.000244`. This supports
+the claim that the compact field can serve as a recomposable target-and-motion
+interface, while its current success rate remains too low for the final method
+claim.
+
+Offline metrics expose the control trade-off. On held-out pre-outside-volume
+windows, e12 normal/zero-A xyz MSE is `0.021954/0.023640`, with a 0.0425 direct
+normal-to-zero-A xyz response. At e50 these become `0.024120/0.033781` and
+0.1012. Stronger A dependence improves bidirectional coverage but degrades
+ordinary action fit and source success. A 0.5 parameter interpolation does not
+solve this: it reaches 32/100 source successes, all on left tasks, and only
+1/100 held-out. Parameter mixing switches source behavior modes rather than
+combining reusable control skills.
+
+Direct pair-aware checkpoint selection is not yet statistically supported. The
+current source validation split contains only three high-confidence left pairs
+and one right pair. Do not select epochs using held-out task outcomes or these
+four validation pairs. Use ordinary source validation for the present seed-0
+method diagnostic, then introduce a stratified segment split before the
+multi-seed confirmation.
+
+A two-stage weak-pair continuation from e12 is the active control-recovery
+test. Its final checkpoint has held-out xyz MSE `0.021191`; in the held-out
+pre-outside-volume phase, normal/zero-A are `0.023905/0.031665` with a 0.0673
+direct A response. This is a better offline Pareto point than e50. Closed-loop
+normal and component ablations remain mandatory before it can replace the e50
+causal probe. Fine-tuning from e50 with pair weight 0.02 does not recover
+validation fit and should not be continued.
+
 ## Reproduction
 
 - Range extractor:

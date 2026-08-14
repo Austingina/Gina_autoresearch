@@ -840,3 +840,44 @@ FIELD_CKPT=checkpoints/lift/guidance_field_s0_fixed.pt \
   is D-like. The present score therefore mixes held-out color-direction
   recombination with scene transfer. Subsequent reporting must separate a
   same-scene compositional gate from an A/B/C-to-D visual scene gate.
+
+# Interaction-volume target-pair gate -- 2026-08-14
+
+- Froze the coarse executor interface as
+  `G=[delta_to_expanded_oriented_object_volume_xyz(3), object_flow_xyz(3)]`.
+  The executor receives proprioception and G, with no direct language, task,
+  scene state, contact bit, stage token, or hard G-to-action projection.
+- Expanded the source calibration/training subset to 336 demonstrations and
+  20,097 cached frames. Each source color-direction task has 84 segments; 18
+  held-out blue-left/red-right segments remain diagnostic-only. The
+  source-validation clearance gap falls from 15.815 mm to 3.139 mm and the
+  geometry reuse gate passes at the fixed 18.012 mm clearance.
+- More data alone does not identify attraction A. Scaled token BC has held-out
+  normal/zero-A xyz MSE `0.022344/0.022345`, while zero-F rises to `0.038895`.
+  Matched no-G remains `0/100` on both source and held-out scene-D rollouts.
+- Added training-only same-flow/different-target action-difference
+  supervision. The source training split supplies 287 high-confidence left
+  and 175 right pairs. Inference and the six-dimensional G are unchanged.
+- Pair-weight-0.1 epoch 12 reaches source `27/100` and held-out `25/100`, but
+  held-out success is `1/50` blue-left and `24/50` red-right; zero-A remains
+  `25/100`. It responds to A offline without needing A for task success.
+- The epoch-50 probe reaches source `15/100`, with every source task nonzero,
+  and held-out `13/100` (`9/50` blue-left, `4/50` red-right). Zero-A, zero-F,
+  all-zero, and sign-flipped controls are each `0/100` on the identical
+  held-out starts. This is the first bidirectional result in which both compact
+  field components are necessary for held-out task success.
+- Stronger A dependence trades against action fit: held-out pre-contact direct
+  normal-to-zero-A xyz response grows from 4.25 cm at epoch 12 to 10.12 cm at
+  epoch 50, while normal xyz MSE worsens from `0.02195` to `0.02412` and source
+  success falls. A 0.5 parameter interpolation is rejected: it gives `32/100`
+  source successes only on left tasks and `1/100` held-out.
+- The source validation split has only four high-confidence target pairs, so
+  it cannot support a stable pair-aware checkpoint metric. Do not select on
+  held-out outcomes. Before multi-seed confirmation, replace the random
+  segment split with a stratified pair-support split.
+- Active follow-up: weak pair continuation from epoch 12. Its final offline
+  checkpoint has held-out xyz MSE `0.021191`, pre-contact normal/zero-A
+  `0.023905/0.031665`, and 6.73 cm direct A response. Closed-loop normal and
+  component controls decide whether it improves the e50 Pareto point. Scaling
+  learned visual G remains blocked until this control-recovery gate and at
+  least three seeds pass.
