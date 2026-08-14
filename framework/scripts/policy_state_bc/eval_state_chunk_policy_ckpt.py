@@ -26,6 +26,12 @@ def main() -> None:
     parser.add_argument("--eval-sequence-workers", type=int, default=8)
     parser.add_argument("--eval-task-filter", nargs="+", default=["close_drawer"])
     parser.add_argument("--eval-sequence-offset", type=int, default=0)
+    parser.add_argument(
+        "--eval-sequence-cache",
+        type=Path,
+        default=None,
+        help="Optional protocol-checked cache of selected CALVIN standard initial states.",
+    )
     parser.add_argument("--action-execution-horizon", type=int, required=True)
     parser.add_argument("--temporal-ensemble", type=int, choices=[0, 1], default=0)
     parser.add_argument("--temporal-ensemble-decay", type=float, default=0.25)
@@ -100,6 +106,11 @@ def main() -> None:
         eval_scan_sequences=args.eval_scan_sequences,
         eval_sequence_workers=args.eval_sequence_workers,
         eval_sequence_offset=args.eval_sequence_offset,
+        eval_sequence_cache=(
+            args.eval_sequence_cache.resolve()
+            if args.eval_sequence_cache is not None
+            else None
+        ),
         g_scale=args.g_scale,
         query_g_control=args.query_g_control,
         online_minimal_g_mode=args.online_minimal_g_mode,

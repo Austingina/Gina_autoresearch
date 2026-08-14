@@ -280,6 +280,7 @@ evaluate() {
     exit 2
   fi
   local eval_dir="${RUN_ROOT}/${mode}/eval_D_${split}_${control}"
+  local sequence_cache="${CALVIN_G_ROOT}/cache/calvin_standard_sequences/D_${split}_${per_task}_offset0.pkl"
   if [[ -f "${eval_dir}/state_bc_summary.json" ]]; then
     return
   fi
@@ -296,6 +297,7 @@ evaluate() {
     --ep-len 160 \
     --eval-scan-sequences 10000 \
     --eval-sequence-workers 8 \
+    --eval-sequence-cache "${sequence_cache}" \
     --eval-task-filter "${tasks[@]}" \
     --action-execution-horizon "${ACTION_EXECUTION_HORIZON}" \
     --query-g-control "${control}" \

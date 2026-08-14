@@ -11,6 +11,7 @@ import json
 import math
 import os
 from pathlib import Path
+import pickle
 import random
 import sys
 import time
@@ -4049,6 +4050,7 @@ def evaluate_policy_ckpt(
     eval_scan_sequences: int,
     eval_sequence_workers: int = 8,
     eval_sequence_offset: int = 0,
+    eval_sequence_cache: Path | None = None,
     g_scale: float = 1.0,
     query_g_control: str = "normal",
     online_minimal_g_mode: str = "generated_query",
@@ -4171,42 +4173,97 @@ def evaluate_policy_ckpt(
         task_cfg = OmegaConf.load(conf_dir / "callbacks/rollout/tasks/new_playtable_tasks.yaml")
         task_oracle = hydra.utils.instantiate(task_cfg)
         val_annotations = OmegaConf.load(conf_dir / "annotations/new_playtable_validation.yaml")
-        selected: list[tuple[Any, str, int]] = []
-        if eval_mode == "first_task":
-            matched = 0
-            for sequence_index, (initial_state, seq) in enumerate(
-                get_sequences(
-                    max(num_sequences + eval_sequence_offset, eval_scan_sequences),
-                    num_workers=eval_sequence_workers,
+        sequence_cache_signature = {
+            "eval_mode": str(eval_mode),
+            "eval_task_filter": sorted(eval_task_filter or []),
+            "num_sequences": int(num_sequences),
+            "eval_scan_sequences": int(eval_scan_sequences),
+            "eval_sequence_offset": int(eval_sequence_offset),
+        }
+        selected: list[tuple[Any, str, int]] | None = None
+        if eval_sequence_cache is not None and eval_sequence_cache.exists():
+            with open(eval_sequence_cache, "rb") as f:
+                cached_selection = pickle.load(f)
+            for key, expected in sequence_cache_signature.items():
+                if cached_selection.get(key) != expected:
+                    raise RuntimeError(
+                        f"Evaluation sequence cache protocol mismatch for {key}: "
+                        f"{cached_selection.get(key)!r} != {expected!r}"
+                    )
+            selected = cached_selection.get("selected")
+            if not isinstance(selected, list):
+                raise RuntimeError(
+                    f"Evaluation sequence cache has invalid selection: {eval_sequence_cache}"
                 )
-            ):
-                first_task = seq[0]
-                if eval_task_filter is None or first_task in eval_task_filter:
-                    if matched >= eval_sequence_offset:
-                        selected.append((initial_state, first_task, sequence_index))
-                    matched += 1
-                if len(selected) >= num_sequences:
-                    break
-        else:
-            if eval_task_filter is None:
-                raise RuntimeError("balanced_first_task requires --eval-task-filter")
-            buckets: dict[str, list[tuple[Any, str, int]]] = {task: [] for task in sorted(eval_task_filter)}
-            matched_by_task: Counter[str] = Counter()
-            required_per_task = num_sequences + eval_sequence_offset
-            for sequence_index, (initial_state, seq) in enumerate(
-                get_sequences(
-                    max(required_per_task * max(1, len(buckets)) * 10, eval_scan_sequences),
-                    num_workers=eval_sequence_workers,
+            print(
+                f"[eval] loaded {len(selected)} standard sequences from "
+                f"{eval_sequence_cache}",
+                flush=True,
+            )
+        if selected is None:
+            selected = []
+            if eval_mode == "first_task":
+                matched = 0
+                for sequence_index, (initial_state, seq) in enumerate(
+                    get_sequences(
+                        max(num_sequences + eval_sequence_offset, eval_scan_sequences),
+                        num_workers=eval_sequence_workers,
+                    )
+                ):
+                    first_task = seq[0]
+                    if eval_task_filter is None or first_task in eval_task_filter:
+                        if matched >= eval_sequence_offset:
+                            selected.append((initial_state, first_task, sequence_index))
+                        matched += 1
+                    if len(selected) >= num_sequences:
+                        break
+            else:
+                if eval_task_filter is None:
+                    raise RuntimeError("balanced_first_task requires --eval-task-filter")
+                buckets: dict[str, list[tuple[Any, str, int]]] = {
+                    task: [] for task in sorted(eval_task_filter)
+                }
+                matched_by_task: Counter[str] = Counter()
+                required_per_task = num_sequences + eval_sequence_offset
+                for sequence_index, (initial_state, seq) in enumerate(
+                    get_sequences(
+                        max(
+                            required_per_task * max(1, len(buckets)) * 10,
+                            eval_scan_sequences,
+                        ),
+                        num_workers=eval_sequence_workers,
+                    )
+                ):
+                    first_task = seq[0]
+                    if first_task in buckets:
+                        if (
+                            matched_by_task[first_task] >= eval_sequence_offset
+                            and len(buckets[first_task]) < num_sequences
+                        ):
+                            buckets[first_task].append(
+                                (initial_state, first_task, sequence_index)
+                            )
+                        matched_by_task[first_task] += 1
+                    if all(len(items) >= num_sequences for items in buckets.values()):
+                        break
+                selected = [item for task in sorted(buckets) for item in buckets[task]]
+            if eval_sequence_cache is not None:
+                eval_sequence_cache.parent.mkdir(parents=True, exist_ok=True)
+                temporary_cache = eval_sequence_cache.with_suffix(
+                    eval_sequence_cache.suffix + f".tmp.{os.getpid()}"
                 )
-            ):
-                first_task = seq[0]
-                if first_task in buckets:
-                    if matched_by_task[first_task] >= eval_sequence_offset and len(buckets[first_task]) < num_sequences:
-                        buckets[first_task].append((initial_state, first_task, sequence_index))
-                    matched_by_task[first_task] += 1
-                if all(len(items) >= num_sequences for items in buckets.values()):
-                    break
-            selected = [item for task in sorted(buckets) for item in buckets[task]]
+                with open(temporary_cache, "wb") as f:
+                    pickle.dump(
+                        {**sequence_cache_signature, "selected": selected},
+                        f,
+                        protocol=pickle.HIGHEST_PROTOCOL,
+                    )
+                os.replace(temporary_cache, eval_sequence_cache)
+                print(
+                    f"[eval] cached {len(selected)} standard sequences at "
+                    f"{eval_sequence_cache}",
+                    flush=True,
+                )
         if not selected:
             raise RuntimeError(f"No first-task eval sequences matched filter: {sorted(eval_task_filter or [])}")
         selected_tasks = [task for _, task, _ in selected]
