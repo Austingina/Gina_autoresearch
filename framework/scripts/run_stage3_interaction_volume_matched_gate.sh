@@ -13,6 +13,8 @@ CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
 CALVIN_PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin/bin/python}"
 ABC_SUBSET_ROOT="${CALVIN_VOLUME_G_SUBSET_ROOT:-${CALVIN_G_ROOT}/data/task_ABC_D_volume_g_subset}"
 PACKED_STATE_ARRAYS_NAME="${VOLUME_GATE_PACKED_STATE_ARRAYS_NAME:-state_only_arrays.npz}"
+VISUAL_FEATURE_ROOT="${CALVIN_VOLUME_G_DINO_FEATURE_ROOT:-${ABC_SUBSET_ROOT}_dinov2_small}"
+VISUAL_ENCODER_NAME="${VOLUME_GATE_VISUAL_ENCODER_NAME:-facebook/dinov2-small}"
 SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_G_ROOT}/data/calvin_debug_dataset}"
 CALIBRATION_REPORT="${CALVIN_VOLUME_G_CALIBRATION_REPORT:-${ABC_SUBSET_ROOT}/surface_g_calibration.json}"
 SEED="${1:-0}"
@@ -196,6 +198,23 @@ PY
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
+export HF_HOME="${HF_HOME:-${CALVIN_G_ROOT}/cache/huggingface}"
+export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
+export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
+
+TRAIN_VISUAL_ARGS=()
+EVAL_OBSERVATION_ARGS=(--state-only-observation)
+if [[ "${EXECUTOR_STATE_SCOPE}" == "visual" ]]; then
+  if [[ ! -f "${VISUAL_FEATURE_ROOT}/manifest.json" ]]; then
+    echo "Visual feature cache does not exist: ${VISUAL_FEATURE_ROOT}/manifest.json" >&2
+    exit 2
+  fi
+  TRAIN_VISUAL_ARGS=(
+    --visual-feature-dir "${VISUAL_FEATURE_ROOT}"
+    --visual-encoder-name "${VISUAL_ENCODER_NAME}"
+  )
+  EVAL_OBSERVATION_ARGS=()
+fi
 
 TRAIN_MODES=(chunk_bc_state chunk_bc_minimal_g_tokens)
 CHECKPOINT_EPOCHS=("${EPOCHS}")
@@ -242,6 +261,7 @@ if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
     --minimal-g-scope translational \
     --executor-state-scope "${EXECUTOR_STATE_SCOPE}" \
     --executor-language-mode none \
+    "${TRAIN_VISUAL_ARGS[@]}" \
     --mask-executor-language-with-g 0 \
     --g-scale-aug-values 1.0 \
     --g-dropout-prob 0.0 \
@@ -347,7 +367,7 @@ evaluate() {
     --behavior-contact-tolerance 0 \
     --behavior-motion-threshold "${MOTION_THRESHOLD}" \
     --language-control normal \
-    --state-only-observation \
+    "${EVAL_OBSERVATION_ARGS[@]}" \
     --trace-rollouts 5 \
     --device "cuda:${GPU_ID}" \
     2>&1 | tee "${LOG_ROOT}/eval_${mode}_${split}_${control}${EVAL_DIR_SUFFIX}.log"
