@@ -12,6 +12,7 @@ CALVIN_G_ROOT="${CALVIN_G_ROOT:?Set CALVIN_G_ROOT or provide .env.server}"
 CALVIN_CODE="${CALVIN_CODE:-${CALVIN_G_ROOT}/code/calvin}"
 CALVIN_PYTHON="${CALVIN_PYTHON:-${CALVIN_G_ROOT}/envs/calvin/bin/python}"
 ABC_SUBSET_ROOT="${CALVIN_VOLUME_G_SUBSET_ROOT:-${CALVIN_G_ROOT}/data/task_ABC_D_volume_g_subset}"
+PACKED_STATE_ARRAYS_NAME="${VOLUME_GATE_PACKED_STATE_ARRAYS_NAME:-state_only_arrays.npz}"
 SIM_DATA_ROOT="${CALVIN_SIM_DATA_ROOT:-${CALVIN_G_ROOT}/data/calvin_debug_dataset}"
 CALIBRATION_REPORT="${CALVIN_VOLUME_G_CALIBRATION_REPORT:-${ABC_SUBSET_ROOT}/surface_g_calibration.json}"
 SEED="${1:-0}"
@@ -131,8 +132,12 @@ if [[ ! -f "${ABC_SUBSET_ROOT}/training/state_only_arrays.npz" ]]; then
     --calibration-report "${CALIBRATION_REPORT}" \
     --motion-threshold "${MOTION_THRESHOLD}"
 fi
+if [[ ! -f "${ABC_SUBSET_ROOT}/training/${PACKED_STATE_ARRAYS_NAME}" ]]; then
+  echo "Packed state cache does not exist: ${ABC_SUBSET_ROOT}/training/${PACKED_STATE_ARRAYS_NAME}" >&2
+  exit 2
+fi
 
-"${CALVIN_PYTHON}" - "${ABC_SUBSET_ROOT}" "${CALIBRATION_REPORT}" <<'PY'
+"${CALVIN_PYTHON}" - "${ABC_SUBSET_ROOT}" "${CALIBRATION_REPORT}" "${PACKED_STATE_ARRAYS_NAME}" <<'PY'
 import json
 from pathlib import Path
 import sys
@@ -141,7 +146,13 @@ import numpy as np
 
 root = Path(sys.argv[1])
 report = json.load(open(sys.argv[2], encoding="utf-8"))
-manifest = json.load(open(root / "training/interaction_volume_cache_manifest.json", encoding="utf-8"))
+cache_name = sys.argv[3]
+manifest_name = (
+    "interaction_volume_cache_manifest.json"
+    if cache_name == "state_only_arrays.npz"
+    else f"{Path(cache_name).stem}_manifest.json"
+)
+manifest = json.load(open(root / "training" / manifest_name, encoding="utf-8"))
 selection = json.load(open(root / "calibration_subset_manifest.json", encoding="utf-8"))
 expected = {
     "push_red_block_left",
@@ -168,7 +179,7 @@ assert manifest["frames"] > 0, manifest["frames"]
 assert manifest["heldout_tasks_written"] is False
 assert report["protocol"]["heldout_used_for_fitting"] is False
 assert report["interface_audit"]["interaction_volume_contact_coverage_gate_pass"] is True
-with np.load(root / "training/state_only_arrays.npz", allow_pickle=False) as cache:
+with np.load(root / "training" / cache_name, allow_pickle=False) as cache:
     assert cache["minimal_g"].shape == (int(manifest["frames"]), 6)
     assert np.isfinite(cache["minimal_g"]).all()
 print("matched_volume_data_gate_ok", manifest["task_counts"], manifest["scene_counts"])
@@ -200,6 +211,7 @@ if (( ${#MISSING_TRAIN_MODES[@]} > 0 )); then
     "${REPO_ROOT}/framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py" \
     --calvin-code "${CALVIN_CODE}" \
     --data-root "${ABC_SUBSET_ROOT}" \
+    --packed-state-arrays-name "${PACKED_STATE_ARRAYS_NAME}" \
     --out-dir "${RUN_ROOT}" \
     --modes "${MISSING_TRAIN_MODES[@]}" \
     --include-tasks "${SOURCE_TASKS[@]}" \
