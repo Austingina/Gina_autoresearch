@@ -187,23 +187,21 @@ def main() -> None:
         minimal_g_scope="translational",
         primitive_geometry={},
     )
-    train_idx, _ = policy.segment_train_val_indices(
+    train_idx, val_idx = policy.segment_train_val_indices(
         arrays["segment_id"], int(meta["split_seed"])
     )
     pairs = args.pair or [parse_pair(value) for value in DEFAULT_PAIRS]
-    report = {
-        "run_meta": args.run_meta.as_posix(),
-        "data_root": data_root.as_posix(),
-        "train_windows": int(len(train_idx)),
-        "settings": {
-            key: value
-            for key, value in vars(args).items()
-            if key not in {"run_meta", "data_root", "pair", "output"}
-        },
-        "families": [
+    settings = {
+        key: value
+        for key, value in vars(args).items()
+        if key not in {"run_meta", "data_root", "pair", "output"}
+    }
+
+    def summarize_split(indices: np.ndarray) -> list[dict[str, Any]]:
+        return [
             summarize_family(
                 arrays,
-                train_idx,
+                indices,
                 family,
                 task0,
                 task1,
@@ -216,7 +214,16 @@ def main() -> None:
                 own_alignment_threshold=args.own_alignment_threshold,
             )
             for family, task0, task1 in pairs
-        ],
+        ]
+
+    report = {
+        "run_meta": args.run_meta.as_posix(),
+        "data_root": data_root.as_posix(),
+        "train_windows": int(len(train_idx)),
+        "validation_windows": int(len(val_idx)),
+        "settings": settings,
+        "families": summarize_split(train_idx),
+        "validation_families": summarize_split(val_idx),
     }
     text = json.dumps(report, indent=2)
     if args.output:
