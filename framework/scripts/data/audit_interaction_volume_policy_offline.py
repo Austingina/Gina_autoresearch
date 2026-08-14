@@ -376,8 +376,17 @@ def main() -> None:
         normal = predictions["volume_g"]["normal"][mask]
         zero = predictions["volume_g"]["zero"][mask]
         flip = predictions["volume_g"]["sign_flip"][mask]
+        zero_attraction = predictions["volume_g"]["zero_attraction"][mask]
+        zero_flow = predictions["volume_g"]["zero_flow"][mask]
         normal_zero = normal - zero
         normal_flip = normal - flip
+        normal_zero_attraction = normal - zero_attraction
+        normal_zero_flow = normal - zero_flow
+        attraction_norm = np.linalg.norm(attraction, axis=1)
+        attraction_direction = attraction / np.maximum(
+            attraction_norm[:, None], 1e-6
+        )
+        attraction_valid = attraction_norm > 1e-6
         group_metrics["volume_g_causal_response"] = {
             "normal_zero_action_l2": float(
                 np.mean(np.linalg.norm(normal_zero, axis=1))
@@ -399,6 +408,18 @@ def main() -> None:
             ),
             "normal_zero_gripper_abs": float(np.mean(np.abs(normal_zero[:, 6]))),
             "normal_flip_gripper_abs": float(np.mean(np.abs(normal_flip[:, 6]))),
+            "normal_zero_attraction_action_l2": float(
+                np.mean(np.linalg.norm(normal_zero_attraction, axis=1))
+            ),
+            "normal_zero_attraction_xyz_l2": float(
+                np.mean(np.linalg.norm(normal_zero_attraction[:, :3], axis=1))
+            ),
+            "normal_zero_flow_action_l2": float(
+                np.mean(np.linalg.norm(normal_zero_flow, axis=1))
+            ),
+            "normal_zero_flow_xyz_l2": float(
+                np.mean(np.linalg.norm(normal_zero_flow[:, :3], axis=1))
+            ),
             "normal_minus_zero_flow_projection": float(
                 np.mean(np.sum(normal_zero[:, :3] * flow, axis=1))
             ),
@@ -423,6 +444,22 @@ def main() -> None:
                 )
                 if np.any(np.linalg.norm(attraction, axis=1) > 1e-6)
                 else None
+            ),
+            "normal_minus_zero_attraction_attraction_projection": (
+                float(
+                    np.mean(
+                        np.sum(
+                            normal_zero_attraction[attraction_valid, :3]
+                            * attraction_direction[attraction_valid],
+                            axis=1,
+                        )
+                    )
+                )
+                if np.any(attraction_valid)
+                else None
+            ),
+            "normal_minus_zero_flow_flow_projection": float(
+                np.mean(np.sum(normal_zero_flow[:, :3] * flow, axis=1))
             ),
         }
         report_groups[name] = group_metrics
