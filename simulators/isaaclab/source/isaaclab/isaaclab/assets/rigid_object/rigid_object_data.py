@@ -2,12 +2,13 @@
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
+from __future__ import annotations
 
 import weakref
 
 import torch
 
-import omni.physics.tensors.impl.api as physx
+from isaaclab.utils.physics_tensors import physx
 
 import isaaclab.utils.math as math_utils
 from isaaclab.sim.utils.stage import get_current_stage_id

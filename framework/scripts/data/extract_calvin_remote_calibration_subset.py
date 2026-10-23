@@ -5,11 +5,15 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import random
 import struct
+import time
+from typing import Any, Sequence
 import zlib
+from zipfile import ZipFile
 
 import numpy as np
 import requests
@@ -121,9 +125,7 @@ def select_segments(
     return sorted(selected, key=lambda row: int(row["start"]))
 
 
-def extract_member_from_range(
-    payload: bytes, range_start: int, info: object, destination: Path
-) -> None:
+def member_bytes_from_range(payload: bytes, range_start: int, info: Any) -> bytes:
     offset = int(info.header_offset) - range_start
     header = LOCAL_HEADER.unpack_from(payload, offset)
     signature, _version, _flags, method, _mtime, _mdate, _crc, _csize, _usize, name_len, extra_len = header
@@ -143,11 +145,32 @@ def extract_member_from_range(
         raise RuntimeError(f"Uncompressed size mismatch for {info.filename}")
     if zlib.crc32(data) & 0xFFFFFFFF != int(info.CRC):
         raise RuntimeError(f"CRC mismatch for {info.filename}")
+    return data
+
+
+def extract_member_from_range(
+    payload: bytes, range_start: int, info: Any, destination: Path
+) -> None:
+    data = member_bytes_from_range(payload, range_start, info)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(data)
 
 
-def member_end(info: object) -> int:
+def fetch_member(session: requests.Session, url: str, info: Any, timeout: float) -> bytes:
+    range_start = int(info.header_offset)
+    range_end = member_end(info)
+    response = session.get(
+        url,
+        headers={"Range": f"bytes={range_start}-{range_end}"},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    if response.status_code != 206:
+        raise RuntimeError(f"Server ignored Range request: {response.status_code}")
+    return member_bytes_from_range(response.content, range_start, info)
+
+
+def member_end(info: Any) -> int:
     return (
         int(info.header_offset)
         + LOCAL_HEADER.size
@@ -158,11 +181,23 @@ def member_end(info: object) -> int:
     )
 
 
-def physical_groups(infos: list[object], max_gap: int = 1 << 20) -> list[list[object]]:
+def physical_groups(
+    infos: Sequence[Any],
+    max_gap: int = 1 << 20,
+    max_range_bytes: int | None = None,
+) -> list[list[Any]]:
     ordered = sorted(infos, key=lambda info: int(info.header_offset))
-    groups: list[list[object]] = []
+    groups: list[list[Any]] = []
     for info in ordered:
-        if not groups or int(info.header_offset) - member_end(groups[-1][-1]) > max_gap:
+        gap_too_large = bool(
+            groups and int(info.header_offset) - member_end(groups[-1][-1]) > max_gap
+        )
+        range_too_large = bool(
+            groups
+            and max_range_bytes is not None
+            and member_end(info) - int(groups[-1][0].header_offset) + 1 > max_range_bytes
+        )
+        if not groups or gap_too_large or range_too_large:
             groups.append([info])
         else:
             groups[-1].append(info)
@@ -181,10 +216,26 @@ def main() -> None:
     parser.add_argument("--validation-modulus", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20260814)
     parser.add_argument("--timeout", type=float, default=120.0)
+    parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--retries", type=int, default=5)
+    parser.add_argument(
+        "--zip-index",
+        type=Path,
+        help="Sparse local ZIP containing the central directory; avoids remote index scanning",
+    )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--selection-manifest",
+        type=Path,
+        help="Optional JSON path for the full deterministic selection, including segment detail",
+    )
     args = parser.parse_args()
     if args.source_per_task_scene < 2:
         parser.error("source-per-task-scene must be at least 2")
+    if args.workers < 1:
+        parser.error("workers must be at least 1")
+    if args.retries < 1:
+        parser.error("retries must be at least 1")
 
     root = args.output_dir.resolve()
     split = root / "training"
@@ -200,8 +251,16 @@ def main() -> None:
         "task_ABC_D/training/.hydra/merged_config.yaml",
         "task_ABC_D/training/scene_info.npy",
     )
-    with RemoteZip(args.url) as archive:
-        metadata = {name: archive.read(name) for name in metadata_names}
+    archive_context = ZipFile(args.zip_index.resolve()) if args.zip_index else RemoteZip(args.url)
+    with archive_context as archive:
+        session = requests.Session()
+        if args.zip_index:
+            metadata = {
+                name: fetch_member(session, args.url, archive.getinfo(name), args.timeout)
+                for name in metadata_names
+            }
+        else:
+            metadata = {name: archive.read(name) for name in metadata_names}
         annotation = np.load(
             __import__("io").BytesIO(metadata[metadata_names[0]]), allow_pickle=True
         ).item()
@@ -233,14 +292,34 @@ def main() -> None:
                 sorted(Counter(str(row["scene"]) for row in segments).items())
             ),
         }
+        if args.selection_manifest:
+            args.selection_manifest.parent.mkdir(parents=True, exist_ok=True)
+            args.selection_manifest.write_text(
+                json.dumps(
+                    {
+                        **selection_summary,
+                        "source_url": args.url,
+                        "selection_seed": args.seed,
+                        "source_tasks": list(SOURCE_TASKS),
+                        "heldout_tasks": list(HELDOUT_TASKS),
+                        "source_per_task_scene": args.source_per_task_scene,
+                        "heldout_per_task_scene": args.heldout_per_task_scene,
+                        "validation_modulus": args.validation_modulus,
+                        "segments_detail": segments,
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
         if args.dry_run:
             print(json.dumps(selection_summary, indent=2))
             return
 
-        session = requests.Session()
-        downloaded = 0
-        frame_count = 0
-        for index, segment in enumerate(segments, start=1):
+        def extract_segment(
+            item: tuple[int, dict[str, object]],
+        ) -> tuple[int, dict[str, object], int, int, int]:
+            index, segment = item
             frame_names = [
                 f"task_ABC_D/training/episode_{frame:07d}.npz"
                 for frame in range(int(segment["start"]), int(segment["end"]) + 1)
@@ -256,29 +335,51 @@ def main() -> None:
                 )
             ]
             groups = physical_groups(missing_infos)
+            segment_downloaded = 0
+            worker_session = requests.Session()
             for group in groups:
                 range_start = int(group[0].header_offset)
                 range_end = member_end(group[-1])
-                response = session.get(
-                    args.url,
-                    headers={"Range": f"bytes={range_start}-{range_end}"},
-                    timeout=args.timeout,
-                )
-                response.raise_for_status()
-                if response.status_code != 206:
-                    raise RuntimeError(f"Server ignored Range request: {response.status_code}")
+                response: requests.Response | None = None
+                for attempt in range(1, args.retries + 1):
+                    try:
+                        response = worker_session.get(
+                            args.url,
+                            headers={"Range": f"bytes={range_start}-{range_end}"},
+                            timeout=args.timeout,
+                        )
+                        response.raise_for_status()
+                        if response.status_code != 206:
+                            raise RuntimeError(
+                                f"Server ignored Range request: {response.status_code}"
+                            )
+                        break
+                    except (requests.RequestException, RuntimeError):
+                        if attempt == args.retries:
+                            raise
+                        time.sleep(min(2 ** (attempt - 1), 30))
+                assert response is not None
                 payload = response.content
-                downloaded += len(payload)
+                segment_downloaded += len(payload)
                 for info in group:
                     destination = destination_for(info.filename)
                     extract_member_from_range(payload, range_start, info, destination)
-            frame_count += len(infos)
-            print(
-                f"[extract] {index}/{len(segments)} {segment['scene']} "
-                f"{segment['task']} frames={len(infos)} ranges={len(groups)} "
-                f"total_mib={downloaded / 2**20:.1f}",
-                flush=True,
-            )
+            return index, segment, len(infos), len(groups), segment_downloaded
+
+        downloaded = 0
+        frame_count = 0
+        indexed_segments = list(enumerate(segments, start=1))
+        with ThreadPoolExecutor(max_workers=args.workers) as executor:
+            results = executor.map(extract_segment, indexed_segments)
+            for index, segment, segment_frames, group_count, segment_downloaded in results:
+                downloaded += segment_downloaded
+                frame_count += segment_frames
+                print(
+                    f"[extract] {index}/{len(segments)} {segment['scene']} "
+                    f"{segment['task']} frames={segment_frames} ranges={group_count} "
+                    f"total_mib={downloaded / 2**20:.1f}",
+                    flush=True,
+                )
 
     (split / ".hydra").mkdir(parents=True, exist_ok=True)
     (split / ".hydra" / "merged_config.yaml").write_bytes(metadata[metadata_names[1]])

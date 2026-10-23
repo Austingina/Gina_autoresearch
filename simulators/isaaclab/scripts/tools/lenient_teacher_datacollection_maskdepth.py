@@ -4,10 +4,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 """
-Record lift-cube demonstrations with lenient teacher labels and dual-camera mask+depth observations.
+Record lift-cube demonstrations with lenient teacher labels and dual-camera RGB+mask+depth observations.
 
 Each exported episode contains:
-- obs: ee_mask, ee_depth, third_person_mask, third_person_depth, student_state  (s_t)
+- obs: ee_rgb, ee_mask, ee_depth, third_person_rgb, third_person_mask, third_person_depth, student_state  (s_t)
 - env_actions: noisy IK-Rel actions actually executed  (a_t, for CQL)
 - actions: lenient teacher 7D twist (expert label, pre-noise)
 - rewards/progress_reward: PROGRESS_REWARD_SCALE * Δprogress  (r_t for CQL; terminal bonus logged only)
@@ -459,6 +459,42 @@ def resolve_max_episode_steps(env_cfg, cli_value: int, *, noise_buffer_factor: f
     return max(1, int(env_cfg.episode_length_s / control_dt * noise_buffer_factor))
 
 
+def validate_nonzero_camera_outputs(env, *, attempts: int = 5) -> dict[str, dict[str, float | str]]:
+    """Render and fail closed unless every camera produces non-zero raw annotator data."""
+    sensor_names = ("ee_camera", "third_person_camera")
+    last_stats: dict[str, dict[str, float | str]] = {}
+    for _ in range(attempts):
+        env.sim.render()
+        last_stats = {}
+        ready = True
+        for sensor_name in sensor_names:
+            sensor = env.scene.sensors[sensor_name]
+            try:
+                sensor.update(env.physics_dt, force_recompute=True)
+                output = sensor.data.output
+            except RuntimeError as exc:
+                last_stats[sensor_name] = {"error": str(exc)}
+                ready = False
+                continue
+            stats = {}
+            for key in ("rgb", "distance_to_image_plane", "instance_id_segmentation_fast"):
+                value = output.get(key)
+                stats[key] = float(torch.count_nonzero(value).item()) if value is not None else -1.0
+            last_stats[sensor_name] = stats
+            ready &= all(count > 0 for count in stats.values())
+        if ready:
+            print(
+                f"[INFO] Vision preflight PASS has_rtx_sensors={env.sim.has_rtx_sensors()} "
+                f"render_mode={env.sim.render_mode} stats={last_stats}"
+            )
+            return last_stats
+    raise RuntimeError(
+        "Vision preflight failed: camera annotators remained missing/all-zero after "
+        f"{attempts} explicit renders; has_rtx_sensors={env.sim.has_rtx_sensors()} "
+        f"render_mode={env.sim.render_mode} stats={last_stats}"
+    )
+
+
 def main():
     output_dir = os.path.dirname(args_cli.dataset_file)
     output_file_name = os.path.splitext(os.path.basename(args_cli.dataset_file))[0]
@@ -512,7 +548,7 @@ def main():
         f"[INFO] Teacher noise: trigger_prob={args_cli.noise_trigger_prob}, std={args_cli.noise_std}, "
         f"hold=[{args_cli.noise_hold_min}, {args_cli.noise_hold_max}]"
     )
-    print("[INFO] Recorded keys: obs (mask+depth+student_state), env_actions (CQL action),")
+    print("[INFO] Recorded keys: obs (RGB+mask+depth+student_state), env_actions (CQL action),")
     print("       rewards/progress_reward (scaled Δprogress), actions (teacher twist),")
     print("       ee_pose, goals, rewards/grasp|lift|progress*, states, demo attr success")
     print(
@@ -521,6 +557,7 @@ def main():
     )
 
     env.reset()
+    validate_nonzero_camera_outputs(env)
     oracle.reset()
     reset_teacher_phase_state(env)
 

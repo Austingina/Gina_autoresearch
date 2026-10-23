@@ -71,6 +71,12 @@ def main() -> None:
         "calvin_scene_B": 10,
         "calvin_scene_C": 10,
     }
+    infos = [
+        types.SimpleNamespace(header_offset=offset, compress_size=600, filename=name, extra=b"")
+        for offset, name in ((0, "a"), (800, "b"), (1600, "c"))
+    ]
+    bounded_groups = MODULE.physical_groups(infos, max_range_bytes=1500)
+    assert [len(group) for group in bounded_groups] == [2, 1]
     print("CALVIN range subset selection: OK")
 
 

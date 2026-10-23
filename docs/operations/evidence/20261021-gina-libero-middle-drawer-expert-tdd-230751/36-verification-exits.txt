@@ -1,0 +1,2 @@
+py_compile_exit=0
+protected_hash_compare_exit=0

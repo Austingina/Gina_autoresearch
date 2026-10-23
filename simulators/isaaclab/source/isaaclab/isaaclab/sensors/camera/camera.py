@@ -401,6 +401,11 @@ class Camera(SensorBase):
         import omni.replicator.core as rep
         from omni.syntheticdata.scripts.SyntheticData import SyntheticData
 
+        if get_isaac_sim_version().major >= 6:
+            usd_context = omni.usd.get_context()
+            if "rtx" not in usd_context.get_attached_hydra_engine_names():
+                omni.usd.create_hydra_engine("rtx", usd_context)
+
         # Initialize parent class
         super()._initialize_impl()
         # Create a view for the sensor with Fabric enabled for fast pose queries, otherwise position will be stale.

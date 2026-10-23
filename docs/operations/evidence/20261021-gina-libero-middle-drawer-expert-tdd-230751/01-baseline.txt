@@ -1,0 +1,49 @@
+git_root=/home/ai-sz-a26394-u1/Gina_autoresearch
+branch=master
+head=3d4aeba1badaa3d6ce781033e0d9187729dfec54
+ M .gitignore
+ M framework/scripts/data/extract_calvin_remote_calibration_subset.py
+ M framework/scripts/data/test_extract_calvin_remote_calibration_subset.py
+ M framework/scripts/policy_state_bc/train_eval_state_bc_task_policy.py
+ M framework/scripts/policy_state_bc/train_eval_state_chunk_flow_policy.py
+ M simulators/registry.yaml
+?? .venv-calvin-unit/
+?? artifacts/
+?? data/calvin/
+?? docs/CROSS_SIM_NATIVE_COLLECTION.md
+?? docs/operations/
+?? experiments/phase1_calvin/2026-10-20_matched_task_multiseed/
+?? experiments/phase1_calvin/2026-10-20_same_g_coverage_comparison/
+?? experiments/phase1_calvin/2026-10-20_same_g_full_formal/
+?? framework/scripts/data/audit_calvin_push_collection_distribution.py
+?? framework/scripts/data/build_calvin_fixed_scene_push_resets.py
+?? framework/scripts/data/build_calvin_fixed_scene_y_push_resets.py
+?? framework/scripts/data/build_calvin_g_intent_multifold.py
+?? framework/scripts/data/build_calvin_packed_state_cache.py
+?? framework/scripts/data/build_remote_zip_sparse_index.py
+?? framework/scripts/data/collect_calvin_geometry_contact_push_expert.py
+?? framework/scripts/data/collect_calvin_parametric_push_expert.py
+?? framework/scripts/data/collect_calvin_scripted_expert.py
+?? framework/scripts/data/compare_calvin_subset_distributions.py
+?? framework/scripts/data/extract_calvin_intent_factorial_subset.py
+?? framework/scripts/data/extract_calvin_original_task_dd_subset.py
+?? framework/scripts/data/test_build_calvin_fixed_scene_push_resets.py
+?? framework/scripts/data/test_build_calvin_fixed_scene_y_push_resets.py
+?? framework/scripts/data/test_build_calvin_g_intent_multifold.py
+?? framework/scripts/data/test_build_calvin_packed_state_cache.py
+?? framework/scripts/data/test_collect_calvin_geometry_contact_push_expert.py
+?? framework/scripts/data/test_collect_calvin_parametric_push_expert.py
+?? framework/scripts/data/test_collect_calvin_scripted_expert.py
+?? framework/scripts/data/test_extract_calvin_original_task_dd_subset.py
+?? framework/scripts/data/test_native_collection_contract.py
+?? framework/scripts/data/test_select_calvin_intent_factorial_subset.py
+?? framework/scripts/policy_state_bc/build_matched_task_multiseed_plan.py
+?? framework/scripts/policy_state_bc/build_same_g_full_formal_plan.py
+?? framework/scripts/policy_state_bc/evaluate_same_g_offline.py
+?? framework/scripts/policy_state_bc/test_build_matched_task_multiseed_plan.py
+?? framework/scripts/policy_state_bc/test_build_same_g_full_formal_plan.py
+?? framework/scripts/policy_state_bc/test_manifest_segment_selection.py
+?? framework/scripts/policy_state_bc/test_numpy_pickle_compat.py
+?? framework/scripts/policy_state_bc/test_profiled_eval_no_recursion.py
+?? framework/scripts/policy_state_bc/test_state_only_calvin_env.py
+?? framework/sim_data/

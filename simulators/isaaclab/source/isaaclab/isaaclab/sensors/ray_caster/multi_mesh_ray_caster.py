@@ -15,7 +15,7 @@ import torch
 import trimesh
 import warp as wp
 
-import omni.physics.tensors.impl.api as physx
+from isaaclab.utils.physics_tensors import physx
 
 import isaaclab.sim as sim_utils
 from isaaclab.sim.views import XformPrimView

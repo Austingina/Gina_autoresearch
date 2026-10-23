@@ -868,7 +868,8 @@ def bind_physics_material(
     # check if prim has collision applied on it
     has_physics_scene_api = prim.HasAPI(PhysxSchema.PhysxSceneAPI)
     has_collider = prim.HasAPI(UsdPhysics.CollisionAPI)
-    has_deformable_body = prim.HasAPI(PhysxSchema.PhysxDeformableBodyAPI)
+    deformable_body_api = getattr(PhysxSchema, "PhysxDeformableBodyAPI", None)
+    has_deformable_body = deformable_body_api is not None and prim.HasAPI(deformable_body_api)
     has_particle_system = prim.IsA(PhysxSchema.PhysxParticleSystem)
     if not (has_physics_scene_api or has_collider or has_deformable_body or has_particle_system):
         logger.debug(

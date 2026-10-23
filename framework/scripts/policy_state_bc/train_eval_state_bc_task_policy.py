@@ -57,8 +57,19 @@ def episode_file(split_dir: Path, index: int) -> Path:
     return split_dir / f"episode_{index:07d}.npz"
 
 
+def install_numpy_pickle_compat_aliases() -> None:
+    """Allow NumPy 1.x to read object arrays pickled by NumPy 2.x."""
+
+    if not hasattr(np, "core"):
+        return
+    sys.modules.setdefault("numpy._core", np.core)
+    sys.modules.setdefault("numpy._core.multiarray", np.core.multiarray)
+    sys.modules.setdefault("numpy._core.numeric", np.core.numeric)
+
+
 def load_lang_segments(split_dir: Path) -> list[dict[str, Any]]:
     lang_file = split_dir / "lang_annotations" / "auto_lang_ann.npy"
+    install_numpy_pickle_compat_aliases()
     lang = np.load(lang_file, allow_pickle=True).item()
     tasks = lang["language"]["task"]
     anns = lang["language"]["ann"]

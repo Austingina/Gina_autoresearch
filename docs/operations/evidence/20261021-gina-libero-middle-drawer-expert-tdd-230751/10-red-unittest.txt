@@ -1,0 +1,19 @@
+test_libero_middle_drawer_expert (unittest.loader._FailedTest.test_libero_middle_drawer_expert) ... ERROR
+
+======================================================================
+ERROR: test_libero_middle_drawer_expert (unittest.loader._FailedTest.test_libero_middle_drawer_expert)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_libero_middle_drawer_expert
+Traceback (most recent call last):
+  File "/home/ai-sz-a26394-u1/.local/share/uv/python/cpython-3.11.15-linux-x86_64-gnu/lib/python3.11/unittest/loader.py", line 162, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ai-sz-a26394-u1/Gina_autoresearch/framework/scripts/data/test_libero_middle_drawer_expert.py", line 10, in <module>
+    from framework.sim_data import libero_middle_drawer_expert as expert
+ImportError: cannot import name 'libero_middle_drawer_expert' from 'framework.sim_data' (/home/ai-sz-a26394-u1/Gina_autoresearch/framework/sim_data/__init__.py)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

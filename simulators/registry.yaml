@@ -51,3 +51,32 @@ platforms:
       External workspace (not nested under simulators/). Link phase1_calvin/*
       to $CALVIN_G_ROOT. Train with torch 2.3.1+cu121 (sm_90) on H200.
       See docs/ENVIRONMENTS.md and docs/progress_phase1_calvin.md.
+
+  libero:
+    id: libero
+    display_name: LIBERO
+    role: data_expansion_external
+    env_var: LIBERO_ROOT
+    default_relpath: simulators/libero
+    conda_env: libero
+    upstream_commit: 8f1084e3132a39270c3a13ebe37270a43ece2a01
+    native_success_checker: ControlEnv.check_success
+    notes: >
+      External runtime, not installed by the current repository. Collection must
+      use OffScreenRenderEnv reset/step plus the public check_success wrapper;
+      native actions, simulator state, camera observations, BDDL task, and init
+      state stay platform-specific.
+
+  robotwin:
+    id: robotwin
+    display_name: RoboTwin 2.0
+    role: data_expansion_external
+    env_var: ROBOTWIN_ROOT
+    default_relpath: simulators/robotwin
+    conda_env: robotwin
+    upstream_commit: ea8b21121ebb3cd201ff5b3fe361944ac94eda3f
+    native_success_checker: plan_success_and_check_success_and_planned_joints_legal
+    notes: >
+      External SAPIEN runtime, not installed by the current repository. Reuse
+      RoboTwin's setup_demo/play_once/save_traj_data pipeline and admit episodes
+      only when its native planning, task-success, and joint-legality gates pass.

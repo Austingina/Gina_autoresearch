@@ -1,4 +1,4 @@
-# AutoResearch — Foundation-G / Interaction Geometry
+# Gina AutoResearch — Foundation-G / Interaction Geometry
 
 Unified research flywheel for **whether a compact geometric goal interface G improves visuomotor generalization**.
 
@@ -6,6 +6,8 @@ Unified research flywheel for **whether a compact geometric goal interface G imp
 a_t = π(o_t, M_t, G_t)     # research interface (platform-agnostic)
 ```
 
+**Code:** <https://github.com/Austingina/Gina_autoresearch><br>
+**Derived dataset:** <https://huggingface.co/datasets/AUSTINGINA/Gina_autoresearch><br>
 **Recovery entry point:** [bootstrap.md](bootstrap.md)<br>
 **Dataset ledger:** [dataset.md](dataset.md)<br>
 (If disks expire: clone this GitHub repo, rebuild the public inputs, and rerun the recorded gates.)
@@ -38,7 +40,7 @@ AutoResearch/
 ## Quick start
 
 ```bash
-git clone https://github.com/wukui-muc/AutoResearch.git && cd AutoResearch
+git clone https://github.com/Austingina/Gina_autoresearch.git && cd Gina_autoresearch
 export AUTORESEARCH_ROOT="$PWD"
 source simulators/resolve_paths.sh
 

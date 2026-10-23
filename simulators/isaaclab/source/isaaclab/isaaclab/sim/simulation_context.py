@@ -222,7 +222,9 @@ class SimulationContext(_SimulationContext):
             # disable the viewport if offscreen_render is enabled
             from omni.kit.viewport.utility import get_active_viewport
 
-            get_active_viewport().updates_enabled = False
+            active_viewport = get_active_viewport()
+            if active_viewport is not None:
+                active_viewport.updates_enabled = False
 
         # override enable scene querying if rendering is enabled
         # this is needed for some GUI features

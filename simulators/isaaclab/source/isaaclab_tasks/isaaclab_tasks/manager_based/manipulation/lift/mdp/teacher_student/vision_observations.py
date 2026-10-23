@@ -231,3 +231,22 @@ def camera_depth(
     depth[depth == float("inf")] = max_depth
     depth = torch.clamp(depth / max_depth, 0.0, 1.0)
     return depth.unsqueeze(-1)
+
+
+def camera_rgb(
+    env: ManagerBasedEnv,
+    sensor_cfg: SceneEntityCfg = SceneEntityCfg("ee_camera"),
+) -> torch.Tensor:
+    """Return three-channel camera RGB normalized to finite float32 ``[0, 1]``."""
+    sensor = env.scene.sensors[sensor_cfg.name]
+    height, width = _sensor_image_shape(env, sensor)
+    output = _safe_camera_output(sensor)
+    if not output or "rgb" not in output:
+        return torch.zeros(env.num_envs, height, width, 3, dtype=torch.float32, device=env.device)
+
+    rgb = output["rgb"][..., :3].clone()
+    if rgb.dtype == torch.uint8:
+        rgb = rgb.to(dtype=torch.float32) / 255.0
+    else:
+        rgb = rgb.to(dtype=torch.float32)
+    return torch.nan_to_num(rgb, nan=0.0, posinf=1.0, neginf=0.0).clamp_(0.0, 1.0)

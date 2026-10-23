@@ -14,6 +14,7 @@ from pxr import Usd, UsdShade
 from isaaclab.sim.utils import clone, safe_set_attribute_on_usd_prim
 from isaaclab.sim.utils.stage import get_current_stage
 from isaaclab.utils.assets import NVIDIA_NUCLEUS_DIR
+from isaaclab.utils.version import get_isaac_sim_version
 
 if TYPE_CHECKING:
     from . import visual_materials_cfg
@@ -61,11 +62,12 @@ def spawn_preview_surface(prim_path: str, cfg: visual_materials_cfg.PreviewSurfa
         # handle scene creation on a custom stage.
         material_prim = UsdShade.Material.Define(stage, prim_path)
         if material_prim:
+            shader_name_key = "prim_name" if get_isaac_sim_version().major >= 6 else "name"
             shader_prim = CreateShaderPrimFromSdrCommand(
                 parent_path=prim_path,
                 identifier="UsdPreviewSurface",
                 stage_or_context=stage,
-                name="Shader",
+                **{shader_name_key: "Shader"},
             ).do()
             # bind the shader graph to the material
             if shader_prim:

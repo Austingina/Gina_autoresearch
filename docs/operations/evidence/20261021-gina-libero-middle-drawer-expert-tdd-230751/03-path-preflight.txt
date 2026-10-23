@@ -1,0 +1,2 @@
+ABSENT framework/sim_data/libero_middle_drawer_expert.py
+ABSENT framework/scripts/data/test_libero_middle_drawer_expert.py

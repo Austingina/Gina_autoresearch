@@ -4,6 +4,8 @@ __pycache__/
 .eggs/
 .coverage
 .venv/
+.venv-data-audit/
+.venv-*/
 venv/
 .env
 .env.*
@@ -34,6 +36,10 @@ wandb/
 
 # Legacy — do not store project data here
 datasets/
+# Keep the vendored IsaacLab Python package named ``datasets``; this is source,
+# not generated project data.
+!simulators/isaaclab/source/isaaclab/isaaclab/utils/datasets/
+!simulators/isaaclab/source/isaaclab/isaaclab/utils/datasets/**
 Uni-embodied-goal/*.pdf
 
 # Optional external Arena checkout (not vendored)
@@ -76,6 +82,19 @@ experiments/**/calvin_logs/
 experiments/**/lightning_logs/
 experiments/**/*.mp4
 _sync_from_server/
+
+# Local CALVIN remote-ZIP index cache (large, reproducible)
+artifacts/calvin_zip_index/
+
+# Local evidence and simulator payloads are published separately, never in Git.
+artifacts/
+data/*
+!data/README.md
+!data/manifests/
+!data/manifests/**
+
+# Current machine-local experiment products (plans, checkpoints, caches, logs).
+experiments/phase1_calvin/2026-*/
 
 # Track small provenance files
 !data/README.md

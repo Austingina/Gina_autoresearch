@@ -14,6 +14,7 @@ from .teacher_student.observations import student_proprio_observation, student_v
 from .teacher_student.vision_observations import (  # noqa: F401
     camera_colored_semantic_mask,
     camera_depth,
+    camera_rgb,
     randomize_colored_mask_palette,
     set_fixed_colored_mask_palette,
 )

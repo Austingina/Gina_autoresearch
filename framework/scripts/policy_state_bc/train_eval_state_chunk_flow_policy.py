@@ -7,6 +7,7 @@ import argparse
 import copy
 from collections import Counter, defaultdict
 import csv
+import hashlib
 import json
 import math
 import os
@@ -813,6 +814,86 @@ PACKED_STATE_ARRAYS_NAME = "state_only_arrays.npz"
 PACKED_STATE_FIELDS = ("robot_obs", "scene_obs", "rel_actions")
 
 
+def segment_key(segment: dict[str, Any]) -> tuple[str, int, int]:
+    return (
+        str(segment["task"]),
+        int(segment["start"]),
+        int(segment["end"]),
+    )
+
+
+def select_segments_from_manifest(
+    segments: list[dict[str, Any]], manifest_path: Path, split: str
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Select exact task/start/end records and fail closed on manifest drift."""
+
+    manifest_path = manifest_path.resolve()
+    manifest_bytes = manifest_path.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    details = manifest.get("segments_detail")
+    if not isinstance(details, list) or not details:
+        raise RuntimeError(f"Selection manifest has no segments_detail: {manifest_path}")
+    requested_rows = [row for row in details if str(row.get("split")) == split]
+    requested_keys = [segment_key(row) for row in requested_rows]
+    if not requested_keys:
+        raise RuntimeError(f"Selection manifest has no {split!r} segments: {manifest_path}")
+    if len(set(requested_keys)) != len(requested_keys):
+        raise RuntimeError(f"Selection manifest contains duplicate {split!r} segments")
+
+    available = {segment_key(segment): segment for segment in segments}
+    missing = sorted(set(requested_keys) - set(available))
+    if missing:
+        raise RuntimeError(
+            f"Selection manifest segments are missing from dataset annotations: {missing[:5]}"
+        )
+    selected_set = set(requested_keys)
+    selected = [segment for segment in segments if segment_key(segment) in selected_set]
+    if len(selected) != len(requested_keys):
+        raise RuntimeError("Dataset annotations contain duplicate selected segments")
+    receipt = {
+        "manifest": manifest_path.as_posix(),
+        "manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest(),
+        "fold_id": manifest.get("fold_id", "legacy_single_fold"),
+        "split": split,
+        "selected_segments": len(selected),
+        "selected_frames": int(
+            sum(int(segment["end"]) - int(segment["start"]) + 1 for segment in selected)
+        ),
+        "selected_tasks": dict(
+            sorted(Counter(str(segment["task"]) for segment in selected).items())
+        ),
+    }
+    return selected, receipt
+
+
+def load_fixed_primitive_geometry(
+    path: Path, required_tasks: set[str]
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Load one immutable primitive-G geometry contract for paired runs."""
+
+    path = path.resolve()
+    payload = path.read_bytes()
+    geometry = json.loads(payload)
+    missing = sorted(required_tasks - set(geometry))
+    if missing:
+        raise RuntimeError(f"Fixed primitive geometry is missing tasks: {missing}")
+    for task in sorted(required_tasks):
+        row = geometry[task]
+        for field in ("target_center", "flow_dir"):
+            value = np.asarray(row.get(field), dtype=np.float32)
+            if value.shape != (3,) or not np.all(np.isfinite(value)):
+                raise RuntimeError(f"Invalid {task}.{field} in {path}")
+        displacement = float(row.get("median_displacement", 0.0))
+        if not np.isfinite(displacement) or displacement <= 0:
+            raise RuntimeError(f"Invalid {task}.median_displacement in {path}")
+    receipt = {
+        "path": path.as_posix(),
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "tasks": sorted(required_tasks),
+    }
+    return geometry, receipt
+
+
 def load_packed_state_arrays(
     split_dir: Path,
     packed_name: str = PACKED_STATE_ARRAYS_NAME,
@@ -868,6 +949,7 @@ def collect_chunk_records(
     reverse_task_pairs: list[tuple[str, str]] | None = None,
     reverse_pair_max_segments: int = 0,
     packed_state_arrays_name: str = PACKED_STATE_ARRAYS_NAME,
+    selected_segment_keys: set[tuple[str, int, int]] | None = None,
 ) -> tuple[dict[str, np.ndarray], list[dict[str, Any]]]:
     rng = random.Random(seed)
     split_dir = data_root / "training"
@@ -911,6 +993,10 @@ def collect_chunk_records(
             return None
 
     segments = base.load_lang_segments(split_dir)
+    if selected_segment_keys is not None:
+        segments = [segment for segment in segments if segment_key(segment) in selected_segment_keys]
+        if not segments:
+            raise RuntimeError("Manifest-exact selection produced no training segments")
     embedding_rows = [
         np.asarray(segment["emb"], dtype=np.float32).reshape(-1)
         for segment in segments
@@ -2407,7 +2493,7 @@ def train_mode(
     y_mean, y_std = y.mean(axis=0), y.std(axis=0) + 1e-6
     init_ckpt: dict[str, Any] | None = None
     if init_checkpoint is not None:
-        init_ckpt = torch.load(init_checkpoint, map_location="cpu")
+        init_ckpt = torch.load(init_checkpoint, map_location="cpu", weights_only=False)
         if str(init_ckpt.get("mode")) != mode:
             raise ValueError(
                 f"Initialization checkpoint mode {init_ckpt.get('mode')!r} does not match {mode!r}"
@@ -3468,7 +3554,7 @@ class ChunkFlowPolicy:
         sample_seed_override: int | None = None,
         reseed_each_episode: bool = True,
     ):
-        ckpt = torch.load(ckpt_path, map_location="cpu")
+        ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
         self.mode = ckpt["mode"]
         self.task_to_id = task_to_id
         self.text_to_task = text_to_task
@@ -4091,6 +4177,18 @@ class ChunkFlowPolicy:
         return action
 
 
+def make_state_only_calvin_env(data_root: Path) -> Any:
+    """Create CALVIN without RGB/depth/tactile cameras for state-only policies."""
+
+    from calvin_env.envs.play_table_env import get_env
+
+    return get_env(
+        data_root / "validation",
+        show_gui=False,
+        obs_space={"rgb_obs": [], "depth_obs": []},
+    )
+
+
 def evaluate_policy_ckpt(
     calvin_code: Path,
     data_root: Path,
@@ -4139,7 +4237,7 @@ def evaluate_policy_ckpt(
 
     eval_mod.NUM_SEQUENCES = num_sequences
     eval_mod.EP_LEN = ep_len
-    checkpoint_meta = torch.load(ckpt_path, map_location="cpu")
+    checkpoint_meta = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     executor_language_mode = str(checkpoint_meta.get("executor_language_mode", "onehot"))
     task_language_embeddings = (
         load_task_language_embeddings(data_root)
@@ -4178,7 +4276,7 @@ def evaluate_policy_ckpt(
             },
         )
     else:
-        env = eval_mod.make_env(data_root)
+        env = make_state_only_calvin_env(data_root)
     if state_only_observation:
         env.get_obs = env.get_state_obs
     if online_minimal_g_mode in {"behavior_block_surface", "behavior_block_volume"}:
@@ -4190,19 +4288,19 @@ def evaluate_policy_ckpt(
         "env_calls": 0,
     }
     if profile_eval_timing:
-        model_step = model.step
-        env_step = env.step
+        profiled_model_step_original = model.step
+        profiled_env_step_original = env.step
 
         def timed_model_step(*args: Any, **kwargs: Any) -> np.ndarray:
             start = time.perf_counter()
-            result = model_step(*args, **kwargs)
+            result = profiled_model_step_original(*args, **kwargs)
             eval_timing["policy_seconds"] += time.perf_counter() - start
             eval_timing["policy_calls"] += 1
             return result
 
         def timed_env_step(*args: Any, **kwargs: Any) -> Any:
             start = time.perf_counter()
-            result = env_step(*args, **kwargs)
+            result = profiled_env_step_original(*args, **kwargs)
             eval_timing["env_seconds"] += time.perf_counter() - start
             eval_timing["env_calls"] += 1
             return result
@@ -4394,10 +4492,10 @@ def evaluate_policy_ckpt(
             env.reset(robot_obs=robot_obs, scene_obs=scene_obs)
             model.reset()
             rollout_steps: list[dict[str, Any]] = []
-            model_step = model.step
+            rollout_model_step = model.step
             if len(results) < trace_rollouts:
                 def traced_model_step(obs: dict[str, Any], goal: str) -> np.ndarray:
-                    action = model_step(obs, goal)
+                    action = rollout_model_step(obs, goal)
                     current_robot = np.asarray(obs["robot_obs"], dtype=np.float32)
                     current_scene = np.asarray(obs["scene_obs"], dtype=np.float32)
                     current_task = model._task_from_goal(goal)
@@ -4488,7 +4586,7 @@ def evaluate_policy_ckpt(
 
                 model.step = traced_model_step  # type: ignore[method-assign]
             success = bool(eval_mod.rollout(env, model, task_oracle, subtask, val_annotations, plans, debug=False))
-            model.step = model_step  # type: ignore[method-assign]
+            model.step = rollout_model_step  # type: ignore[method-assign]
             if rollout_steps:
                 trace_records.append(
                     {
@@ -4561,6 +4659,18 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--calvin-code", type=Path, required=True)
     parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument(
+        "--segment-selection-manifest",
+        type=Path,
+        default=None,
+        help="Manifest whose exact task/start/end records define the allowed data split.",
+    )
+    parser.add_argument(
+        "--segment-selection-split",
+        choices=("source", "heldout"),
+        default="source",
+        help="segments_detail split selected from --segment-selection-manifest.",
+    )
     parser.add_argument(
         "--packed-state-arrays-name",
         default=PACKED_STATE_ARRAYS_NAME,
@@ -4733,6 +4843,12 @@ def main() -> None:
         help="Mask direct task language when compact G is nonzero (legacy=1); keep it for fair language+G tests with 0.",
     )
     parser.add_argument("--articulation-geometry-json", type=Path, required=True)
+    parser.add_argument(
+        "--primitive-geometry-json",
+        type=Path,
+        default=None,
+        help="Frozen primitive-G geometry shared by controlled comparison runs.",
+    )
     parser.add_argument(
         "--minimal-g-scope",
         choices=sorted(MINIMAL_G_SCOPES),
@@ -4915,11 +5031,19 @@ def main() -> None:
         if args.include_tasks is None
         else set(args.include_tasks) & supported_primitive_tasks
     )
-    primitive_geometry = (
-        fit_primitive_query_geometry(args.data_root, required_primitive_tasks)
-        if args.minimal_g_scope == "translational" and required_primitive_tasks
-        else {}
-    )
+    primitive_geometry_receipt: dict[str, Any] | None = None
+    if args.minimal_g_scope == "translational" and required_primitive_tasks:
+        if args.primitive_geometry_json is not None:
+            primitive_geometry, primitive_geometry_receipt = load_fixed_primitive_geometry(
+                args.primitive_geometry_json, required_primitive_tasks
+            )
+        else:
+            primitive_geometry = fit_primitive_query_geometry(
+                args.data_root, required_primitive_tasks
+            )
+            primitive_geometry_receipt = {"source": "fit_from_current_data_root"}
+    else:
+        primitive_geometry = {}
     task_segment_limits = parse_task_segment_limits(args.task_segment_limits)
     reverse_task_loss_weights = parse_task_loss_weights(args.reverse_task_loss_weights)
     reverse_task_pairs = parse_reverse_task_pairs(args.reverse_task_pairs)
@@ -4935,6 +5059,15 @@ def main() -> None:
     text_to_task, _task_to_text = base.load_eval_annotation_maps(args.calvin_code)
     segments = base.load_lang_segments(args.data_root / "training")
     task_to_id = base.build_task_index(segments, text_to_task)
+    segment_selection_receipt: dict[str, Any] | None = None
+    selected_segment_keys: set[tuple[str, int, int]] | None = None
+    if args.segment_selection_manifest is not None:
+        selected_segments, segment_selection_receipt = select_segments_from_manifest(
+            segments,
+            args.segment_selection_manifest,
+            args.segment_selection_split,
+        )
+        selected_segment_keys = {segment_key(segment) for segment in selected_segments}
     arrays, used_segments = collect_chunk_records(
         args.data_root,
         task_to_id,
@@ -4953,6 +5086,7 @@ def main() -> None:
         reverse_task_pairs=reverse_task_pairs,
         reverse_pair_max_segments=args.reverse_pair_max_segments,
         packed_state_arrays_name=args.packed_state_arrays_name,
+        selected_segment_keys=selected_segment_keys,
     )
     visual_feature_meta: dict[str, Any] = {}
     if args.executor_state_scope == "visual":
@@ -4997,6 +5131,7 @@ def main() -> None:
         "actual_segments_by_task": dict(Counter(str(seg["task"]) for seg in used_segments)),
         "actual_windows_by_task": dict(Counter(str(task) for task in arrays["task_name"])),
         "packed_state_arrays_name": args.packed_state_arrays_name,
+        "segment_selection": segment_selection_receipt,
         "reverse_open_augmentation": args.reverse_open_augmentation,
         "reverse_open_max_segments": args.reverse_open_max_segments,
         "reverse_open_windows": int(np.sum(arrays["is_reverse_open"])),
@@ -5037,6 +5172,7 @@ def main() -> None:
         "articulation_geometry_json": args.articulation_geometry_json,
         "minimal_g_scope": args.minimal_g_scope,
         "primitive_geometry": primitive_geometry,
+        "primitive_geometry_receipt": primitive_geometry_receipt,
         "fm_steps": args.fm_steps,
         "g_scale_aug_values": args.g_scale_aug_values,
         "g_dropout_prob": args.g_dropout_prob,

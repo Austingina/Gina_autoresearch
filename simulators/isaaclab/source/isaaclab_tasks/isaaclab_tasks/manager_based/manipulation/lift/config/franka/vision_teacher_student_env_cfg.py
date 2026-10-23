@@ -44,10 +44,14 @@ def _camera_cfg(
 
 @configclass
 class VisionObservationsCfg:
-    """Dual-camera mask + depth observations (GT from Replicator)."""
+    """Dual-camera RGB + mask + depth observations (GT from Replicator)."""
 
     @configclass
     class PolicyCfg(ObsGroup):
+        ee_rgb = ObsTerm(
+            func=mdp.camera_rgb,
+            params={"sensor_cfg": SceneEntityCfg("ee_camera")},
+        )
         ee_depth = ObsTerm(
             func=mdp.camera_depth,
             params={"sensor_cfg": SceneEntityCfg("ee_camera"), "max_depth": 2.0},
@@ -62,6 +66,10 @@ class VisionObservationsCfg:
         )
         third_person_mask = ObsTerm(
             func=mdp.camera_colored_semantic_mask,
+            params={"sensor_cfg": SceneEntityCfg("third_person_camera")},
+        )
+        third_person_rgb = ObsTerm(
+            func=mdp.camera_rgb,
             params={"sensor_cfg": SceneEntityCfg("third_person_camera")},
         )
         student_state = ObsTerm(func=mdp.student_proprio_observation)

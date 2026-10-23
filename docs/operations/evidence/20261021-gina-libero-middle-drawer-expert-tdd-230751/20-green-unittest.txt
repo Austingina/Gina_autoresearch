@@ -1,0 +1,14 @@
+test_action_is_exactly_seven_finite_clipped_values (framework.scripts.data.test_libero_middle_drawer_expert.ActionContractTests.test_action_is_exactly_seven_finite_clipped_values) ... ok
+test_fsm_reaches_hold_only_after_consecutive_error_confirmations (framework.scripts.data.test_libero_middle_drawer_expert.FSMContractTests.test_fsm_reaches_hold_only_after_consecutive_error_confirmations) ... ok
+test_nan_observation_or_missing_geometry_enters_safe_failed_state (framework.scripts.data.test_libero_middle_drawer_expert.FSMContractTests.test_nan_observation_or_missing_geometry_enters_safe_failed_state) ... ok
+test_step_contract_has_no_success_label_or_forbidden_inputs (framework.scripts.data.test_libero_middle_drawer_expert.FSMContractTests.test_step_contract_has_no_success_label_or_forbidden_inputs) ... ok
+test_middle_handle_local_is_transformed_from_body_frame_to_world (framework.scripts.data.test_libero_middle_drawer_expert.GeometryContractTests.test_middle_handle_local_is_transformed_from_body_frame_to_world) ... ok
+test_missing_or_nan_geometry_fails_closed (framework.scripts.data.test_libero_middle_drawer_expert.GeometryContractTests.test_missing_or_nan_geometry_fails_closed) ... ok
+test_parser_rejects_bad_range_body_and_axis (framework.scripts.data.test_libero_middle_drawer_expert.GeometryContractTests.test_parser_rejects_bad_range_body_and_axis) ... ok
+test_parser_requires_exactly_one_slide_joint (framework.scripts.data.test_libero_middle_drawer_expert.GeometryContractTests.test_parser_requires_exactly_one_slide_joint) ... ok
+test_pull_direction_has_strictly_negative_projected_joint_delta (framework.scripts.data.test_libero_middle_drawer_expert.GeometryContractTests.test_pull_direction_has_strictly_negative_projected_joint_delta) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.014s
+
+OK
